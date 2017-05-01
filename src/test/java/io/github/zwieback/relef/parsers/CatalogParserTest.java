@@ -1,5 +1,6 @@
 package io.github.zwieback.relef.parsers;
 
+import io.github.zwieback.relef.configs.DatabaseConfig;
 import io.github.zwieback.relef.configs.ParserConfigForTest;
 import io.github.zwieback.relef.configs.PropertyConfig;
 import io.github.zwieback.relef.configs.ServiceConfig;
@@ -29,6 +30,7 @@ import static org.mockito.Mockito.doAnswer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
+        DatabaseConfig.class,
         ParserConfigForTest.class,
         PropertyConfig.class,
         ServiceConfig.class
@@ -36,7 +38,7 @@ import static org.mockito.Mockito.doAnswer;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class CatalogParserTest {
 
-    private static final int CATALOG_ID = 69472;
+    private static final Long CATALOG_ID = 69472L;
     private static final int PAGE_COUNT = 9;
     private static final int HEADERS_ARGUMENT_INDEX = 1;
     private static final String PAGE_NUMBER_KEY = "PAGEN_1";

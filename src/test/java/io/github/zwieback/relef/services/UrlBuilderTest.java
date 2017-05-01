@@ -24,6 +24,8 @@ public class UrlBuilderTest {
     private static final String DOMAIN_URL = "http://relefopt.ru/";
     private static final String PRODUCT_URL = "/69702/132654/";
     private static final String BRAND_URL = "/brands/12908290.php";
+    private static final Long CATALOG_ID = 69702L;
+    private static final Long PRODUCT_ID = 132654L;
     private static final Long NOW = 1492872488282L;
 
     @SuppressWarnings("unused")
@@ -35,16 +37,24 @@ public class UrlBuilderTest {
     private DateTimeService dateTimeService;
 
     @Test
-    public void test_buildProductUrl_should_contains_bxrand() {
-        String resultUrl = urlBuilder.buildProductUrl(PRODUCT_URL);
+    public void test_buildProductUrl_should_be_full_url() {
+        String resultUrl = urlBuilder.buildProductUrl(CATALOG_ID, PRODUCT_ID);
+        String expectedUrl = DOMAIN_URL + "catalog" + PRODUCT_URL;
+        assertEquals(expectedUrl, resultUrl);
+    }
+
+
+    @Test
+    public void test_buildTrickyProductUrl_should_contains_bxrand() {
+        String resultUrl = urlBuilder.buildTrickyProductUrl(PRODUCT_URL);
         assertTrue(resultUrl.contains("bxrand"));
     }
 
     @Test
-    public void test_buildProductUrl_should_contains_now_as_timestamp() {
+    public void test_buildTrickyProductUrl_should_contains_now_as_timestamp() {
         when(dateTimeService.nowAsMilliseconds()).thenReturn(NOW);
 
-        String resultUrl = urlBuilder.buildProductUrl(PRODUCT_URL);
+        String resultUrl = urlBuilder.buildTrickyProductUrl(PRODUCT_URL);
         String[] dividedUrl = resultUrl.split("="); // timestamp as ms in last value
         Long timestamp = Long.valueOf(dividedUrl[dividedUrl.length - 1]);
         assertEquals(NOW, timestamp);

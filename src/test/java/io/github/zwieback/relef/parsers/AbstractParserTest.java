@@ -1,5 +1,6 @@
 package io.github.zwieback.relef.parsers;
 
+import io.github.zwieback.relef.configs.DatabaseConfig;
 import io.github.zwieback.relef.configs.ParserConfigForTest;
 import io.github.zwieback.relef.configs.PropertyConfig;
 import io.github.zwieback.relef.configs.ServiceConfig;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
+        DatabaseConfig.class,
         ParserConfigForTest.class,
         PropertyConfig.class,
         ServiceConfig.class

@@ -109,20 +109,22 @@ public class CatalogParser {
      * @param catalogId catalog id
      * @return products
      */
-    public List<Product> parseProducts(Document document, @NotNull Integer catalogId) {
+    public List<Product> parseProducts(Document document, @NotNull Long catalogId) {
         Elements items = document.select("ul.rc-catalog > li.rc-catalog__item");
-        return items.stream().map(productNode -> parseProduct(productNode, catalogId)).collect(toList());
+        return items.stream().map(productNode -> parseProduct(catalogId, productNode)).collect(toList());
     }
 
     /**
      * Parse available characteristics and properties of product.
      *
+     * @param catalogId catalog id
      * @param productNode source node
      * @return product with parsed characteristics and properties
      */
-    private Product parseProduct(Element productNode, @NotNull Integer catalogId) {
+    private Product parseProduct(@NotNull Long catalogId, Element productNode) {
+        Long productId = parseId(productNode);
         Product product = new Product()
-                .setId(parseId(productNode))
+                .setId(productId)
                 .setCatalogId(catalogId)
                 .setCode(parseCode(productNode))
                 .setArticle(parseArticle(productNode))
@@ -133,20 +135,20 @@ public class CatalogParser {
                 .setManufacturer(parseManufacturer(productNode))
                 .setTradeMark(parseTradeMark(productNode))
                 .setParty(parseParty(productNode))
-                .setProperties(parseProductProperties(productNode));
+                .setProperties(parseProductProperties(productId, productNode));
         product
                 .setManufacturerCountry(parseManufacturerCountry(product));
         return product;
     }
 
     @NotNull
-    private Integer parseId(Element productNode) {
+    private Long parseId(Element productNode) {
         String cssQuery = "p.rc-catalog__identify > label.rc-catalog__code > label.rc-catalog__favorite";
         Element idNode = productNode.select(cssQuery).first();
         if (idNode == null) {
             throw new HtmlParseException("Couldn't parse product id");
         }
-        return Integer.valueOf(idNode.attr("data-id"));
+        return Long.valueOf(idNode.attr("data-id"));
     }
 
     @Nullable
@@ -247,7 +249,7 @@ public class CatalogParser {
         return text == null ? null : text.split(":")[1].trim();
     }
 
-    private List<ProductProperty> parseProductProperties(Element productNode) {
+    private List<ProductProperty> parseProductProperties(@NotNull Long productId, Element productNode) {
         String propertiesCssQuery = "div.rc-catalog__information > p.rc-catalog__properties > " +
                 "span.rc-catalog__property";
         String hiddenPropertiesCssQuery = "div.rc-catalog__information > p.rc-catalog__properties > " +
@@ -255,16 +257,20 @@ public class CatalogParser {
         Elements properties = productNode.select(propertiesCssQuery);
         Elements hiddenProperties = productNode.select(hiddenPropertiesCssQuery);
         List<ProductProperty> productProperties = new ArrayList<>();
-        productProperties.addAll(properties.stream().map(this::parseProductProperty).collect(toList()));
-        productProperties.addAll(hiddenProperties.stream().map(this::parseProductProperty).collect(toList()));
+        productProperties.addAll(properties.stream()
+                .map(property -> parseProductProperty(productId, property))
+                .collect(toList()));
+        productProperties.addAll(hiddenProperties.stream()
+                .map(property -> parseProductProperty(productId, property))
+                .collect(toList()));
         return productProperties;
     }
 
     @NotNull
-    private ProductProperty parseProductProperty(Element productProperty) {
+    private ProductProperty parseProductProperty(@NotNull Long productId, Element productProperty) {
         String text = Jsoup.parse(productProperty.html()).text();
         String name = stringService.clean(text.split("–")[0]);
         String value = stringService.clean(text.split("–")[1]);
-        return new ProductProperty(name, value);
+        return new ProductProperty(productId, name, value);
     }
 }

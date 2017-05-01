@@ -52,7 +52,7 @@ public class CatalogsParser {
     @NotNull
     private Brand parseBrand(Element brandNode) {
         String url = urlBuilder.buildPathUrl(brandNode.attr("href"));
-        Integer id = urlParser.parseBrandId(url);
+        Long id = urlParser.parseBrandId(url);
         Element imageNode = brandNode.select("img").first();
         String imageUrl = imageNode == null ? null : urlBuilder.buildQueryUrl(imageNode.attr("data-src"));
         return new Brand(id, url, imageUrl);
@@ -74,7 +74,7 @@ public class CatalogsParser {
 
     private Catalog parseCatalog(Element catalogNode, CatalogLevel level) {
         String url = urlBuilder.buildPathUrl(catalogNode.attr("href"));
-        Integer id = urlParser.parseCatalogId(url);
+        Long id = urlParser.parseCatalogId(url);
         String name = catalogNode.text();
         return new Catalog()
                 .setId(id)
@@ -103,7 +103,9 @@ public class CatalogsParser {
             children = parseTreeOfCatalogs(catalogNode, level.next());
         }
         Element urlNode = catalogNode.select(level.getCssQueryForNodeUrl()).first();
-        return parseCatalog(urlNode, level).setChildren(children);
+        Catalog catalog = parseCatalog(urlNode, level);
+        children.forEach(child -> child.setParent(catalog));
+        return catalog.setChildren(children);
     }
 
     /**

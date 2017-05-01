@@ -9,7 +9,7 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 @Component
-public class InternalParser {
+public class InternalParser implements InitializingBean {
 
     private static final Logger log = LogManager.getLogger(InternalParser.class);
     private static final String ACCEPT_ENCODING = "accept-encoding";
@@ -30,8 +30,8 @@ public class InternalParser {
     @Value("${client.userAgent}")
     private String userAgent;
 
-    @Autowired
-    InternalParser() {
+    @Override
+    public void afterPropertiesSet() throws Exception {
         log.info("User agent is " + userAgent);
     }
 

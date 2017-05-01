@@ -21,9 +21,9 @@ abstract class AbstractProductParserTest extends AbstractParserTest {
     @Autowired
     private ProductParser productParser;
 
-    abstract Integer getProductId();
+    abstract Long getProductId();
 
-    abstract Integer getCatalogId();
+    abstract Long getCatalogId();
 
     abstract Product getExpectedProduct();
 
@@ -61,12 +61,12 @@ abstract class AbstractProductParserTest extends AbstractParserTest {
     }
 
     @NotNull
-    static Manufacturer generateManufacturer(String name, String url) {
+    static Manufacturer generateManufacturer(@NotNull String name, @NotNull String url) {
         return new Manufacturer(name, url);
     }
 
     @NotNull
-    static TradeMark generateTradeMark(String name, String url) {
+    static TradeMark generateTradeMark(@NotNull String name, @NotNull String url) {
         return new TradeMark(name, url);
     }
 }

@@ -4,8 +4,8 @@ import io.github.zwieback.relef.entities.Product;
 
 public class Product34259ParserTest extends AbstractProductParserTest {
 
-    private static final Integer CATALOG_ID = 68711;
-    private static final Integer PRODUCT_ID = 34259;
+    private static final Long CATALOG_ID = 68711L;
+    private static final Long PRODUCT_ID = 34259L;
 
     @Override
     String getResourcePage() {
@@ -13,12 +13,12 @@ public class Product34259ParserTest extends AbstractProductParserTest {
     }
 
     @Override
-    Integer getProductId() {
+    Long getProductId() {
         return PRODUCT_ID;
     }
 
     @Override
-    Integer getCatalogId() {
+    Long getCatalogId() {
         return CATALOG_ID;
     }
 

@@ -1,14 +1,21 @@
 package io.github.zwieback.relef.entities;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Catalog {
+@Entity
+@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
+public class Catalog extends BaseEntity {
 
+    @Id
     @NotNull
-    private Integer id;
+    private Long id;
 
     @NotNull
     private String url;
@@ -16,26 +23,38 @@ public class Catalog {
     @NotNull
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
     private CatalogLevel level;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Nullable
+    private Catalog parent;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="parent")
+    @NotFound(action = NotFoundAction.IGNORE)               // workaround to save tree of catalogs with not null id
     @NotNull
     private List<Catalog> children;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "catalog")
+    @NotNull
+    private List<Product> products;
+
     public Catalog() {
-        id = 0;
+        id = 0L;
         url = "";
         name = "";
         level = CatalogLevel.NONE;
         children = new ArrayList<>();
+        products = new ArrayList<>();
     }
 
     @NotNull
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public Catalog setId(@NotNull Integer id) {
+    public Catalog setId(@NotNull Long id) {
         this.id = id;
         return this;
     }
@@ -70,6 +89,16 @@ public class Catalog {
         return this;
     }
 
+    @Nullable
+    public Catalog getParent() {
+        return parent;
+    }
+
+    public Catalog setParent(@Nullable Catalog parent) {
+        this.parent = parent;
+        return this;
+    }
+
     @NotNull
     public List<Catalog> getChildren() {
         return children;
@@ -77,6 +106,16 @@ public class Catalog {
 
     public Catalog setChildren(@NotNull List<Catalog> children) {
         this.children = children;
+        return this;
+    }
+
+    @NotNull
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public Catalog setProducts(@NotNull List<Product> products) {
+        this.products = products;
         return this;
     }
 
