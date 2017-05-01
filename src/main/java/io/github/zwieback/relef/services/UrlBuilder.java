@@ -26,13 +26,26 @@ public class UrlBuilder {
     }
 
     /**
+     * Build product url.
+     *
+     * @param catalogId catalog id
+     * @param productId product id
+     * @return product url
+     */
+    @NotNull
+    public String buildProductUrl(@NotNull Long catalogId, @NotNull Long productId) {
+        String relativeUrl = "catalog/" + catalogId + "/" + productId + "/";
+        return buildPathUrl(relativeUrl);
+    }
+
+    /**
      * Add bxrand query param to productUrl with current timestamp.
      *
      * @param productUrl product url
      * @return tricky url for product request
      */
     @NotNull
-    public String buildProductUrl(String productUrl) {
+    public String buildTrickyProductUrl(String productUrl) {
         return productUrl + "?bxrand=" + dateTimeService.nowAsMilliseconds();
     }
 

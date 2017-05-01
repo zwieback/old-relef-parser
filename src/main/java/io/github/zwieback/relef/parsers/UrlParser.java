@@ -7,31 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 class UrlParser {
 
-//    /**
-//     * Parse catalog id from product url.
-//     * <p>
-//     * Example:
-//     * <p>
-//     * http://relefopt.ru/catalog/69472/321940415/
-//     * returns 69472
-//     *
-//     * @param productUrl url to product
-//     * @return catalog id if exists
-//     * @throws UrlParseException if product url has incorrect format
-//     */
-//    @NotNull
-//    Integer parseCatalogId(String productUrl) {
-//        String[] divided = productUrl.split("/");
-//        int partCount = 6;
-//        if (divided.length == partCount) {
-//            // penultimate value = catalogId
-//            // last value = productId
-//            int penultimateIndex = divided.length - 2;
-//            return Integer.valueOf(divided[penultimateIndex]);
-//        }
-//        throw new UrlParseException("Couldn't parse id from product url " + productUrl);
-//    }
-
     /**
      * Parse catalog id from catalog url.
      * <p>
@@ -45,12 +20,12 @@ class UrlParser {
      * @throws UrlParseException if catalog url has incorrect format
      */
     @NotNull
-    Integer parseCatalogId(String catalogUrl) {
+    Long parseCatalogId(String catalogUrl) {
         String[] divided = catalogUrl.split("/");
         int partCount = 5;
         if (divided.length == partCount) {
             int catalogIndex = divided.length - 1;
-            return Integer.valueOf(divided[catalogIndex]);
+            return Long.valueOf(divided[catalogIndex]);
         }
         throw new UrlParseException("Couldn't parse id from catalog url " + catalogUrl);
     }
@@ -68,12 +43,12 @@ class UrlParser {
      * @throws UrlParseException if brand url has incorrect format
      */
     @NotNull
-    Integer parseBrandId(String brandUrl) {
+    Long parseBrandId(String brandUrl) {
         String[] divided = brandUrl.split("/");
         int partCount = 5;
         if (divided.length == partCount) {
             int brandIndex = divided.length - 1;
-            return Integer.valueOf(divided[brandIndex]);
+            return Long.valueOf(divided[brandIndex]);
         }
         throw new UrlParseException("Couldn't parse id from brand url " + brandUrl);
     }

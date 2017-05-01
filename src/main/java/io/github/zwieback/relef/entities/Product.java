@@ -3,18 +3,28 @@ package io.github.zwieback.relef.entities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import static io.github.zwieback.relef.services.utils.StringFormatter.formatDouble;
 
-public class Product {
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class Product extends BaseEntity {
 
+    @Id
     @NotNull
-    private Integer id;
+    private Long id;
 
+    @Column(name = "catalog_id")
     @NotNull
-    private Integer catalogId;
+    private Long catalogId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "catalog_id", insertable = false, updatable = false)
+    @Nullable
+    private Catalog catalog;
 
     // Код
     @Nullable
@@ -29,6 +39,7 @@ public class Product {
     private String barcode;
 
     // Страна производитель
+    @Column(name = "manufacturer_country")
     @Nullable
     private String manufacturerCountry;
 
@@ -37,6 +48,7 @@ public class Product {
     private String name;
 
     // Описание
+    @Lob
     @Nullable
     private String description;
 
@@ -45,18 +57,24 @@ public class Product {
     private String url;
 
     // Ссылка на фотографию
+    @Column(name = "photo_url")
     @Nullable
     private String photoUrl;
 
     // Ссылка на кешированную фотографию
+    @Column(name = "photo_cached_url")
     @Nullable
     private String photoCachedUrl;
 
     // Производитель
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "manufacturer_name")
     @Nullable
     private Manufacturer manufacturer;
 
     // Торговая марка
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "trade_mark_name")
     @Nullable
     private TradeMark tradeMark;
 
@@ -73,32 +91,43 @@ public class Product {
     private Double volume;
 
     // Свойства
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
     @NotNull
     private List<ProductProperty> properties;
 
     public Product() {
-        id = 0;
-        catalogId = 0;
+        id = 0L;
+        catalogId = 0L;
         properties = new ArrayList<>();
     }
 
     @NotNull
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public Product setId(@NotNull Integer id) {
+    public Product setId(@NotNull Long id) {
         this.id = id;
         return this;
     }
 
     @NotNull
-    public Integer getCatalogId() {
+    public Long getCatalogId() {
         return catalogId;
     }
 
-    public Product setCatalogId(@NotNull Integer catalogId) {
+    public Product setCatalogId(@NotNull Long catalogId) {
         this.catalogId = catalogId;
+        return this;
+    }
+
+    @Nullable
+    public Catalog getCatalog() {
+        return catalog;
+    }
+
+    public Product setCatalog(@Nullable Catalog catalog) {
+        this.catalog = catalog;
         return this;
     }
 

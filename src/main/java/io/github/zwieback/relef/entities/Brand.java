@@ -3,10 +3,15 @@ package io.github.zwieback.relef.entities;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class Brand {
+import javax.persistence.*;
 
+@Entity
+@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
+public class Brand extends BaseEntity {
+
+    @Id
     @NotNull
-    private Integer id;
+    private Long id;
 
     @Nullable
     private String name;
@@ -14,25 +19,26 @@ public class Brand {
     @Nullable
     private String url;
 
+    @Column(name = "image_url")
     @Nullable
     private String imageUrl;
 
     public Brand() {
-        id = 0;
+        id = 0L;
     }
 
-    public Brand(@NotNull Integer id, @Nullable String url, @Nullable String imageUrl) {
+    public Brand(@NotNull Long id, @Nullable String url, @Nullable String imageUrl) {
         this.id = id;
         this.url = url;
         this.imageUrl = imageUrl;
     }
 
     @NotNull
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public Brand setId(@NotNull Integer id) {
+    public Brand setId(@NotNull Long id) {
         this.id = id;
         return this;
     }

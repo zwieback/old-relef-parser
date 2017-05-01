@@ -54,13 +54,13 @@ public class ProductParser {
      * @param url url to product
      * @return document with products content
      */
-    public Document parseUrl(String url) {
+    public Document parseUrl(@NotNull String url) {
         Headers headers = HeadersBuilder.create()
                 .add("BX-ACTION-TYPE", "get_dynamic")
                 .add("BX-REF", "")
                 .add("BX-CACHE-MODE", "HTMLCACHE")
                 .build();
-        return internalParser.get(urlBuilder.buildProductUrl(url), headers);
+        return internalParser.get(urlBuilder.buildTrickyProductUrl(url), headers);
     }
 
     /**
@@ -73,7 +73,7 @@ public class ProductParser {
      * @throws HtmlParseException if product not found in source document
      */
     @NotNull
-    public Product parseProduct(Document productDoc, @NotNull Integer catalogId, @NotNull Integer productId) {
+    public Product parseProduct(Document productDoc, @NotNull Long catalogId, @NotNull Long productId) {
         Element productNode = productDoc.select("div.rc-item__item").first();
         if (productNode == null) {
             throw new HtmlParseException("Not found product node in catalog " + catalogId);
@@ -81,7 +81,8 @@ public class ProductParser {
         Product product = new Product()
                 .setId(productId)
                 .setCatalogId(catalogId)
-                .setProperties(parseProductProperties(productNode))
+                .setUrl(urlBuilder.buildProductUrl(catalogId, productId))
+                .setProperties(parseProductProperties(productId, productNode))
                 .setName(parseName(productNode))
                 .setDescription(parseDescription(productNode))
                 .setPhotoUrl(parsePhotoUrl(productNode))
@@ -207,33 +208,39 @@ public class ProductParser {
     }
 
 
-    private List<ProductProperty> parseProductProperties(Element productNode) {
+    private List<ProductProperty> parseProductProperties(@NotNull Long productId, Element productNode) {
         Element commonProperties = productNode.select("dl.detail-info").first();
         Elements visibleProperties = productNode.select("ul.simple-list > li.visible");
         Elements hiddenProperties = productNode.select("ul.simple-list > li.hid");
         List<ProductProperty> productProperties = new ArrayList<>();
-        productProperties.addAll(parseCommonProductProperties(commonProperties));
-        productProperties.addAll(visibleProperties.stream().map(this::parseProductProperty).collect(toList()));
-        productProperties.addAll(hiddenProperties.stream().map(this::parseProductProperty).collect(toList()));
+        productProperties.addAll(parseCommonProductProperties(productId, commonProperties));
+        productProperties.addAll(visibleProperties.stream()
+                .map(property -> parseProductProperty(productId, property))
+                .collect(toList()));
+        productProperties.addAll(hiddenProperties.stream()
+                .map(property -> parseProductProperty(productId, property))
+                .collect(toList()));
         return productProperties;
     }
 
-    private List<ProductProperty> parseCommonProductProperties(Element commonProperties) {
+    private List<ProductProperty> parseCommonProductProperties(@NotNull Long productId, Element commonProperties) {
         String[] properties = commonProperties.html().split("<br>");
-        return Arrays.stream(properties).map(this::parseProductPropertyAsHtml).collect(toList());
+        return Arrays.stream(properties)
+                .map(property -> parseProductPropertyAsHtml(productId, property))
+                .collect(toList());
     }
 
     @NotNull
-    private ProductProperty parseProductProperty(Element productProperty) {
-        return parseProductPropertyAsHtml(productProperty.html());
+    private ProductProperty parseProductProperty(@NotNull Long productId, Element productProperty) {
+        return parseProductPropertyAsHtml(productId, productProperty.html());
     }
 
     @NotNull
-    private ProductProperty parseProductPropertyAsHtml(String productPropertyAsHtml) {
+    private ProductProperty parseProductPropertyAsHtml(@NotNull Long productId, String productPropertyAsHtml) {
         String text = Jsoup.parse(productPropertyAsHtml).text();
         String name = stringService.clean(text.split("–")[0]);
         String value = stringService.clean(text.split("–")[1]);
-        return new ProductProperty(name, value);
+        return new ProductProperty(productId, name, value);
     }
 
 
@@ -264,35 +271,4 @@ public class ProductParser {
                 .findAny();
         return propertyOptional.map(ProductProperty::getValue).orElse(null);
     }
-
-
-//    @Nullable
-//    private String parseCode(Element productNode) {
-//        return parseCommonProductProperty(productNode, "Код");
-//    }
-//
-//    @Nullable
-//    private String parseArticle(Element productNode) {
-//        return parseCommonProductProperty(productNode, "Артикул");
-//    }
-//
-//    @Nullable
-//    private String parseBarcode(Element productNode) {
-//        return parseCommonProductProperty(productNode, "Штрих код");
-//    }
-//
-//    @Nullable
-//    private String parseManufacturerCountry(Element productNode) {
-//        return parseCommonProductProperty(productNode, "Страна производитель");
-//    }
-//
-//    @Nullable
-//    private String parseCommonProductProperty(Element productNode, String propertyName) {
-//        Element commonProperties = productNode.select("dl.detail-info").first();
-//        List<ProductProperty> properties = parseCommonProductProperties(commonProperties);
-//        Optional<ProductProperty> propertyOptional = properties.stream()
-//                .filter(property -> propertyName.equals(property.getName()))
-//                .findAny();
-//        return propertyOptional.map(ProductProperty::getValue).orElse(null);
-//    }
 }
