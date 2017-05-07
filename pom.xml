@@ -210,6 +210,8 @@
                             </manifest>
                         </archive>
                         <descriptorRefs>
+                            <!-- command to start assembly: -->
+                            <!-- clean assembly:assembly -DdescriptorId=jar-with-dependencies -->
                             <descriptorRef>jar-with-dependencies</descriptorRef>
                         </descriptorRefs>
                     </configuration>
