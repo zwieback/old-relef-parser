@@ -7,8 +7,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @IdClass(ProductProperty.Pk.class)
+@Table(name = "T_PRODUCT_PROPERTY")
 public class ProductProperty extends BaseEntity {
 
     public static class Pk implements Serializable {

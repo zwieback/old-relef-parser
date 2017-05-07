@@ -10,8 +10,10 @@ import java.util.List;
 import static io.github.zwieback.relef.services.utils.StringFormatter.formatDouble;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "T_PRODUCT")
 public class Product extends BaseEntity {
+
+    private static final int MAX_LENGTH_OF_DESCRIPTION = 4000;
 
     @Id
     @NotNull
@@ -48,7 +50,6 @@ public class Product extends BaseEntity {
     private String name;
 
     // Описание
-    @Lob
     @Nullable
     private String description;
 
@@ -188,6 +189,9 @@ public class Product extends BaseEntity {
 
     public Product setDescription(@Nullable String description) {
         this.description = description;
+        if (description != null && description.length() > MAX_LENGTH_OF_DESCRIPTION) {
+            this.description = description.substring(0, MAX_LENGTH_OF_DESCRIPTION);
+        }
         return this;
     }
 

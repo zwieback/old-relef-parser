@@ -1,0 +1,29 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog ../dbchangelog-3.5.xsd">
+
+    <changeSet author="zwieback"
+               id="RP-2: add foreign key from manufacturer_name of T_PRODUCT to name of T_MANUFACTURER">
+        <addForeignKeyConstraint
+                baseColumnNames="manufacturer_name"
+                baseTableName="T_PRODUCT"
+                constraintName="fk_t_product_manufacturer_name_to_t_manufacturer_name"
+                onDelete="NO ACTION"
+                onUpdate="NO ACTION"
+                referencedColumnNames="name"
+                referencedTableName="T_MANUFACTURER"/>
+    </changeSet>
+
+    <changeSet author="zwieback" id="RP-2: add foreign key from trade_mark_name of T_PRODUCT to name of T_TRADE_MARK">
+        <addForeignKeyConstraint
+                baseColumnNames="trade_mark_name"
+                baseTableName="T_PRODUCT"
+                constraintName="fk_t_product_trade_mark_name_to_t_trade_mark_name"
+                onDelete="NO ACTION"
+                onUpdate="NO ACTION"
+                referencedColumnNames="name"
+                referencedTableName="T_TRADE_MARK"/>
+    </changeSet>
+
+</databaseChangeLog>

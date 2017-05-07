@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog dbchangelog-3.5.xsd">
+
+    <!--<property name="currentDate" value="sysdate" dbms="oracle"/>-->
+    <!--<property name="now" value="now()" dbms="postgresql"/>-->
+
+    <includeAll path="level01.Sequence" relativeToChangelogFile="true"/>
+    <includeAll path="level03.CreateTable" relativeToChangelogFile="true"/>
+    <includeAll path="level05.AlterTable" relativeToChangelogFile="true"/>
+    <includeAll path="level07.IndexAndConstraint" relativeToChangelogFile="true"/>
+    <includeAll path="level09.ForeignKey" relativeToChangelogFile="true"/>
+    <includeAll path="level11.FunctionAndProcedure" relativeToChangelogFile="true"/>
+    <includeAll path="level13.View" relativeToChangelogFile="true"/>
+    <includeAll path="level15.ViewFromView" relativeToChangelogFile="true"/>
+    <includeAll path="level17.Trigger" relativeToChangelogFile="true"/>
+    <includeAll path="level19.Data" relativeToChangelogFile="true"/>
+    <includeAll path="level20.DataAfter" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

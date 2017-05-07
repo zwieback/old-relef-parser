@@ -57,9 +57,9 @@ public class ParseRunner {
         try {
 //            downloadCatalogs();
 //            downloadProduct();
-//            parseBrands();
-            parseCatalogs();
-            parseCatalog();
+            parseBrands();
+//            parseCatalogs();
+//            parseCatalog();
 //            parseProduct();
             loadCatalog();
         } catch (Exception e) {
