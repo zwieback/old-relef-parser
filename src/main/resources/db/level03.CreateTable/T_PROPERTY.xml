@@ -1,0 +1,15 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog ../dbchangelog-3.5.xsd">
+
+    <changeSet author="zwieback" id="RP-2: create table T_PROPERTY">
+        <createTable tableName="T_PROPERTY">
+            <column name="name" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_t_property"/>
+            </column>
+            <column name="last_update" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

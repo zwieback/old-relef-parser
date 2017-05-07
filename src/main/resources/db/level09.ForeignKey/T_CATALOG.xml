@@ -1,0 +1,17 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog ../dbchangelog-3.5.xsd">
+
+    <changeSet author="zwieback" id="RP-2: add foreign key from parent_id of T_CATALOG to id of T_CATALOG">
+        <addForeignKeyConstraint
+                baseColumnNames="parent_id"
+                baseTableName="T_CATALOG"
+                constraintName="fk_t_catalog_parent_id_to_t_catalog_id"
+                onDelete="NO ACTION"
+                onUpdate="NO ACTION"
+                referencedColumnNames="id"
+                referencedTableName="T_CATALOG"/>
+    </changeSet>
+
+</databaseChangeLog>

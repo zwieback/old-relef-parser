@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog ../dbchangelog-3.5.xsd">
+
+    <changeSet author="zwieback" id="RP-2: add foreign key from product_id of T_PRODUCT_PROPERTY to id of T_PRODUCT">
+        <addForeignKeyConstraint
+                baseColumnNames="product_id"
+                baseTableName="T_PRODUCT_PROPERTY"
+                constraintName="fk_t_product_property_product_id_to_t_product_id"
+                onDelete="NO ACTION"
+                onUpdate="NO ACTION"
+                referencedColumnNames="id"
+                referencedTableName="T_PRODUCT"/>
+    </changeSet>
+
+    <changeSet author="zwieback" id="RP-2: add foreign key from name of T_PRODUCT_PROPERTY to name of T_PROPERTY">
+        <addForeignKeyConstraint
+                baseColumnNames="name"
+                baseTableName="T_PRODUCT_PROPERTY"
+                constraintName="fk_t_product_property_name_to_t_property_name"
+                onDelete="NO ACTION"
+                onUpdate="NO ACTION"
+                referencedColumnNames="name"
+                referencedTableName="T_PROPERTY"/>
+    </changeSet>
+
+</databaseChangeLog>

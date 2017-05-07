@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
+@Table(name = "T_CATALOG")
 public class Catalog extends BaseEntity {
 
     @Id
@@ -27,11 +27,15 @@ public class Catalog extends BaseEntity {
     @NotNull
     private CatalogLevel level;
 
+    @Column(name = "parent_id", insertable = false, updatable = false)
+    @Nullable
+    private Long parentId;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Nullable
     private Catalog parent;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="parent")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
     @NotFound(action = NotFoundAction.IGNORE)               // workaround to save tree of catalogs with not null id
     @NotNull
     private List<Catalog> children;
@@ -86,6 +90,16 @@ public class Catalog extends BaseEntity {
 
     public Catalog setLevel(@NotNull CatalogLevel level) {
         this.level = level;
+        return this;
+    }
+
+    @Nullable
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public Catalog setParentId(@Nullable Long parentId) {
+        this.parentId = parentId;
         return this;
     }
 

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
+@Table(name = "T_BRAND")
 public class Brand extends BaseEntity {
 
     @Id

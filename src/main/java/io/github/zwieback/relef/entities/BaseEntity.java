@@ -2,12 +2,11 @@ package io.github.zwieback.relef.entities;
 
 import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PreUpdate;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
+@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
 public abstract class BaseEntity {
 
     @Column(name = "last_update")

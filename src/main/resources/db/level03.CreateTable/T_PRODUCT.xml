@@ -1,0 +1,30 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog ../dbchangelog-3.5.xsd">
+
+    <changeSet author="zwieback" id="RP-2: create table T_PRODUCT">
+        <createTable tableName="T_PRODUCT">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_t_product"/>
+            </column>
+            <column name="last_update" type="timestamp"/>
+            <column name="catalog_id" type="bigint"/>
+            <column name="code" type="varchar(255)"/>
+            <column name="article" type="varchar(255)"/>
+            <column name="barcode" type="varchar(255)"/>
+            <column name="manufacturer_country" type="varchar(255)"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="varchar(4000)"/>
+            <column name="url" type="varchar(255)"/>
+            <column name="photo_url" type="varchar(255)"/>
+            <column name="photo_cached_url" type="varchar(255)"/>
+            <column name="manufacturer_name" type="varchar(255)"/>
+            <column name="trade_mark_name" type="varchar(255)"/>
+            <column name="party" type="varchar(255)"/>
+            <column name="weight" type="double"/>
+            <column name="volume" type="double"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

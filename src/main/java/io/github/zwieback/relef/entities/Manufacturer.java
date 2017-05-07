@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
+@Table(name = "T_MANUFACTURER")
 public class Manufacturer extends BaseEntity {
 
     @Id
