@@ -137,7 +137,7 @@ public class CatalogParser {
                 .setCode(parseCode(productNode))
                 .setArticle(parseArticle(productNode))
                 .setName(parseName(productNode))
-                .setUrl(parseUrl(productNode))
+                .setUrl(urlBuilder.buildProductUrl(catalogId, productId))
                 .setPhotoUrl(parsePhotoUrl(productNode))
                 .setPhotoCachedUrl(parsePhotoCachedUrl(productNode))
                 .setManufacturer(parseManufacturer(productNode))

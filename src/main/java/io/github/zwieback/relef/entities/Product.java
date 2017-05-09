@@ -54,7 +54,7 @@ public class Product extends BaseEntity {
     private String description;
 
     // Ссылка на продукт
-    @Nullable
+    @NotNull
     private String url;
 
     // Ссылка на фотографию
@@ -99,6 +99,7 @@ public class Product extends BaseEntity {
     public Product() {
         id = 0L;
         catalogId = 0L;
+        url = "";
         properties = new ArrayList<>();
     }
 
@@ -195,12 +196,12 @@ public class Product extends BaseEntity {
         return this;
     }
 
-    @Nullable
+    @NotNull
     public String getUrl() {
         return url;
     }
 
-    public Product setUrl(@Nullable String url) {
+    public Product setUrl(@NotNull String url) {
         this.url = url;
         return this;
     }
