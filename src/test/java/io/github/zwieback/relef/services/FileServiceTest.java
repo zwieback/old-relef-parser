@@ -36,7 +36,7 @@ public class FileServiceTest {
     }
 
     @Test
-    public void test_buildProductUrl_should_contains_bxrand() throws IOException {
+    public void test_writeDocument_should_write_document_to_temp_file() throws IOException {
         tempDir = Files.createTempDirectory("temp_files");
         String tempFile = tempDir.toFile().getAbsolutePath() + File.separator + ".tmp";
         fileService.writeDocument(Document.createShell(""), tempFile);
