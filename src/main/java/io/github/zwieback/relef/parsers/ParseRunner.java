@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Component
 public class ParseRunner {
@@ -56,12 +57,13 @@ public class ParseRunner {
         log.info("Parsing started...");
         try {
 //            downloadCatalogs();
+            downloadCatalog();
 //            downloadProduct();
-            parseBrands();
+//            parseBrands();
 //            parseCatalogs();
 //            parseCatalog();
 //            parseProduct();
-            loadCatalog();
+//            loadCatalog();
         } catch (Exception e) {
             log.error("Parsing completed with error: " + e.getMessage(), e);
             return;
@@ -69,12 +71,19 @@ public class ParseRunner {
         log.info("Parsing completed successfully");
     }
 
-    private void downloadCatalogs() throws IOException {
+    private void downloadCatalogs() {
         Document catalogsDocument = catalogsParser.parseUrl("http://relefopt.ru/catalog/");
         fileService.writeDocument(catalogsDocument, "./target/catalogs.html");
     }
 
-    private void downloadProduct() throws IOException {
+    private void downloadCatalog() {
+        List<Document> catalogDocuments = catalogParser.parseUrl("http://relefopt.ru/catalog/70126/");
+        IntStream.range(0, catalogDocuments.size())
+                .forEach(i -> fileService.writeDocument(catalogDocuments.get(i),
+                        String.format("./target/catalog_70126_page_%d.html", i + 1)));
+    }
+
+    private void downloadProduct() {
         Document productDocument = productParser.parseUrl("http://relefopt.ru/catalog/68711/34259/");
         fileService.writeDocument(productDocument, "./target/catalog_68711_product_34259.html");
     }
