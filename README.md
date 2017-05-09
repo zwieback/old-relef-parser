@@ -8,8 +8,8 @@ The content of specific products is formed by a separate ajax request.
 * Save data to a local database (done).
 
 ## History
-1.2: Added Liquibase support.
+1.2 (2017-05-07): Added Liquibase support.
 
-1.1: Added Hibernate support.
+1.1 (2017-05-01): Added Hibernate support.
 
-1.0: First commit.
+1.0 (2017-04-29): First commit.
