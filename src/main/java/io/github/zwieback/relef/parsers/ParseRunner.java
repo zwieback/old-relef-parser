@@ -22,6 +22,9 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.stream.IntStream;
 
+/**
+ * Used only for testing and as utility class.
+ */
 @Component
 public class ParseRunner {
 
