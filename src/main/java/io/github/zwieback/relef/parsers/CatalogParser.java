@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -98,7 +99,7 @@ public class CatalogParser {
      * @return product urls
      */
     public List<String> parseProductUrls(Document document) {
-        Elements items = document.select("ul.rc-catalog > li.rc-catalog__item");
+        Elements items = document.select("ul.rc-catalog > li.rc-catalog__item:not(.empty)");
         return items.stream().map(this::parseUrl).collect(toList());
     }
 
@@ -111,7 +112,10 @@ public class CatalogParser {
      */
     public List<Product> parseProducts(Document document, @NotNull Long catalogId) {
         Elements items = document.select("ul.rc-catalog > li.rc-catalog__item");
-        return items.stream().map(productNode -> parseProduct(catalogId, productNode)).collect(toList());
+        return items.stream()
+                .map(productNode -> parseProduct(catalogId, productNode))
+                .filter(Objects::nonNull)
+                .collect(toList());
     }
 
     /**
@@ -121,8 +125,12 @@ public class CatalogParser {
      * @param productNode source node
      * @return product with parsed characteristics and properties
      */
+    @Nullable
     private Product parseProduct(@NotNull Long catalogId, Element productNode) {
         Long productId = parseId(productNode);
+        if (productId == null) {
+            return null;
+        }
         Product product = new Product()
                 .setId(productId)
                 .setCatalogId(catalogId)
@@ -141,8 +149,11 @@ public class CatalogParser {
         return product;
     }
 
-    @NotNull
+    @Nullable
     private Long parseId(Element productNode) {
+        if (productNode.hasClass("empty")) {
+            return null;
+        }
         String cssQuery = "p.rc-catalog__identify > label.rc-catalog__code > label.rc-catalog__favorite";
         Element idNode = productNode.select(cssQuery).first();
         if (idNode == null) {
