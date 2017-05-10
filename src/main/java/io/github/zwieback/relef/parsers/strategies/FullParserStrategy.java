@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -38,6 +39,9 @@ public class FullParserStrategy extends ParserStrategy {
 
     @Value("${site.domain.catalogs}")
     private String catalogsUrl;
+
+    @Value("${max.errors.number:10}")
+    private Integer maxErrorsNumber;
 
     public FullParserStrategy(CatalogsParser catalogsParser, CatalogParser catalogParser,
                               BrandRepository brandRepository, CatalogRepository catalogRepository,
@@ -96,10 +100,18 @@ public class FullParserStrategy extends ParserStrategy {
     private void parseCatalogsOfLastLevel(Document catalogsDoc) {
         CatalogLevel lastLevel = catalogLevelService.determineLastCatalogLevel();
         List<Catalog> catalogs = catalogsParser.parseCatalogsOfLevel(catalogsDoc, lastLevel);
+        AtomicInteger errorCount = new AtomicInteger();
         IntStream.range(0, catalogs.size())
                 .forEach(i -> {
-                    log.info(String.format("Parse catalog %d of %d", i, catalogs.size()));
-                    parseProductsOfCatalog(catalogs.get(i));
+                    log.info(String.format("Parse catalog %d (%d) of %d", i, catalogs.get(i).getId(), catalogs.size()));
+                    try {
+                        parseProductsOfCatalog(catalogs.get(i));
+                    } catch (Exception e) {
+                        log.error(e.getMessage(), e);
+                        if (errorCount.incrementAndGet() > maxErrorsNumber) {
+                            throw new RuntimeException("Exceeded the threshold number of errors");
+                        }
+                    }
                 });
     }
 
