@@ -55,6 +55,7 @@ public class FullParserStrategy extends ParserStrategy {
         throw new UnsupportedOperationException();
     }
 
+    @Transactional
     @Override
     public void parse() {
         Document catalogsDoc = catalogsParser.parseUrl(catalogsUrl);
@@ -69,7 +70,6 @@ public class FullParserStrategy extends ParserStrategy {
         saveBrands(brands);
     }
 
-    @Transactional
     private void saveBrands(List<Brand> brands) {
         brandRepository.save(brands);
     }
@@ -84,7 +84,6 @@ public class FullParserStrategy extends ParserStrategy {
         saveTreeOfCatalogs(treeOfCatalogs);
     }
 
-    @Transactional
     private void saveTreeOfCatalogs(List<Catalog> catalogs) {
         catalogs.forEach(catalog -> {
             if (!catalog.getChildren().isEmpty()) {
@@ -115,7 +114,6 @@ public class FullParserStrategy extends ParserStrategy {
         saveProducts(products);
     }
 
-    @Transactional
     private void saveProducts(List<Product> products) {
         productRepository.save(products);
     }

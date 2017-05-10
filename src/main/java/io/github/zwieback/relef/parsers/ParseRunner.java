@@ -56,6 +56,7 @@ public class ParseRunner {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public void parse() {
         log.info("Parsing started...");
         try {
@@ -154,7 +155,6 @@ public class ParseRunner {
         saveTreeOfCatalogs(treeOfCatalogs);
     }
 
-    @Transactional
     private void saveTreeOfCatalogs(List<Catalog> catalogs) {
         catalogs.forEach(catalog -> {
             if (!catalog.getChildren().isEmpty()) {

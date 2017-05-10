@@ -37,6 +37,7 @@ public class ProductParserStrategy extends ParserStrategy {
         productIds = collectLongIds(entityIds);
     }
 
+    @Transactional
     @Override
     public void parse() {
         List<Long> existedIds = repository.findExistedIdsByIdIn(productIds);
@@ -55,7 +56,6 @@ public class ProductParserStrategy extends ParserStrategy {
         return parser.parseProduct(document, existedProduct.getCatalogId(), existedProduct.getId());
     }
 
-    @Transactional
     private void saveProducts(List<Product> products) {
         repository.save(products);
     }
