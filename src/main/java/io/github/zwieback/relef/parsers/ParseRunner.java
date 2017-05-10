@@ -41,10 +41,10 @@ public class ParseRunner {
     private final ProductRepository productRepository;
 
     @Autowired
-    private ParseRunner(CatalogsParser catalogsParser, CatalogParser catalogParser, ProductParser productParser,
-                        FileParser fileParser, FileService fileService, ResourceLoader resourceLoader,
-                        BrandRepository brandRepository, CatalogRepository catalogRepository,
-                        ProductRepository productRepository) {
+    public ParseRunner(CatalogsParser catalogsParser, CatalogParser catalogParser, ProductParser productParser,
+                       FileParser fileParser, FileService fileService, ResourceLoader resourceLoader,
+                       BrandRepository brandRepository, CatalogRepository catalogRepository,
+                       ProductRepository productRepository) {
         this.catalogsParser = catalogsParser;
         this.catalogParser = catalogParser;
         this.productParser = productParser;
