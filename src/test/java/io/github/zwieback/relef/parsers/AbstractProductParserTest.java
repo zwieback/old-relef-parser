@@ -25,6 +25,10 @@ abstract class AbstractProductParserTest extends AbstractParserTest {
 
     abstract Long getCatalogId();
 
+    String getResourcePage() {
+        return String.format("classpath:pages/catalog_%d_product_%d.html", getCatalogId(), getProductId());
+    }
+
     abstract Product getExpectedProduct();
 
     @Test
