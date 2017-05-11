@@ -54,7 +54,7 @@ abstract class AbstractCatalogParserTest {
 
     @SuppressWarnings("unused")
     @Autowired
-    private CatalogParser catalogParser;
+    CatalogParser catalogParser;
 
     abstract Long getCatalogId();
 
@@ -107,7 +107,7 @@ abstract class AbstractCatalogParserTest {
                 .forEach(i -> validateParseProducts(catalogDocuments.get(i), getProductQuantities().get(i)));
     }
 
-    private void validateParseProducts(Document catalogDocument, int productQuantity) {
+    void validateParseProducts(Document catalogDocument, int productQuantity) {
         List<Product> products = catalogParser.parseProducts(catalogDocument, getCatalogId());
         assertEquals(productQuantity, products.size());
     }
