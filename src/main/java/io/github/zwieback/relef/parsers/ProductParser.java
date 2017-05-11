@@ -19,6 +19,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -225,9 +226,14 @@ public class ProductParser {
 
     private List<ProductProperty> parseCommonProductProperties(@NotNull Long productId, Element commonProperties) {
         String[] properties = commonProperties.html().split("<br>");
-        return Arrays.stream(properties)
+        List<String> notEmptyProperties = collectNotEmptyProperties(properties);
+        return notEmptyProperties.stream()
                 .map(property -> parseProductPropertyAsHtml(productId, property))
                 .collect(toList());
+    }
+
+    private List<String> collectNotEmptyProperties(String[] properties) {
+        return Arrays.stream(properties).filter(property -> !StringUtils.isEmpty(property)).collect(toList());
     }
 
     @NotNull
