@@ -66,6 +66,7 @@ public class DatabaseConfig {
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(getHibernateProperties());
+        em.afterPropertiesSet();
         return em;
     }
 
