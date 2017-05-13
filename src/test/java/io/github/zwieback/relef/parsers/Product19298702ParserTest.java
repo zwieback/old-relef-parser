@@ -8,11 +8,6 @@ public class Product19298702ParserTest extends AbstractProductParserTest {
     private static final Long PRODUCT_ID = 19298702L;
 
     @Override
-    String getResourcePage() {
-        return "classpath:pages/catalog_64323_product_19298702.html";
-    }
-
-    @Override
     Long getProductId() {
         return PRODUCT_ID;
     }

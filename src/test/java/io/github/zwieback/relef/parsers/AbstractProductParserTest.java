@@ -25,6 +25,10 @@ abstract class AbstractProductParserTest extends AbstractParserTest {
 
     abstract Long getCatalogId();
 
+    String getResourcePage() {
+        return String.format("classpath:pages/catalog_%d_product_%d.html", getCatalogId(), getProductId());
+    }
+
     abstract Product getExpectedProduct();
 
     @Test
@@ -50,10 +54,8 @@ abstract class AbstractProductParserTest extends AbstractParserTest {
         assertEquals(expectedProduct.getWeight(), actualProduct.getWeight());
         assertEquals(expectedProduct.getVolume(), actualProduct.getVolume());
         assertEquals(expectedProduct.getProperties().size(), actualProduct.getProperties().size());
-        assertEquals(expectedProduct.getManufacturer().getName(), actualProduct.getManufacturer().getName());
-        assertEquals(expectedProduct.getManufacturer().getUrl(), actualProduct.getManufacturer().getUrl());
-        assertEquals(expectedProduct.getTradeMark().getName(), actualProduct.getTradeMark().getName());
-        assertEquals(expectedProduct.getTradeMark().getUrl(), actualProduct.getTradeMark().getUrl());
+        assertEquals(expectedProduct.getManufacturer(), actualProduct.getManufacturer());
+        assertEquals(expectedProduct.getTradeMark(), actualProduct.getTradeMark());
     }
 
     static List<ProductProperty> generatePropertiesStub(int size) {

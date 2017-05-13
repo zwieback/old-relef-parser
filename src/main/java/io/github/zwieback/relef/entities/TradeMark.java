@@ -59,6 +59,21 @@ public class TradeMark extends BaseEntity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TradeMark tradeMark = (TradeMark) o;
+        return name.equals(tradeMark.name) && url.equals(tradeMark.url);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + url.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "TradeMark{" +
                 "name='" + name + '\'' +

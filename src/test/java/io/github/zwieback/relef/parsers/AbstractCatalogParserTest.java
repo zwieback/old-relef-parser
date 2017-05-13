@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -36,14 +35,10 @@ import static org.mockito.Mockito.doAnswer;
         ServiceConfig.class
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-public class CatalogParserTest {
+abstract class AbstractCatalogParserTest {
 
-    private static final Long CATALOG_ID = 69472L;
-    private static final int PAGE_COUNT = 9;
     private static final int HEADERS_ARGUMENT_INDEX = 1;
     private static final String PAGE_NUMBER_KEY = "PAGEN_1";
-
-    private static final List<Integer> PRODUCT_QUANTITIES = Arrays.asList(48, 48, 48, 48, 48, 48, 48, 48, 20);
 
     @SuppressWarnings("unused")
     @Autowired
@@ -59,7 +54,13 @@ public class CatalogParserTest {
 
     @SuppressWarnings("unused")
     @Autowired
-    private CatalogParser catalogParser;
+    CatalogParser catalogParser;
+
+    abstract Long getCatalogId();
+
+    abstract int getPageCount();
+
+    abstract List<Integer> getProductQuantities();
 
     @Before
     public void setUp() {
@@ -71,7 +72,7 @@ public class CatalogParserTest {
     }
 
     private Document getCatalogDocument(int pageNumber) throws IOException {
-        String resourcePage = String.format("classpath:pages/catalog_%d_page_%d.html", CATALOG_ID, pageNumber);
+        String resourcePage = String.format("classpath:pages/catalog_%d_page_%d.html", getCatalogId(), pageNumber);
         Resource resource = resourceLoader.getResource(resourcePage);
         InputStream inputStream = resource.getInputStream();
         return fileParser.parseInputStream(inputStream);
@@ -80,34 +81,34 @@ public class CatalogParserTest {
     @Test
     public void test_parseUrl_should_returns_not_empty_catalog_documents() {
         List<Document> catalogDocuments = catalogParser.parseUrl("");
-        assertEquals(catalogDocuments.size(), PAGE_COUNT);
+        assertEquals(getPageCount(), catalogDocuments.size());
     }
 
     @Test
     public void test_parseProductUrls_should_returns_parsed_product_urls() {
         List<Document> catalogDocuments = catalogParser.parseUrl("");
-        assertEquals(catalogDocuments.size(), PRODUCT_QUANTITIES.size());
+        assertEquals(catalogDocuments.size(), getProductQuantities().size());
 
         IntStream.range(0, catalogDocuments.size())
-                .forEach(i -> validateParseProductUrls(catalogDocuments.get(i), PRODUCT_QUANTITIES.get(i)));
+                .forEach(i -> validateParseProductUrls(catalogDocuments.get(i), getProductQuantities().get(i)));
     }
 
     private void validateParseProductUrls(Document catalogDocument, int productQuantity) {
         List<String> productUrls = catalogParser.parseProductUrls(catalogDocument);
-        assertEquals(productUrls.size(), productQuantity);
+        assertEquals(productQuantity, productUrls.size());
     }
 
     @Test
     public void test_parseProducts_should_returns_parsed_products() {
         List<Document> catalogDocuments = catalogParser.parseUrl("");
-        assertEquals(catalogDocuments.size(), PRODUCT_QUANTITIES.size());
+        assertEquals(getProductQuantities().size(), catalogDocuments.size());
 
         IntStream.range(0, catalogDocuments.size())
-                .forEach(i -> validateParseProducts(catalogDocuments.get(i), PRODUCT_QUANTITIES.get(i)));
+                .forEach(i -> validateParseProducts(catalogDocuments.get(i), getProductQuantities().get(i)));
     }
 
-    private void validateParseProducts(Document catalogDocument, int productQuantity) {
-        List<Product> products = catalogParser.parseProducts(catalogDocument, CATALOG_ID);
-        assertEquals(products.size(), productQuantity);
+    void validateParseProducts(Document catalogDocument, int productQuantity) {
+        List<Product> products = catalogParser.parseProducts(catalogDocument, getCatalogId());
+        assertEquals(productQuantity, products.size());
     }
 }
