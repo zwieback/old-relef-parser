@@ -36,6 +36,10 @@ public class CatalogParser {
     private static final int UNKNOWN_PAGES = 0;
     private static final int FIRST_PAGE = 1;
     private static final int SECOND_PAGE = 2;
+    private static final int ARTICLE_VALUE_INDEX = 1;
+    private static final int PARTY_VALUE_INDEX = 1;
+    private static final int PROPERTY_NAME_INDEX = 0;
+    private static final int PROPERTY_VALUE_INDEX = 1;
 
     private final InternalParser internalParser;
     private final StringService stringService;
@@ -176,7 +180,11 @@ public class CatalogParser {
             return null;
         }
         String text = Jsoup.parse(article.html()).text();
-        return text.split(":")[1].trim();
+        String[] articleTitleAndValue = text.split(":");
+        if (articleTitleAndValue.length > ARTICLE_VALUE_INDEX) {
+            return articleTitleAndValue[ARTICLE_VALUE_INDEX].trim();
+        }
+        return null;
     }
 
 //    @Nullable
@@ -256,8 +264,15 @@ public class CatalogParser {
     @Nullable
     private String parseParty(Element productNode) {
         Element party = productNode.select("p.rc-catalog__party").first();
+        if (party == null) {
+            return null;
+        }
         String text = Jsoup.parse(party.html()).text();
-        return text == null ? null : text.split(":")[1].trim();
+        String[] partyTitleAndValue = text.split(":");
+        if (partyTitleAndValue.length > PARTY_VALUE_INDEX) {
+            return partyTitleAndValue[PARTY_VALUE_INDEX].trim();
+        }
+        return null;
     }
 
     private List<ProductProperty> parseProductProperties(@NotNull Long productId, Element productNode) {
@@ -270,18 +285,24 @@ public class CatalogParser {
         List<ProductProperty> productProperties = new ArrayList<>();
         productProperties.addAll(properties.stream()
                 .map(property -> parseProductProperty(productId, property))
+                .filter(Objects::nonNull)
                 .collect(toList()));
         productProperties.addAll(hiddenProperties.stream()
                 .map(property -> parseProductProperty(productId, property))
+                .filter(Objects::nonNull)
                 .collect(toList()));
         return productProperties;
     }
 
-    @NotNull
+    @Nullable
     private ProductProperty parseProductProperty(@NotNull Long productId, Element productProperty) {
         String text = Jsoup.parse(productProperty.html()).text();
-        String name = stringService.clean(text.split("–")[0]);
-        String value = stringService.clean(text.split("–")[1]);
-        return new ProductProperty(productId, name, value);
+        String[] propertyNameAndValue = text.split("–");
+        if (propertyNameAndValue.length > PROPERTY_VALUE_INDEX) {
+            String name = stringService.clean(propertyNameAndValue[PROPERTY_NAME_INDEX]);
+            String value = stringService.clean(propertyNameAndValue[PROPERTY_VALUE_INDEX]);
+            return new ProductProperty(productId, name, value);
+        }
+        return null;
     }
 }
