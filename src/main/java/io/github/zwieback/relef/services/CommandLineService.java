@@ -36,6 +36,6 @@ public class CommandLineService {
     public void printHelp(Options options) {
         String footer = "\nPlease report issues at https://github.com/zwieback/relef-parser/issues";
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("java", null, options, footer, true);
+        formatter.printHelp("java -jar relef-parser-{version}.jar", null, options, footer, true);
     }
 }
