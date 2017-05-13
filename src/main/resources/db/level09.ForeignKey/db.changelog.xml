@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog ../dbchangelog-3.5.xsd">
+
+    <include file="db/level09.ForeignKey/T_CATALOG.xml"/>
+    <include file="db/level09.ForeignKey/T_PRODUCT.xml"/>
+    <include file="db/level09.ForeignKey/T_PRODUCT_PROPERTY.xml"/>
+
+</databaseChangeLog>
