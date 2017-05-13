@@ -6,16 +6,16 @@
     <!--<property name="currentDate" value="sysdate" dbms="oracle"/>-->
     <!--<property name="now" value="now()" dbms="postgresql"/>-->
 
-    <includeAll path="level01.Sequence" relativeToChangelogFile="true"/>
-    <includeAll path="level03.CreateTable" relativeToChangelogFile="true"/>
-    <includeAll path="level05.AlterTable" relativeToChangelogFile="true"/>
-    <includeAll path="level07.IndexAndConstraint" relativeToChangelogFile="true"/>
-    <includeAll path="level09.ForeignKey" relativeToChangelogFile="true"/>
-    <includeAll path="level11.FunctionAndProcedure" relativeToChangelogFile="true"/>
-    <includeAll path="level13.View" relativeToChangelogFile="true"/>
-    <includeAll path="level15.ViewFromView" relativeToChangelogFile="true"/>
-    <includeAll path="level17.Trigger" relativeToChangelogFile="true"/>
-    <includeAll path="level19.Data" relativeToChangelogFile="true"/>
-    <includeAll path="level20.DataAfter" relativeToChangelogFile="true"/>
+    <include file="db/level01.Sequence/db.changelog.xml"/>
+    <include file="db/level03.CreateTable/db.changelog.xml"/>
+    <include file="db/level05.AlterTable/db.changelog.xml"/>
+    <include file="db/level07.IndexAndConstraint/db.changelog.xml"/>
+    <include file="db/level09.ForeignKey/db.changelog.xml"/>
+    <include file="db/level11.FunctionAndProcedure/db.changelog.xml"/>
+    <include file="db/level13.View/db.changelog.xml"/>
+    <include file="db/level15.ViewFromView/db.changelog.xml"/>
+    <include file="db/level17.Trigger/db.changelog.xml"/>
+    <include file="db/level19.Data/db.changelog.xml"/>
+    <include file="db/level20.DataAfter/db.changelog.xml"/>
 
 </databaseChangeLog>
