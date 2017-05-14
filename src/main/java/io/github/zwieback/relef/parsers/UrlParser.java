@@ -2,10 +2,10 @@ package io.github.zwieback.relef.parsers;
 
 import io.github.zwieback.relef.parsers.exceptions.UrlParseException;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-class UrlParser {
+@Service
+public class UrlParser {
 
     /**
      * Parse catalog id from catalog url.
@@ -20,14 +20,42 @@ class UrlParser {
      * @throws UrlParseException if catalog url has incorrect format
      */
     @NotNull
-    Long parseCatalogId(String catalogUrl) {
-        String[] divided = catalogUrl.split("/");
-        int partCount = 5;
-        if (divided.length == partCount) {
-            int catalogIndex = divided.length - 1;
-            return Long.valueOf(divided[catalogIndex]);
-        }
-        throw new UrlParseException("Couldn't parse id from catalog url " + catalogUrl);
+    Long parseCatalogIdFromCatalogUrl(String catalogUrl) {
+        return parseIdFromUrl(catalogUrl, 5, 1, "Couldn't parse catalog id from catalog url " + catalogUrl);
+    }
+
+    /**
+     * Parse catalog id from product url.
+     * <p>
+     * Example:
+     * <p>
+     * http://relefopt.ru/catalog/69472/321940415/
+     * returns 69472
+     *
+     * @param productUrl url to product
+     * @return catalog id if exists
+     * @throws UrlParseException if catalog url has incorrect format
+     */
+    @NotNull
+    public Long parseCatalogIdFromProductUrl(String productUrl) {
+        return parseIdFromUrl(productUrl, 6, 2, "Couldn't parse catalog id from product url " + productUrl);
+    }
+
+    /**
+     * Parse product id from product url.
+     * <p>
+     * Example:
+     * <p>
+     * http://relefopt.ru/catalog/69472/321940415/
+     * returns 321940415
+     *
+     * @param productUrl url to product
+     * @return catalog id if exists
+     * @throws UrlParseException if catalog url has incorrect format
+     */
+    @NotNull
+    public Long parseProductIdFromProductUrl(String productUrl) {
+        return parseIdFromUrl(productUrl, 6, 1, "Couldn't parse product id from product url " + productUrl);
     }
 
     /**
@@ -44,12 +72,16 @@ class UrlParser {
      */
     @NotNull
     Long parseBrandId(String brandUrl) {
-        String[] divided = brandUrl.split("/");
-        int partCount = 5;
+        return parseIdFromUrl(brandUrl, 5, 1, "Couldn't parse id from brand url " + brandUrl);
+    }
+
+    @NotNull
+    private Long parseIdFromUrl(String url, int partCount, int indexOffset, String exceptionMessage) {
+        String[] divided = url.split("/");
         if (divided.length == partCount) {
-            int brandIndex = divided.length - 1;
-            return Long.valueOf(divided[brandIndex]);
+            int idIndex = divided.length - indexOffset;
+            return Long.valueOf(divided[idIndex]);
         }
-        throw new UrlParseException("Couldn't parse id from brand url " + brandUrl);
+        throw new UrlParseException(exceptionMessage);
     }
 }
