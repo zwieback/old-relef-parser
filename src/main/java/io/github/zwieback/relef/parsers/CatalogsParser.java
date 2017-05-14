@@ -74,7 +74,7 @@ public class CatalogsParser {
 
     private Catalog parseCatalog(Element catalogNode, CatalogLevel level) {
         String url = urlBuilder.buildPathUrl(catalogNode.attr("href"));
-        Long id = urlParser.parseCatalogId(url);
+        Long id = urlParser.parseCatalogIdFromCatalogUrl(url);
         String name = catalogNode.text();
         return new Catalog()
                 .setId(id)

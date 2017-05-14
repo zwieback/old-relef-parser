@@ -3,40 +3,30 @@ package io.github.zwieback.relef.parsers.strategies;
 import io.github.zwieback.relef.entities.Brand;
 import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.CatalogLevel;
-import io.github.zwieback.relef.entities.Product;
-import io.github.zwieback.relef.parsers.CatalogParser;
 import io.github.zwieback.relef.parsers.CatalogsParser;
 import io.github.zwieback.relef.parsers.exceptions.ExceededErrorsCountException;
-import io.github.zwieback.relef.parsers.exceptions.UncheckedHttpStatusException;
 import io.github.zwieback.relef.repositories.BrandRepository;
 import io.github.zwieback.relef.repositories.CatalogRepository;
-import io.github.zwieback.relef.repositories.ProductRepository;
 import io.github.zwieback.relef.services.CatalogLevelService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.FULL_STRATEGY;
+public abstract class AbstractFullParserStrategy extends ParserStrategy {
 
-@Service(FULL_STRATEGY)
-public class FullParserStrategy extends ParserStrategy {
-
-    private static final Logger log = LogManager.getLogger(FullParserStrategy.class);
+    private static final Logger log = LogManager.getLogger(AbstractFullParserStrategy.class);
 
     private final CatalogsParser catalogsParser;
-    private final CatalogParser catalogParser;
     private final BrandRepository brandRepository;
     private final CatalogRepository catalogRepository;
-    private final ProductRepository productRepository;
     private final CatalogLevelService catalogLevelService;
 
     @Value("${site.domain.catalogs}")
@@ -45,14 +35,14 @@ public class FullParserStrategy extends ParserStrategy {
     @Value("${max.errors.number:10}")
     private Integer maxErrorsNumber;
 
-    public FullParserStrategy(CatalogsParser catalogsParser, CatalogParser catalogParser,
-                              BrandRepository brandRepository, CatalogRepository catalogRepository,
-                              ProductRepository productRepository, CatalogLevelService catalogLevelService) {
+    @Autowired
+    AbstractFullParserStrategy(CatalogsParser catalogsParser,
+                               BrandRepository brandRepository,
+                               CatalogRepository catalogRepository,
+                               CatalogLevelService catalogLevelService) {
         this.catalogsParser = catalogsParser;
-        this.catalogParser = catalogParser;
         this.brandRepository = brandRepository;
         this.catalogRepository = catalogRepository;
-        this.productRepository = productRepository;
         this.catalogLevelService = catalogLevelService;
     }
 
@@ -103,15 +93,11 @@ public class FullParserStrategy extends ParserStrategy {
         CatalogLevel lastLevel = catalogLevelService.determineLastCatalogLevel();
         List<Catalog> catalogs = catalogsParser.parseCatalogsOfLevel(catalogsDoc, lastLevel);
         AtomicInteger errorCount = new AtomicInteger();
-        AtomicInteger httpErrorCount = new AtomicInteger();
         IntStream.range(0, catalogs.size())
                 .forEach(i -> {
                     log.info(String.format("Parse catalog %d (%d) of %d", i, catalogs.get(i).getId(), catalogs.size()));
                     try {
                         parseProductsOfCatalog(catalogs.get(i));
-                    } catch (UncheckedHttpStatusException e) {
-                        log.error(e.getMessage(), e);
-                        httpErrorCount.incrementAndGet();
                     } catch (Exception e) {
                         log.error(e.getMessage(), e);
                         if (errorCount.incrementAndGet() > maxErrorsNumber) {
@@ -119,21 +105,7 @@ public class FullParserStrategy extends ParserStrategy {
                         }
                     }
                 });
-        log.info(String.format("There were %s http errors", httpErrorCount.get()));
     }
 
-    private void parseProductsOfCatalog(Catalog catalog) {
-        String url = catalog.getUrl();
-        List<Document> documents = catalogParser.parseUrl(url);
-        List<Product> products = documents.stream()
-                .map(document -> catalogParser.parseProducts(document, catalog.getId()))
-                .flatMap(List::stream)
-                .collect(Collectors.toList());
-        log.info(String.format("Found %d products in catalog %d", products.size(), catalog.getId()));
-        saveProducts(products);
-    }
-
-    private void saveProducts(List<Product> products) {
-        productRepository.save(products);
-    }
+    abstract void parseProductsOfCatalog(Catalog catalog);
 }
