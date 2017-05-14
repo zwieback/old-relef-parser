@@ -61,7 +61,7 @@ public class FullParserStrategy extends ParserStrategy {
         throw new UnsupportedOperationException();
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = ExceededErrorsCountException.class)
     @Override
     public void parse() {
         Document catalogsDoc = catalogsParser.parseUrl(catalogsUrl);
