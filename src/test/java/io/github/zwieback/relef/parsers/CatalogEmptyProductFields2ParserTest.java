@@ -1,20 +1,23 @@
 package io.github.zwieback.relef.parsers;
 
 import io.github.zwieback.relef.entities.Product;
+import io.github.zwieback.relef.parsers.exceptions.HtmlParseException;
 import org.jsoup.nodes.Document;
+import org.junit.Test;
 
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class CatalogEmptyProductFieldsParserTest extends AbstractCatalogParserTest {
+public class CatalogEmptyProductFields2ParserTest extends AbstractCatalogParserTest {
 
     private static final List<Integer> PRODUCT_QUANTITIES = Collections.singletonList(1);
 
     @Override
     Long getCatalogId() {
-        return 1L;
+        return 2L;
     }
 
     @Override
@@ -31,9 +34,8 @@ public class CatalogEmptyProductFieldsParserTest extends AbstractCatalogParserTe
         List<Product> products = catalogParser.parseProducts(catalogDocument, getCatalogId());
         products.forEach(product -> {
             assertNull(product.getArticle());
-            assertNull(product.getManufacturer());
-            assertNull(product.getTradeMark());
             assertNull(product.getParty());
+            assertEquals(12, product.getProperties().size());
         });
     }
 }

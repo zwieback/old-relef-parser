@@ -1,5 +1,6 @@
 package io.github.zwieback.relef.parsers;
 
+import io.github.zwieback.relef.parsers.exceptions.UncheckedHttpStatusException;
 import io.github.zwieback.relef.services.HeadersBuilder;
 import io.github.zwieback.relef.services.HeadersBuilder.Headers;
 import org.apache.log4j.LogManager;
@@ -7,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.InitializingBean;
@@ -63,6 +65,9 @@ public class InternalParser implements InitializingBean {
                     .method(method) // The default is GET
 //                    .ignoreHttpErrors(true)
                     .execute();
+        } catch (HttpStatusException e) {
+            log.error(e.getMessage(), e);
+            throw new UncheckedHttpStatusException(e.getMessage(), e);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             throw new UncheckedIOException(e.getMessage(), e);
