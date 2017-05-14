@@ -6,6 +6,8 @@ import io.github.zwieback.relef.entities.CatalogLevel;
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.parsers.CatalogParser;
 import io.github.zwieback.relef.parsers.CatalogsParser;
+import io.github.zwieback.relef.parsers.exceptions.ExceededErrorsCountException;
+import io.github.zwieback.relef.parsers.exceptions.UncheckedHttpStatusException;
 import io.github.zwieback.relef.repositories.BrandRepository;
 import io.github.zwieback.relef.repositories.CatalogRepository;
 import io.github.zwieback.relef.repositories.ProductRepository;
@@ -101,18 +103,23 @@ public class FullParserStrategy extends ParserStrategy {
         CatalogLevel lastLevel = catalogLevelService.determineLastCatalogLevel();
         List<Catalog> catalogs = catalogsParser.parseCatalogsOfLevel(catalogsDoc, lastLevel);
         AtomicInteger errorCount = new AtomicInteger();
+        AtomicInteger httpErrorCount = new AtomicInteger();
         IntStream.range(0, catalogs.size())
                 .forEach(i -> {
                     log.info(String.format("Parse catalog %d (%d) of %d", i, catalogs.get(i).getId(), catalogs.size()));
                     try {
                         parseProductsOfCatalog(catalogs.get(i));
+                    } catch (UncheckedHttpStatusException e) {
+                        log.error(e.getMessage(), e);
+                        httpErrorCount.incrementAndGet();
                     } catch (Exception e) {
                         log.error(e.getMessage(), e);
                         if (errorCount.incrementAndGet() > maxErrorsNumber) {
-                            throw new RuntimeException("Exceeded the threshold number of errors");
+                            throw new ExceededErrorsCountException();
                         }
                     }
                 });
+        log.info(String.format("There were %s http errors", httpErrorCount.get()));
     }
 
     private void parseProductsOfCatalog(Catalog catalog) {
