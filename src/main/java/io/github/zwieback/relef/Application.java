@@ -14,7 +14,9 @@ import org.springframework.context.support.AbstractApplicationContext;
 
 import java.util.List;
 
-import static io.github.zwieback.relef.services.CommandLineService.OPTION_HELP;
+import static io.github.zwieback.relef.services.CommandLineService.OPTION_CATALOG_PARSER;
+import static io.github.zwieback.relef.services.CommandLineService.OPTION_FULL_PARSER;
+import static io.github.zwieback.relef.services.CommandLineService.OPTION_PRODUCT_PARSER;
 
 public class Application {
 
@@ -26,9 +28,7 @@ public class Application {
         CommandLineService cmdService = context.getBean(CommandLineService.class);
         Options options = cmdService.createOptions();
         CommandLine cmd = cmdService.createCommandLine(options, args);
-        if (cmd.hasOption(OPTION_HELP)) {
-            cmdService.printHelp(options);
-        } else {
+        if (commandLineHasParserOption(cmd)) {
             log.info("Parsing started...");
             try {
                 ParserStrategyFactory strategyFactory = context.getBean(ParserStrategyFactory.class);
@@ -48,6 +48,14 @@ public class Application {
                 context.close();
             }
             log.info("Parsing completed successfully");
+        } else {
+            cmdService.printHelp(options);
         }
+    }
+
+    private static boolean commandLineHasParserOption(CommandLine cmd) {
+        return cmd.hasOption(OPTION_FULL_PARSER)
+                || cmd.hasOption(OPTION_CATALOG_PARSER)
+                || cmd.hasOption(OPTION_PRODUCT_PARSER);
     }
 }

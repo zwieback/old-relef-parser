@@ -10,36 +10,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.CATALOG_STRATEGY;
-import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.FULL_STRATEGY;
+import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.FULL_STRATEGY_FAST;
+import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.FULL_STRATEGY_SLOW;
 import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.PRODUCT_STRATEGY;
-import static io.github.zwieback.relef.services.CommandLineService.OPTION_CATALOG_IDS;
-import static io.github.zwieback.relef.services.CommandLineService.OPTION_PRODUCT_IDS;
+import static io.github.zwieback.relef.services.CommandLineService.OPTION_CATALOG_PARSER;
+import static io.github.zwieback.relef.services.CommandLineService.OPTION_FULL_PARSER;
+import static io.github.zwieback.relef.services.CommandLineService.OPTION_PRODUCT_PARSER;
 
 @Service
 public class ParserStrategyFactory {
 
-    private final ParserStrategy fullStrategy;
+    private final ParserStrategy fullStrategyFast;
+    private final ParserStrategy fullStrategySlow;
     private final ParserStrategy catalogStrategy;
     private final ParserStrategy productStrategy;
 
+    private FullParserStrategyType fullParserStrategyType;
     private String catalogIds;
     private String productIds;
 
     @Autowired
-    public ParserStrategyFactory(@Qualifier(FULL_STRATEGY) ParserStrategy fullStrategy,
+    public ParserStrategyFactory(@Qualifier(FULL_STRATEGY_FAST) ParserStrategy fullStrategyFast,
+                                 @Qualifier(FULL_STRATEGY_SLOW) ParserStrategy fullStrategySlow,
                                  @Qualifier(CATALOG_STRATEGY) ParserStrategy catalogStrategy,
                                  @Qualifier(PRODUCT_STRATEGY) ParserStrategy productStrategy) {
-        this.fullStrategy = fullStrategy;
+        this.fullStrategyFast = fullStrategyFast;
+        this.fullStrategySlow = fullStrategySlow;
         this.catalogStrategy = catalogStrategy;
         this.productStrategy = productStrategy;
     }
 
     public void parseCommandLine(CommandLine cmd) {
-        if (cmd.hasOption(OPTION_CATALOG_IDS)) {
-            catalogIds = cmd.getOptionValue(OPTION_CATALOG_IDS);
+        if (cmd.hasOption(OPTION_CATALOG_PARSER)) {
+            catalogIds = cmd.getOptionValue(OPTION_CATALOG_PARSER);
         }
-        if (cmd.hasOption(OPTION_PRODUCT_IDS)) {
-            productIds = cmd.getOptionValue(OPTION_PRODUCT_IDS);
+        if (cmd.hasOption(OPTION_PRODUCT_PARSER)) {
+            productIds = cmd.getOptionValue(OPTION_PRODUCT_PARSER);
+        }
+        if (cmd.hasOption(OPTION_FULL_PARSER)) {
+            switch (cmd.getOptionValue(OPTION_FULL_PARSER)) {
+                case "1":
+                    fullParserStrategyType = FullParserStrategyType.SLOW;
+                    break;
+                default:
+                    fullParserStrategyType = FullParserStrategyType.FAST;
+                    break;
+            }
         }
     }
 
@@ -53,8 +69,13 @@ public class ParserStrategyFactory {
             productStrategy.setEntityIds(productIds);
             strategies.add(productStrategy);
         }
-        if (StringUtils.isEmpty(catalogIds) && StringUtils.isEmpty(productIds)) {
-            strategies.add(fullStrategy);
+        switch (fullParserStrategyType) {
+            case SLOW:
+                strategies.add(fullStrategySlow);
+                break;
+            default:
+                strategies.add(fullStrategyFast);
+                break;
         }
         return strategies;
     }

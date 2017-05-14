@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 
 public abstract class ParserStrategy {
 
-    static final String FULL_STRATEGY = "fullStrategy";
+    static final String FULL_STRATEGY_FAST = "fullStrategyFast";
+    static final String FULL_STRATEGY_SLOW = "fullStrategySlow";
     static final String CATALOG_STRATEGY = "catalogStrategy";
     static final String PRODUCT_STRATEGY = "productStrategy";
 
