@@ -24,7 +24,7 @@ public class InternalParser implements InitializingBean {
     private static final String ACCEPT_ENCODING = "accept-encoding";
     private static final String GZIP_DEFLATE_ENCODING = "gzip, deflate";
 
-    @Value("${request.timeout:500}")
+    @Value("${request.timeout:1000}")
     private long requestTimeout;
 
     @Value("${client.userAgent}")
