@@ -35,6 +35,6 @@ public class TradeMarkExporter extends Exporter {
 
     @Override
     public String getXlsxFileName() {
-        return super.getFileName("trade_marks_", getXlsxExtension());
+        return super.getFileName("trade_marks_", EXTENSION_XLSX);
     }
 }

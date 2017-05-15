@@ -24,6 +24,7 @@ public class ProductEmptyParserTest extends AbstractProductParserTest {
         return null;
     }
 
+    @Override
     @Test(expected = HtmlParseException.class)
     public void test_parseProduct_should_returns_parsed_product() {
         super.test_parseProduct_should_returns_parsed_product();

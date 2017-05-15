@@ -35,6 +35,6 @@ public class ManufacturerExporter extends Exporter {
 
     @Override
     public String getXlsxFileName() {
-        return super.getFileName("manufacturers_", getXlsxExtension());
+        return super.getFileName("manufacturers_", EXTENSION_XLSX);
     }
 }

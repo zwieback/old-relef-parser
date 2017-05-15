@@ -24,8 +24,8 @@ public class FullParserStrategyFast extends AbstractFullParserStrategy {
 
     private static final Logger log = LogManager.getLogger(FullParserStrategyFast.class);
 
-    private CatalogParser catalogParser;
-    private ProductRepository productRepository;
+    private final CatalogParser catalogParser;
+    private final ProductRepository productRepository;
 
     @Autowired
     public FullParserStrategyFast(CatalogsParser catalogsParser,

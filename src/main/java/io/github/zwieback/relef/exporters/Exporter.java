@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter;
 @Component
 public abstract class Exporter {
 
+    static final String EXTENSION_XLSX = ".xlsx";
+
     private final DateTimeService dateTimeService;
 
     @Value("${export.date.time.pattern}")
@@ -30,9 +32,5 @@ public abstract class Exporter {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
         String dateTime = dateTimeService.nowAsLocalDateTime().format(formatter);
         return exportPath + File.separator + entityName + dateTime + extension;
-    }
-
-    String getXlsxExtension() {
-        return ".xlsx";
     }
 }

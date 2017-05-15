@@ -187,18 +187,6 @@ public class CatalogParser {
         return null;
     }
 
-//    @Nullable
-//    private String parseManufacturerCountry(Element productNode) {
-//        String propertiesCssQuery = "div.rc-catalog__information > p.rc-catalog__properties > " +
-//                "span.rc-catalog__property";
-//        Elements properties = productNode.select(propertiesCssQuery);
-//        Optional<ProductProperty> propertyOptional = properties.stream()
-//                .map(this::parseProductProperty)
-//                .filter(property -> "Страна производитель".equals(property.getName()))
-//                .findAny();
-//        return propertyOptional.map(ProductProperty::getValue).orElse(null);
-//    }
-
     @Nullable
     private String parseManufacturerCountry(Product product) {
         Optional<ProductProperty> propertyOptional = product.getProperties().stream()

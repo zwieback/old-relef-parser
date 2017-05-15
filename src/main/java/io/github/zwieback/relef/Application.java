@@ -47,9 +47,6 @@ public class Application {
                 log.debug("Started " + strategy.getClass().getSimpleName() + " strategy");
                 strategy.parse();
             });
-
-//                ParseRunner parseRunner = context.getBean(ParseRunner.class);
-//                parseRunner.parse();
             log.info("Parsing completed successfully");
         } catch (Exception e) {
             log.error("Parsing completed with error: " + e.getMessage(), e);
