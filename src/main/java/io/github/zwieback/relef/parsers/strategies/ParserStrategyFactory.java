@@ -13,9 +13,9 @@ import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.CATALOG
 import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.FULL_STRATEGY_FAST;
 import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.FULL_STRATEGY_SLOW;
 import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.PRODUCT_STRATEGY;
-import static io.github.zwieback.relef.services.CommandLineService.OPTION_CATALOG_PARSER;
-import static io.github.zwieback.relef.services.CommandLineService.OPTION_FULL_PARSER;
-import static io.github.zwieback.relef.services.CommandLineService.OPTION_PRODUCT_PARSER;
+import static io.github.zwieback.relef.services.CommandLineService.OPTION_PARSER_CATALOG;
+import static io.github.zwieback.relef.services.CommandLineService.OPTION_PARSER_FULL;
+import static io.github.zwieback.relef.services.CommandLineService.OPTION_PARSER_PRODUCT;
 
 @Service
 public class ParserStrategyFactory {
@@ -41,14 +41,14 @@ public class ParserStrategyFactory {
     }
 
     public void parseCommandLine(CommandLine cmd) {
-        if (cmd.hasOption(OPTION_CATALOG_PARSER)) {
-            catalogIds = cmd.getOptionValue(OPTION_CATALOG_PARSER);
+        if (cmd.hasOption(OPTION_PARSER_CATALOG)) {
+            catalogIds = cmd.getOptionValue(OPTION_PARSER_CATALOG);
         }
-        if (cmd.hasOption(OPTION_PRODUCT_PARSER)) {
-            productIds = cmd.getOptionValue(OPTION_PRODUCT_PARSER);
+        if (cmd.hasOption(OPTION_PARSER_PRODUCT)) {
+            productIds = cmd.getOptionValue(OPTION_PARSER_PRODUCT);
         }
-        if (cmd.hasOption(OPTION_FULL_PARSER)) {
-            switch (cmd.getOptionValue(OPTION_FULL_PARSER)) {
+        if (cmd.hasOption(OPTION_PARSER_FULL)) {
+            switch (cmd.getOptionValue(OPTION_PARSER_FULL)) {
                 case "1":
                     fullParserStrategyType = FullParserStrategyType.SLOW;
                     break;
