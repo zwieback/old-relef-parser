@@ -95,9 +95,10 @@ public abstract class AbstractFullParserStrategy extends ParserStrategy {
         AtomicInteger errorCount = new AtomicInteger();
         IntStream.range(0, catalogs.size())
                 .forEach(i -> {
-                    log.info(String.format("Parse catalog %d (%d) of %d", i, catalogs.get(i).getId(), catalogs.size()));
+                    Catalog catalog = catalogs.get(i);
+                    log.info(String.format("Parse catalog %d (%d) of %d", i + 1, catalog.getId(), catalogs.size()));
                     try {
-                        parseProductsOfCatalog(catalogs.get(i));
+                        parseProductsOfCatalog(catalog);
                     } catch (Exception e) {
                         log.error(e.getMessage(), e);
                         if (errorCount.incrementAndGet() > maxErrorsNumber) {
