@@ -36,3 +36,4 @@ buildNumber.properties
 # Specific
 src/main/resources/pages/**
 db/**
+exports/**

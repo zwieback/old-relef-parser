@@ -6,7 +6,7 @@
 
     <groupId>io.github.zwieback</groupId>
     <artifactId>relef-parser</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Relef parser</name>
     <description>Project to parse catalogs and products from site relefopt.ru</description>
@@ -46,6 +46,7 @@
         <liquibase.hibernate5.version>3.6</liquibase.hibernate5.version>
         <sl4j.version>1.7.25</sl4j.version>
         <jsoup.version>1.10.2</jsoup.version>
+        <poi.builder.version>1.0.4</poi.builder.version>
         <junit.version>4.12</junit.version>
         <mockito.version>1.10.19</mockito.version>
         <commons.cli.version>1.4</commons.cli.version>
@@ -139,6 +140,13 @@
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
+        </dependency>
+
+        <!-- Export -->
+        <dependency>
+            <groupId>org.subtlelib</groupId>
+            <artifactId>poi.builder</artifactId>
+            <version>${poi.builder.version}</version>
         </dependency>
 
         <!-- Test -->
