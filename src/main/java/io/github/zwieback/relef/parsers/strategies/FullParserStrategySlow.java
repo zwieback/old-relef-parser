@@ -62,7 +62,7 @@ public class FullParserStrategySlow extends AbstractFullParserStrategy {
         int productSize = productUrls.size();
         IntStream.range(0, productSize)
                 .forEach(i -> {
-                    log.debug(String.format("Parse product %d of %d (%s)", i, productSize, productUrls.get(i)));
+                    log.debug(String.format("Parse product %d of %d (%s)", i + 1, productSize, productUrls.get(i)));
                     Product parsedProduct = parseProductByUrl(productUrls.get(i));
                     saveProduct(parsedProduct);
                 });
