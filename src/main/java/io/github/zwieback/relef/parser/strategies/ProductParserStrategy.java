@@ -1,4 +1,4 @@
-package io.github.zwieback.relef.parsers.strategies;
+package io.github.zwieback.relef.parser.strategies;
 
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.parsers.ProductParser;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.PRODUCT_STRATEGY;
+import static io.github.zwieback.relef.parser.strategies.ParserStrategy.PRODUCT_STRATEGY;
 
 @Service(PRODUCT_STRATEGY)
 public class ProductParserStrategy extends ParserStrategy {

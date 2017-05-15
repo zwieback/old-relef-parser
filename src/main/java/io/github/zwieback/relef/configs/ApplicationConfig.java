@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Import;
         DatabaseConfig.class,
         ExporterConfig.class,
         ParserConfig.class,
+        ParserStrategyConfig.class,
         PropertyConfig.class,
         ServiceConfig.class
 })

@@ -1,6 +1,5 @@
 package io.github.zwieback.relef.parsers;
 
-import io.github.zwieback.relef.configs.DatabaseConfig;
 import io.github.zwieback.relef.configs.ParserConfig;
 import io.github.zwieback.relef.configs.ServiceConfig;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +15,6 @@ import java.io.UncheckedIOException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
-        DatabaseConfig.class,
         ParserConfig.class,
         ServiceConfig.class
 })

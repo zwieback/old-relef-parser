@@ -1,4 +1,4 @@
-package io.github.zwieback.relef.parsers.strategies;
+package io.github.zwieback.relef.parser.strategies;
 
 import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.Product;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.FULL_STRATEGY_FAST;
+import static io.github.zwieback.relef.parser.strategies.ParserStrategy.FULL_STRATEGY_FAST;
 
 @Service(FULL_STRATEGY_FAST)
 public class FullParserStrategyFast extends AbstractFullParserStrategy {
