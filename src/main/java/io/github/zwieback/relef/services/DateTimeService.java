@@ -10,9 +10,6 @@ import java.time.ZonedDateTime;
 public class DateTimeService {
 
     public long nowAsMilliseconds() {
-//        java.util.Date now = new Date();
-//        return now.getTime();
-
         LocalDateTime ldt = LocalDateTime.now();
         ZonedDateTime zdt = ldt.atZone(ZoneId.systemDefault());
         return zdt.toInstant().toEpochMilli();

@@ -25,10 +25,10 @@ public class FullParserStrategySlow extends AbstractFullParserStrategy {
 
     private static final Logger log = LogManager.getLogger(FullParserStrategySlow.class);
 
-    private CatalogParser catalogParser;
-    private ProductParser productParser;
-    private UrlParser urlParser;
-    private ProductRepository productRepository;
+    private final CatalogParser catalogParser;
+    private final ProductParser productParser;
+    private final UrlParser urlParser;
+    private final ProductRepository productRepository;
 
     @Autowired
     public FullParserStrategySlow(CatalogsParser catalogsParser,

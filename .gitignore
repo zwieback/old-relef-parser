@@ -34,6 +34,5 @@ buildNumber.properties
 
 ### Project
 # Specific
-src/main/resources/pages/**
 db/**
 exports/**

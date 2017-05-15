@@ -1,9 +1,7 @@
 package io.github.zwieback.relef.parsers;
 
 import io.github.zwieback.relef.entities.Product;
-import io.github.zwieback.relef.parsers.exceptions.HtmlParseException;
 import org.jsoup.nodes.Document;
-import org.junit.Test;
 
 import java.util.Collections;
 import java.util.List;

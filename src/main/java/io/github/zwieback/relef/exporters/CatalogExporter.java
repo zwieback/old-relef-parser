@@ -35,6 +35,6 @@ public class CatalogExporter extends Exporter {
 
     @Override
     public String getXlsxFileName() {
-        return super.getFileName("catalogs_", getXlsxExtension());
+        return super.getFileName("catalogs_", EXTENSION_XLSX);
     }
 }

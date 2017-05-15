@@ -35,6 +35,6 @@ public class ProductExporter extends Exporter {
 
     @Override
     public String getXlsxFileName() {
-        return super.getFileName("products_", getXlsxExtension());
+        return super.getFileName("products_", EXTENSION_XLSX);
     }
 }
