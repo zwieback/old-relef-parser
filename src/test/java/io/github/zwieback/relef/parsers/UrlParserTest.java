@@ -1,6 +1,5 @@
 package io.github.zwieback.relef.parsers;
 
-import io.github.zwieback.relef.configs.DatabaseConfig;
 import io.github.zwieback.relef.configs.ParserConfig;
 import io.github.zwieback.relef.configs.ServiceConfig;
 import io.github.zwieback.relef.parsers.exceptions.UrlParseException;
@@ -14,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
-        DatabaseConfig.class,
         ParserConfig.class,
         ServiceConfig.class
 })

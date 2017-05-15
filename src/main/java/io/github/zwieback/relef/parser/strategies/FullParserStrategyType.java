@@ -1,4 +1,4 @@
-package io.github.zwieback.relef.parsers.strategies;
+package io.github.zwieback.relef.parser.strategies;
 
 public enum FullParserStrategyType {
 

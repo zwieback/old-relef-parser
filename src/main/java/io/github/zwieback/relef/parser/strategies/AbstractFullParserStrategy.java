@@ -1,10 +1,10 @@
-package io.github.zwieback.relef.parsers.strategies;
+package io.github.zwieback.relef.parser.strategies;
 
 import io.github.zwieback.relef.entities.Brand;
 import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.CatalogLevel;
 import io.github.zwieback.relef.parsers.CatalogsParser;
-import io.github.zwieback.relef.parsers.exceptions.ExceededErrorsCountException;
+import io.github.zwieback.relef.parser.strategies.exceptions.ExceededErrorsCountException;
 import io.github.zwieback.relef.repositories.BrandRepository;
 import io.github.zwieback.relef.repositories.CatalogRepository;
 import io.github.zwieback.relef.services.CatalogLevelService;

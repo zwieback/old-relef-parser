@@ -1,4 +1,4 @@
-package io.github.zwieback.relef.parsers.strategies;
+package io.github.zwieback.relef.parser.strategies;
 
 import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.Product;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static io.github.zwieback.relef.parsers.strategies.ParserStrategy.FULL_STRATEGY_SLOW;
+import static io.github.zwieback.relef.parser.strategies.ParserStrategy.FULL_STRATEGY_SLOW;
 
 @Service(FULL_STRATEGY_SLOW)
 public class FullParserStrategySlow extends AbstractFullParserStrategy {
