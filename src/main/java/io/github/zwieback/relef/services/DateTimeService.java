@@ -17,4 +17,8 @@ public class DateTimeService {
         ZonedDateTime zdt = ldt.atZone(ZoneId.systemDefault());
         return zdt.toInstant().toEpochMilli();
     }
+
+    public LocalDateTime nowAsLocalDateTime() {
+        return LocalDateTime.now();
+    }
 }

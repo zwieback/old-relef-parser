@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import static org.junit.Assert.assertEquals;
@@ -28,6 +29,14 @@ public class DateTimeServiceTest {
         LocalDate expected = LocalDate.now();
         long nowAsMilliseconds = dateTimeService.nowAsMilliseconds();
         LocalDate resultDate = Instant.ofEpochMilli(nowAsMilliseconds).atZone(ZoneId.systemDefault()).toLocalDate();
+        assertEquals(expected, resultDate);
+    }
+
+    @Test
+    public void test_nowAsLocalDateTime_should_be_today() {
+        LocalDate expected = LocalDate.now();
+        LocalDateTime nowAsLocalDateTime = dateTimeService.nowAsLocalDateTime();
+        LocalDate resultDate = nowAsLocalDateTime.toLocalDate();
         assertEquals(expected, resultDate);
     }
 }

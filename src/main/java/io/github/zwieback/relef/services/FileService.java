@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
@@ -25,8 +26,16 @@ public class FileService {
     }
 
     public void writeDocument(Document document, String fileName) {
+        writeBytes(document.toString().getBytes(defaultCharset), fileName);
+    }
+
+    public void writeBytes(byte[] bytes, String fileName) {
         try {
-            Files.write(Paths.get(fileName), document.toString().getBytes(defaultCharset));
+            Path parentDir = Paths.get(fileName).getParent();
+            if (!Files.exists(parentDir)) {
+                Files.createDirectories(parentDir);
+            }
+            Files.write(Paths.get(fileName), bytes);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             throw new UncheckedIOException(e.getMessage(), e);
