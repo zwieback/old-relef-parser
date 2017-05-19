@@ -1,4 +1,4 @@
-package io.github.zwieback.relef.services.utils;
+package io.github.zwieback.relef.utils;
 
 import java.text.DecimalFormat;
 

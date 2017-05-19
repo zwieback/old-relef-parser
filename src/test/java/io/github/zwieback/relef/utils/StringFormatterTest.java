@@ -1,4 +1,4 @@
-package io.github.zwieback.relef.services.utils;
+package io.github.zwieback.relef.utils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

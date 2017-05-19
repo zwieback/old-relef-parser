@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.github.zwieback.relef.services.utils.StringFormatter.formatDouble;
+import static io.github.zwieback.relef.utils.StringFormatter.formatDouble;
 
 @Entity
 @Table(name = "T_PRODUCT")
