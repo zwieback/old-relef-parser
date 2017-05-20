@@ -21,10 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
@@ -147,6 +144,9 @@ public class CatalogParser {
                 .setManufacturer(parseManufacturer(productNode))
                 .setTradeMark(parseTradeMark(productNode))
                 .setParty(parseParty(productNode))
+                .setXmlId(parseXmlId(productNode))
+                .setDataType(parseDataType(productNode))
+                .setAmount(parseAmount(productNode))
                 .setProperties(parseProductProperties(productId, productNode));
         product
                 .setManufacturerCountry(parseManufacturerCountry(product));
@@ -261,6 +261,29 @@ public class CatalogParser {
             return partyTitleAndValue[PARTY_VALUE_INDEX].trim();
         }
         return null;
+    }
+
+    @Nullable
+    private UUID parseXmlId(Element productNode) {
+        String cssQuery = "form.rc-catalog__price";
+        Element xmlId = productNode.select(cssQuery).first();
+        String xmlIdAttribute = xmlId == null ? null : xmlId.attr("data-xmlid");
+        return xmlIdAttribute == null ? null : UUID.fromString(xmlIdAttribute);
+    }
+
+    @Nullable
+    private String parseDataType(Element productNode) {
+        String cssQuery = "form.rc-catalog__price";
+        Element dataType = productNode.select(cssQuery).first();
+        return dataType == null ? null : dataType.attr("data-type");
+    }
+
+    @Nullable
+    private Integer parseAmount(Element productNode) {
+        String cssQuery = "input.rc-2basket__amount";
+        Element amount = productNode.select(cssQuery).first();
+        String amountAttribute = amount == null ? null : amount.attr("value");
+        return amountAttribute == null ? null : Integer.valueOf(amountAttribute);
     }
 
     private List<ProductProperty> parseProductProperties(@NotNull Long productId, Element productNode) {

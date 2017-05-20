@@ -2,6 +2,8 @@ package io.github.zwieback.relef.parsers;
 
 import io.github.zwieback.relef.entities.Product;
 
+import java.util.UUID;
+
 public class Product321940415ParserTest extends AbstractProductParserTest {
 
     private static final Long CATALOG_ID = 69472L;
@@ -39,6 +41,9 @@ public class Product321940415ParserTest extends AbstractProductParserTest {
                 .setParty("5 / 10 / 20")
                 .setWeight(0.51)
                 .setVolume(0.001)
+                .setXmlId(UUID.fromString("397de5b3-0fa3-11e7-9405-acf1df3ff64b"))
+                .setDataType("basket")
+                .setAmount(5)
                 .setProperties(generatePropertiesStub(22))
                 .setManufacturer(generateManufacturer("Спейс", "http://relefopt.ru/catalog/69472/?arrFilter_pf[DP_MANIFACTUR][12861056]=12861056"))
                 .setTradeMark(generateTradeMark("ArtSpace", "http://relefopt.ru/brands/12908290.php"));

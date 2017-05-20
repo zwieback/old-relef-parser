@@ -4,8 +4,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static io.github.zwieback.relef.utils.StringFormatter.formatDouble;
 
@@ -90,6 +92,40 @@ public class Product extends BaseEntity {
     // Объем, м³
     @Nullable
     private Double volume;
+
+    // XML ID
+    // чаще всего используется для поиска цены продуктов
+    @Column(name = "xml_id")
+    @Nullable
+    private UUID xmlId;
+
+    // Тип продукта
+    // чаще всего используется для поиска цены продуктов
+    @Column(name = "data_type")
+    @Nullable
+    private String dataType;
+
+    // Цена
+    @Nullable
+    private BigDecimal price;
+
+    // ?
+    @Nullable
+    private Integer amount;
+
+    // Доступное количество
+    @Nullable
+    private Integer available;
+
+    // Старая цена
+    @Column(name = "old_price")
+    @Nullable
+    private BigDecimal oldPrice;
+
+    // ?
+    @Column(name = "black_friday")
+    @Nullable
+    private Boolean blackFriday;
 
     // Свойства
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
@@ -273,6 +309,76 @@ public class Product extends BaseEntity {
 
     public Product setVolume(@Nullable Double volume) {
         this.volume = volume;
+        return this;
+    }
+
+    @Nullable
+    public UUID getXmlId() {
+        return xmlId;
+    }
+
+    public Product setXmlId(@Nullable UUID xmlId) {
+        this.xmlId = xmlId;
+        return this;
+    }
+
+    @Nullable
+    public String getDataType() {
+        return dataType;
+    }
+
+    public Product setDataType(@Nullable String dataType) {
+        this.dataType = dataType;
+        return this;
+    }
+
+    @Nullable
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public Product setPrice(@Nullable BigDecimal price) {
+        this.price = price;
+        return this;
+    }
+
+    @Nullable
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public Product setAmount(@Nullable Integer amount) {
+        this.amount = amount;
+        return this;
+    }
+
+    @Nullable
+    public Integer getAvailable() {
+        return available;
+    }
+
+    public Product setAvailable(@Nullable Integer available) {
+        this.available = available;
+        return this;
+    }
+
+    @Nullable
+    public BigDecimal getOldPrice() {
+        return oldPrice;
+    }
+
+    public Product setOldPrice(@Nullable BigDecimal oldPrice) {
+        this.oldPrice = oldPrice;
+        return this;
+    }
+
+    @Nullable
+    public Boolean getBlackFriday() {
+        return blackFriday;
+    }
+
+    public Product setBlackFriday(@Nullable Boolean blackFriday) {
+        this.blackFriday = blackFriday;
         return this;
     }
 

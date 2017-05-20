@@ -1,0 +1,18 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog ../dbchangelog-3.5.xsd">
+
+    <changeSet author="zwieback" id="RP-16: add columns for price parsing to T_PRODUCT">
+        <addColumn tableName="T_PRODUCT">
+            <column name="xml_id" type="${type.uuid}"/>
+            <column name="data_type" type="varchar(255)"/>
+            <column name="price" type="number(19,2)"/>
+            <column name="amount" type="int"/>
+            <column name="available" type="int"/>
+            <column name="old_price" type="number(19,2)"/>
+            <column name="black_friday" type="boolean"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
