@@ -3,8 +3,10 @@ package io.github.zwieback.relef.parser.strategies;
 import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.parsers.CatalogParser;
+import io.github.zwieback.relef.web.parsers.ProductPriceReceiver;
 import io.github.zwieback.relef.repositories.CatalogRepository;
 import io.github.zwieback.relef.repositories.ProductRepository;
+import io.github.zwieback.relef.services.mergers.ProductPriceMerger;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
@@ -24,16 +26,18 @@ public class CatalogParserStrategy extends ParserStrategy {
 
     private final CatalogParser parser;
     private final CatalogRepository catalogRepository;
-    private final ProductRepository productRepository;
 
     private List<Long> catalogIds;
 
     @Autowired
-    public CatalogParserStrategy(CatalogParser parser, CatalogRepository catalogRepository,
-                                 ProductRepository productRepository) {
+    public CatalogParserStrategy(CatalogParser parser,
+                                 CatalogRepository catalogRepository,
+                                 ProductRepository productRepository,
+                                 ProductPriceReceiver productPriceReceiver,
+                                 ProductPriceMerger productPriceMerger) {
+        super(productRepository, productPriceReceiver, productPriceMerger);
         this.parser = parser;
         this.catalogRepository = catalogRepository;
-        this.productRepository = productRepository;
     }
 
     @Override
@@ -60,10 +64,7 @@ public class CatalogParserStrategy extends ParserStrategy {
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
         log.info(String.format("Found %d products in catalog %d", parsedProducts.size(), existedCatalog.getId()));
+        getAndMergeProductPrices(parsedProducts);
         saveProducts(parsedProducts);
-    }
-
-    private void saveProducts(List<Product> products) {
-        productRepository.save(products);
     }
 }

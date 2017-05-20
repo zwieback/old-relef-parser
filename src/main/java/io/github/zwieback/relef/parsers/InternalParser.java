@@ -2,6 +2,7 @@ package io.github.zwieback.relef.parsers;
 
 import io.github.zwieback.relef.services.HeadersBuilder;
 import io.github.zwieback.relef.services.HeadersBuilder.Headers;
+import io.github.zwieback.relef.services.SleepService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -24,11 +25,14 @@ public class InternalParser implements InitializingBean {
     private static final String ACCEPT_ENCODING = "accept-encoding";
     private static final String GZIP_DEFLATE_ENCODING = "gzip, deflate";
 
-    @Value("${request.timeout:1000}")
-    private long requestTimeout;
+    private final SleepService sleepService;
 
     @Value("${client.userAgent}")
     private String userAgent;
+
+    public InternalParser(SleepService sleepService) {
+        this.sleepService = sleepService;
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -68,24 +72,8 @@ public class InternalParser implements InitializingBean {
             throw new UncheckedIOException(e.getMessage(), e);
         }
         watch.stop();
-        sleepIfNeeded(watch.getTotalTimeMillis());
+        sleepService.sleepIfNeeded(watch.getTotalTimeMillis());
         return response;
-    }
-
-    /**
-     * Sleep only if responseExecutionTime lower than requestTimeout.
-     *
-     * @param responseExecutionTime how many milliseconds response was executed
-     */
-    private void sleepIfNeeded(long responseExecutionTime) {
-        if (responseExecutionTime >= requestTimeout) {
-            return;
-        }
-        try {
-            Thread.sleep(requestTimeout - responseExecutionTime);
-        } catch (InterruptedException e) {
-            log.error(e.getMessage(), e);
-        }
     }
 
     Document get(String url) {

@@ -56,6 +56,8 @@ public class ParserStrategyFactory {
                     fullParserStrategyType = FullParserStrategyType.FAST;
                     break;
             }
+        } else {
+            fullParserStrategyType = FullParserStrategyType.NONE;
         }
     }
 
@@ -73,7 +75,7 @@ public class ParserStrategyFactory {
             case SLOW:
                 strategies.add(fullStrategySlow);
                 break;
-            default:
+            case FAST:
                 strategies.add(fullStrategyFast);
                 break;
         }

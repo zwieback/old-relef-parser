@@ -36,3 +36,4 @@ buildNumber.properties
 # Specific
 db/**
 exports/**
+imports/**

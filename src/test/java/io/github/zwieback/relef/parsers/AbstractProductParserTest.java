@@ -53,6 +53,13 @@ abstract class AbstractProductParserTest extends AbstractParserTest {
         assertEquals(expectedProduct.getParty(), actualProduct.getParty());
         assertEquals(expectedProduct.getWeight(), actualProduct.getWeight());
         assertEquals(expectedProduct.getVolume(), actualProduct.getVolume());
+        assertEquals(expectedProduct.getXmlId(), actualProduct.getXmlId());
+        assertEquals(expectedProduct.getDataType(), actualProduct.getDataType());
+        assertEquals(expectedProduct.getPrice(), actualProduct.getPrice());
+        assertEquals(expectedProduct.getAmount(), actualProduct.getAmount());
+        assertEquals(expectedProduct.getAvailable(), actualProduct.getAvailable());
+        assertEquals(expectedProduct.getOldPrice(), actualProduct.getOldPrice());
+        assertEquals(expectedProduct.getBlackFriday(), actualProduct.getBlackFriday());
         assertEquals(expectedProduct.getProperties().size(), actualProduct.getProperties().size());
         assertEquals(expectedProduct.getManufacturer(), actualProduct.getManufacturer());
         assertEquals(expectedProduct.getTradeMark(), actualProduct.getTradeMark());

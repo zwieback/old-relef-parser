@@ -9,8 +9,6 @@ import io.github.zwieback.relef.services.HeadersBuilder;
 import io.github.zwieback.relef.services.HeadersBuilder.Headers;
 import io.github.zwieback.relef.services.StringService;
 import io.github.zwieback.relef.services.UrlBuilder;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jsoup.Jsoup;
@@ -21,11 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
@@ -33,7 +27,6 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class ProductParser {
 
-    private static final Logger log = LogManager.getLogger(ProductParser.class);
     private static final int INFO_PROPERTY_NOT_FOUND_INDEX = -1;
     private static final int MANUFACTURER_INDEX = 0;
     private static final int TRADE_MARK_INDEX = 1;
@@ -92,7 +85,10 @@ public class ProductParser {
                 .setTradeMark(parseTradeMark(productNode))
                 .setParty(parseParty(productNode))
                 .setWeight(parseWeight(productNode))
-                .setVolume(parseVolume(productNode));
+                .setVolume(parseVolume(productNode))
+                .setXmlId(parseXmlId(productNode))
+                .setDataType(parseDataType(productNode))
+                .setAmount(parseAmount(productNode));
         product
                 .setCode(parseCode(product))
                 .setArticle(parseArticle(product))
@@ -247,6 +243,30 @@ public class ProductParser {
         String name = stringService.clean(text.split("–")[0]);
         String value = stringService.clean(text.split("–")[1]);
         return new ProductProperty(productId, name, value);
+    }
+
+
+    @Nullable
+    private UUID parseXmlId(Element productNode) {
+        String cssQuery = "form.rc-item__price";
+        Element xmlId = productNode.select(cssQuery).first();
+        String xmlIdAttribute = xmlId == null ? null : xmlId.attr("data-xmlid");
+        return xmlIdAttribute == null ? null : UUID.fromString(xmlIdAttribute);
+    }
+
+    @Nullable
+    private String parseDataType(Element productNode) {
+        String cssQuery = "form.rc-item__price";
+        Element dataType = productNode.select(cssQuery).first();
+        return dataType == null ? null : dataType.attr("data-type");
+    }
+
+    @Nullable
+    private Integer parseAmount(Element productNode) {
+        String cssQuery = "input.rc-2basket__amount";
+        Element amount = productNode.select(cssQuery).first();
+        String amountAttribute = amount == null ? null : amount.attr("value");
+        return amountAttribute == null ? null : Integer.valueOf(amountAttribute);
     }
 
 

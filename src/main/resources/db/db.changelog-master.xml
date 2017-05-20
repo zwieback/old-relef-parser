@@ -6,6 +6,8 @@
     <!--<property name="currentDate" value="sysdate" dbms="oracle"/>-->
     <!--<property name="now" value="now()" dbms="postgresql"/>-->
 
+    <property name="type.uuid" value="binary(16)" dbms="hsqldb"/>
+
     <include file="db/level01.Sequence/db.changelog.xml"/>
     <include file="db/level03.CreateTable/db.changelog.xml"/>
     <include file="db/level05.AlterTable/db.changelog.xml"/>

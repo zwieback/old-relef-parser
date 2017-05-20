@@ -3,6 +3,11 @@ package io.github.zwieback.relef.parser.strategies;
 public enum FullParserStrategyType {
 
     /**
+     * not use parser
+     */
+    NONE,
+
+    /**
      * parse products from catalog pages only
      */
     FAST,

@@ -1,0 +1,78 @@
+{
+	"product": {
+		"9348300": {
+			"price": 51064.65,
+			"amount": false,
+			"available": 0,
+			"oldprice": 0,
+			"blfriday": false
+		},
+		"12810786": {
+			"price": 37724.12,
+			"amount": 0,
+			"available": 0,
+			"oldprice": 0,
+			"blfriday": false
+		},
+		"18264775": {
+			"price": 32617.65,
+			"amount": 0,
+			"available": 0,
+			"oldprice": 0,
+			"blfriday": false
+		},
+		"19298559": {
+			"price": 27586.65,
+			"amount": 0,
+			"available": 0,
+			"oldprice": 0,
+			"blfriday": false
+		},
+		"75227223": {
+			"price": 35971.65,
+			"amount": false,
+			"available": 0,
+			"oldprice": 0,
+			"blfriday": false
+		},
+		"75227224": {
+			"price": 41002.65,
+			"amount": false,
+			"available": 0,
+			"oldprice": 0,
+			"blfriday": false
+		},
+		"75227225": {
+			"price": 46033.65,
+			"amount": false,
+			"available": 0,
+			"oldprice": 0,
+			"blfriday": false
+		},
+		"75227226": {
+			"price": 59449.65,
+			"amount": false,
+			"available": 0,
+			"oldprice": 0,
+			"blfriday": false
+		},
+		"75227227": {
+			"price": 54418.65,
+			"amount": false,
+			"available": 0,
+			"oldprice": 0,
+			"blfriday": false
+		},
+		"313539543": {
+			"price": 79573.65,
+			"amount": false,
+			"available": 0,
+			"oldprice": 0,
+			"blfriday": false
+		}
+	},
+	"action": "define",
+	"canbuy": true,
+	"compare": 0,
+	"soapm": false
+}

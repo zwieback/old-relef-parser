@@ -2,6 +2,8 @@ package io.github.zwieback.relef.parsers;
 
 import io.github.zwieback.relef.entities.Product;
 
+import java.util.UUID;
+
 public class Product34259ParserTest extends AbstractProductParserTest {
 
     private static final Long CATALOG_ID = 68711L;
@@ -35,6 +37,9 @@ public class Product34259ParserTest extends AbstractProductParserTest {
                 .setParty("1 / 1 / 1")
                 .setWeight(6.00)
                 .setVolume(0.036)
+                .setXmlId(UUID.fromString("77e2290d-c30f-11dd-8aea-00e098c184c1"))
+                .setDataType("basket")
+                .setAmount(1)
                 .setProperties(generatePropertiesStub(10))
                 .setManufacturer(generateManufacturer("Berlingo", "http://relefopt.ru/catalog/68711/?arrFilter_pf[DP_MANIFACTUR][12819243]=12819243"))
                 .setTradeMark(generateTradeMark("Berlingo", "http://relefopt.ru/brands/12820028.php"));

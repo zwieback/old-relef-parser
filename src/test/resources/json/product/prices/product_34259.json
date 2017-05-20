@@ -1,0 +1,15 @@
+{
+  "product": {
+    "34259": {
+      "price": 2200.93,
+      "amount": 0,
+      "available": 0,
+      "oldprice": 0,
+      "blfriday": false
+    }
+  },
+  "action": "define",
+  "canbuy": true,
+  "compare": 0,
+  "soapm": false
+}

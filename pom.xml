@@ -45,6 +45,7 @@
         <liquibase.slf4j.version>2.0.0</liquibase.slf4j.version>
         <liquibase.hibernate5.version>3.6</liquibase.hibernate5.version>
         <sl4j.version>1.7.25</sl4j.version>
+        <jackson.version>2.8.8</jackson.version>
         <jsoup.version>1.10.2</jsoup.version>
         <poi.builder.version>1.0.4</poi.builder.version>
         <junit.version>4.12</junit.version>
@@ -67,6 +68,10 @@
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
         </dependency>
 
         <!-- Database -->
@@ -133,6 +138,13 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${sl4j.version}</version>
+        </dependency>
+
+        <!-- Json -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- Parser -->
