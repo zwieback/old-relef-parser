@@ -3,7 +3,7 @@ package io.github.zwieback.relef.services;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class HeadersBuilder {
 
@@ -28,7 +28,7 @@ public class HeadersBuilder {
         return headers;
     }
 
-    public static class Headers extends HashMap<String, String> {
+    public static class Headers extends LinkedHashMap<String, String> {
         private static final long serialVersionUID = -2926131010422179665L;
     }
 }
