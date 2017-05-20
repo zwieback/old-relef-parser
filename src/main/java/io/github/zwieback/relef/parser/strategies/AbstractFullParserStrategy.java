@@ -3,11 +3,14 @@ package io.github.zwieback.relef.parser.strategies;
 import io.github.zwieback.relef.entities.Brand;
 import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.CatalogLevel;
-import io.github.zwieback.relef.parsers.CatalogsParser;
 import io.github.zwieback.relef.parser.strategies.exceptions.ExceededErrorsCountException;
+import io.github.zwieback.relef.parsers.CatalogsParser;
+import io.github.zwieback.relef.web.parsers.ProductPriceReceiver;
 import io.github.zwieback.relef.repositories.BrandRepository;
 import io.github.zwieback.relef.repositories.CatalogRepository;
+import io.github.zwieback.relef.repositories.ProductRepository;
 import io.github.zwieback.relef.services.CatalogLevelService;
+import io.github.zwieback.relef.services.mergers.ProductPriceMerger;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
@@ -39,7 +42,11 @@ public abstract class AbstractFullParserStrategy extends ParserStrategy {
     AbstractFullParserStrategy(CatalogsParser catalogsParser,
                                BrandRepository brandRepository,
                                CatalogRepository catalogRepository,
-                               CatalogLevelService catalogLevelService) {
+                               CatalogLevelService catalogLevelService,
+                               ProductRepository productRepository,
+                               ProductPriceReceiver productPriceReceiver,
+                               ProductPriceMerger productPriceMerger) {
+        super(productRepository, productPriceReceiver, productPriceMerger);
         this.catalogsParser = catalogsParser;
         this.brandRepository = brandRepository;
         this.catalogRepository = catalogRepository;

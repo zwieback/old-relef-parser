@@ -4,10 +4,12 @@ import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.parsers.CatalogParser;
 import io.github.zwieback.relef.parsers.CatalogsParser;
+import io.github.zwieback.relef.web.parsers.ProductPriceReceiver;
 import io.github.zwieback.relef.repositories.BrandRepository;
 import io.github.zwieback.relef.repositories.CatalogRepository;
 import io.github.zwieback.relef.repositories.ProductRepository;
 import io.github.zwieback.relef.services.CatalogLevelService;
+import io.github.zwieback.relef.services.mergers.ProductPriceMerger;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
@@ -25,7 +27,6 @@ public class FullParserStrategyFast extends AbstractFullParserStrategy {
     private static final Logger log = LogManager.getLogger(FullParserStrategyFast.class);
 
     private final CatalogParser catalogParser;
-    private final ProductRepository productRepository;
 
     @Autowired
     public FullParserStrategyFast(CatalogsParser catalogsParser,
@@ -33,10 +34,12 @@ public class FullParserStrategyFast extends AbstractFullParserStrategy {
                                   CatalogRepository catalogRepository,
                                   CatalogLevelService catalogLevelService,
                                   CatalogParser catalogParser,
-                                  ProductRepository productRepository) {
-        super(catalogsParser, brandRepository, catalogRepository, catalogLevelService);
+                                  ProductRepository productRepository,
+                                  ProductPriceReceiver productPriceReceiver,
+                                  ProductPriceMerger productPriceMerger) {
+        super(catalogsParser, brandRepository, catalogRepository, catalogLevelService, productRepository,
+                productPriceReceiver, productPriceMerger);
         this.catalogParser = catalogParser;
-        this.productRepository = productRepository;
     }
 
     @Override
@@ -48,10 +51,7 @@ public class FullParserStrategyFast extends AbstractFullParserStrategy {
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
         log.info(String.format("Found %d products in catalog %d", products.size(), catalog.getId()));
+        getAndMergeProductPrices(products);
         saveProducts(products);
-    }
-
-    private void saveProducts(List<Product> products) {
-        productRepository.save(products);
     }
 }
