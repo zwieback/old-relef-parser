@@ -1,0 +1,10 @@
+{
+  "product": [],
+  "action": "define",
+  "canbuy": true,
+  "error": {
+    "product": "не указан товар"
+  },
+  "compare": 0,
+  "soapm": false
+}
