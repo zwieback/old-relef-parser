@@ -2,7 +2,7 @@ package io.github.zwieback.relef.parser.strategies;
 
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.parsers.ProductParser;
-import io.github.zwieback.relef.web.parsers.ProductPriceReceiver;
+import io.github.zwieback.relef.web.services.ProductPriceService;
 import io.github.zwieback.relef.repositories.ProductRepository;
 import io.github.zwieback.relef.services.mergers.ProductPriceMerger;
 import org.apache.log4j.LogManager;
@@ -31,9 +31,9 @@ public class ProductParserStrategy extends ParserStrategy {
     @Autowired
     public ProductParserStrategy(ProductParser parser,
                                  ProductRepository repository,
-                                 ProductPriceReceiver priceParser,
+                                 ProductPriceService priceService,
                                  ProductPriceMerger priceMerger) {
-        super(repository, priceParser, priceMerger);
+        super(repository, priceService, priceMerger);
         this.parser = parser;
         this.repository = repository;
     }

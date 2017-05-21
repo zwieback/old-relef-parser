@@ -1,4 +1,4 @@
-package io.github.zwieback.relef.web.parsers;
+package io.github.zwieback.relef.web.services;
 
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.entities.dto.product.prices.ProductPricesDto;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class ProductPriceReceiver {
+public class ProductPriceService {
 
     private final RestService restService;
     private final HeadersToMultiValueMapConverter converter;
@@ -26,7 +26,7 @@ public class ProductPriceReceiver {
     private String priceUrl;
 
     @Autowired
-    public ProductPriceReceiver(RestService restService, HeadersToMultiValueMapConverter converter) {
+    public ProductPriceService(RestService restService, HeadersToMultiValueMapConverter converter) {
         this.restService = restService;
         this.converter = converter;
     }
