@@ -1,0 +1,13 @@
+{
+  "action": "auth",
+  "sid": "41bca88b31ee02c4ed15fc8cfbf295a3",
+  "userId": "21828",
+  "mark": {
+    "sid": "41bca88b31ee02c4ed15fc8cfbf295a3",
+    "buy": true,
+    "auth": true,
+    "loyalty": false,
+    "bookmark": false,
+    "banner_top": true
+  }
+}
