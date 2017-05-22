@@ -424,8 +424,15 @@ public class Product extends BaseEntity {
                 ", manufacturer=" + manufacturer +
                 ", tradeMark=" + tradeMark +
                 ", party='" + party + '\'' +
-                ", weight='" + formatDouble(weight) + '\'' +
-                ", volume='" + formatDouble(volume) + '\'' +
+                ", weight=" + formatDouble(weight) +
+                ", volume=" + formatDouble(volume) +
+                ", xmlId=" + xmlId +
+                ", dataType='" + dataType + '\'' +
+                ", price=" + price +
+                ", amount=" + amount +
+                ", available=" + available +
+                ", oldPrice=" + oldPrice +
+                ", blackFriday=" + blackFriday +
                 ", properties=" + properties +
                 '}';
     }
