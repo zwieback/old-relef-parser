@@ -44,9 +44,14 @@ public class RestService {
     }
 
     public <T> T post(String url, HttpEntity<?> entity, Class<T> responseType, Map<String, ?> urlParams) {
+        return exchange(url, HttpMethod.POST, entity, responseType, urlParams);
+    }
+
+    private <T> T exchange(String url, HttpMethod method, HttpEntity<?> entity, Class<T> responseType,
+                           Map<String, ?> urlParams) {
         StopWatch watch = new StopWatch();
         watch.start();
-        ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.POST, entity, responseType, urlParams);
+        ResponseEntity<T> response = restTemplate.exchange(url, method, entity, responseType, urlParams);
         watch.stop();
         sleepService.sleepIfNeeded(watch.getTotalTimeMillis());
         return response.getBody();
