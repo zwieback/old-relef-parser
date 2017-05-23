@@ -2,7 +2,7 @@ package io.github.zwieback.relef.parser.strategies;
 
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.entities.dto.product.prices.ProductPricesDto;
-import io.github.zwieback.relef.web.parsers.ProductPriceReceiver;
+import io.github.zwieback.relef.web.services.ProductPriceService;
 import io.github.zwieback.relef.repositories.ProductRepository;
 import io.github.zwieback.relef.services.mergers.ProductPriceMerger;
 import org.apache.log4j.LogManager;
@@ -23,14 +23,14 @@ public abstract class ParserStrategy {
     static final String PRODUCT_STRATEGY = "productStrategy";
 
     private final ProductRepository productRepository;
-    private final ProductPriceReceiver productPriceReceiver;
+    private final ProductPriceService productPriceService;
     private final ProductPriceMerger productPriceMerger;
 
     ParserStrategy(ProductRepository productRepository,
-                   ProductPriceReceiver productPriceReceiver,
+                   ProductPriceService productPriceService,
                    ProductPriceMerger productPriceMerger) {
         this.productRepository = productRepository;
-        this.productPriceReceiver = productPriceReceiver;
+        this.productPriceService = productPriceService;
         this.productPriceMerger = productPriceMerger;
     }
 
@@ -50,7 +50,7 @@ public abstract class ParserStrategy {
     public abstract void parse();
 
     void getAndMergeProductPrices(List<Product> products) {
-        ProductPricesDto productPricesDto = productPriceReceiver.getPrices(products);
+        ProductPricesDto productPricesDto = productPriceService.getPrices(products);
         log.info(String.format("Found %d prices for products", productPricesDto.getProductMap().size()));
         productPriceMerger.mergePrices(products, productPricesDto);
     }

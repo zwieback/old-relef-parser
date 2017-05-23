@@ -2,6 +2,7 @@ package io.github.zwieback.relef.web.rest.services;
 
 import io.github.zwieback.relef.services.SleepService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
@@ -17,6 +18,9 @@ public class RestService {
     private final RestTemplate restTemplate;
     private final SleepService sleepService;
 
+    @Value("${client.userAgent}")
+    private String userAgent;
+
     @Autowired
     public RestService(RestTemplate restTemplate, SleepService sleepService) {
         this.restTemplate = restTemplate;
@@ -25,6 +29,7 @@ public class RestService {
 
     public HttpHeaders buildHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.USER_AGENT, userAgent);
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         return httpHeaders;
@@ -39,9 +44,14 @@ public class RestService {
     }
 
     public <T> T post(String url, HttpEntity<?> entity, Class<T> responseType, Map<String, ?> urlParams) {
+        return exchange(url, HttpMethod.POST, entity, responseType, urlParams);
+    }
+
+    private <T> T exchange(String url, HttpMethod method, HttpEntity<?> entity, Class<T> responseType,
+                           Map<String, ?> urlParams) {
         StopWatch watch = new StopWatch();
         watch.start();
-        ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.POST, entity, responseType, urlParams);
+        ResponseEntity<T> response = restTemplate.exchange(url, method, entity, responseType, urlParams);
         watch.stop();
         sleepService.sleepIfNeeded(watch.getTotalTimeMillis());
         return response.getBody();

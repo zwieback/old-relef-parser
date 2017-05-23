@@ -7,6 +7,7 @@ import io.github.zwieback.relef.parser.strategies.ParserStrategy;
 import io.github.zwieback.relef.parser.strategies.ParserStrategyFactory;
 import io.github.zwieback.relef.services.CommandLineService;
 import io.github.zwieback.relef.services.FileService;
+import io.github.zwieback.relef.web.services.AuthService;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -40,6 +41,8 @@ public class Application {
     private static void parse(AbstractApplicationContext context, CommandLine cmd) {
         log.info("Parsing started...");
         try {
+            AuthService authService = context.getBean(AuthService.class);
+            authService.auth();
             ParserStrategyFactory strategyFactory = context.getBean(ParserStrategyFactory.class);
             strategyFactory.parseCommandLine(cmd);
             List<ParserStrategy> strategies = strategyFactory.createStrategies();
@@ -47,6 +50,7 @@ public class Application {
                 log.debug("Started " + strategy.getClass().getSimpleName() + " strategy");
                 strategy.parse();
             });
+            authService.logout();
             log.info("Parsing completed successfully");
         } catch (Exception e) {
             log.error("Parsing completed with error: " + e.getMessage(), e);

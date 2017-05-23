@@ -4,7 +4,7 @@ import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.parsers.CatalogParser;
 import io.github.zwieback.relef.parsers.CatalogsParser;
-import io.github.zwieback.relef.web.parsers.ProductPriceReceiver;
+import io.github.zwieback.relef.web.services.ProductPriceService;
 import io.github.zwieback.relef.repositories.BrandRepository;
 import io.github.zwieback.relef.repositories.CatalogRepository;
 import io.github.zwieback.relef.repositories.ProductRepository;
@@ -35,10 +35,10 @@ public class FullParserStrategyFast extends AbstractFullParserStrategy {
                                   CatalogLevelService catalogLevelService,
                                   CatalogParser catalogParser,
                                   ProductRepository productRepository,
-                                  ProductPriceReceiver productPriceReceiver,
+                                  ProductPriceService productPriceService,
                                   ProductPriceMerger productPriceMerger) {
         super(catalogsParser, brandRepository, catalogRepository, catalogLevelService, productRepository,
-                productPriceReceiver, productPriceMerger);
+                productPriceService, productPriceMerger);
         this.catalogParser = catalogParser;
     }
 
