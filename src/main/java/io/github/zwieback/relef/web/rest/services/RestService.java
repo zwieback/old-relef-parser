@@ -2,6 +2,7 @@ package io.github.zwieback.relef.web.rest.services;
 
 import io.github.zwieback.relef.services.SleepService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
@@ -17,6 +18,9 @@ public class RestService {
     private final RestTemplate restTemplate;
     private final SleepService sleepService;
 
+    @Value("${client.userAgent}")
+    private String userAgent;
+
     @Autowired
     public RestService(RestTemplate restTemplate, SleepService sleepService) {
         this.restTemplate = restTemplate;
@@ -25,6 +29,7 @@ public class RestService {
 
     public HttpHeaders buildHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.USER_AGENT, userAgent);
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         return httpHeaders;
