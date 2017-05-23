@@ -35,7 +35,7 @@ public class ProductPriceService {
         Headers queryParams = buildBody(products);
         MultiValueMap<String, String> body = converter.convert(queryParams);
         HttpHeaders httpHeaders = restService.buildHeaders();
-        HttpEntity httpEntity = restService.buildEntity(body, httpHeaders);
+        HttpEntity<?> httpEntity = restService.buildEntity(body, httpHeaders);
         return restService.post(priceUrl, httpEntity, ProductPricesDto.class);
     }
 
