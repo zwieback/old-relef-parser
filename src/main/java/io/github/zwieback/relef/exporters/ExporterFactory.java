@@ -4,6 +4,9 @@ import org.apache.commons.cli.CommandLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static io.github.zwieback.relef.services.CommandLineService.OPTION_EXPORT_BRAND;
 import static io.github.zwieback.relef.services.CommandLineService.OPTION_EXPORT_CATALOG;
 import static io.github.zwieback.relef.services.CommandLineService.OPTION_EXPORT_MANUFACTURER;
@@ -32,22 +35,33 @@ public class ExporterFactory {
         this.tradeMarkExporter = tradeMarkExporter;
     }
 
-    public Exporter determineExporterByCommandLine(CommandLine cmd) {
+    /**
+     * Determine and collect exporters by options specified in the command line.
+     *
+     * @param cmd command line
+     * @return list of exporters specified in the command line
+     * @throws IllegalArgumentException if no exporter found
+     */
+    public List<Exporter> determineExportersByCommandLine(CommandLine cmd) {
+        List<Exporter> exporters = new ArrayList<>();
         if (cmd.hasOption(OPTION_EXPORT_BRAND)) {
-            return brandExporter;
+            exporters.add(brandExporter);
         }
         if (cmd.hasOption(OPTION_EXPORT_CATALOG)) {
-            return catalogExporter;
+            exporters.add(catalogExporter);
         }
         if (cmd.hasOption(OPTION_EXPORT_PRODUCT)) {
-            return productExporter;
+            exporters.add(productExporter);
         }
         if (cmd.hasOption(OPTION_EXPORT_MANUFACTURER)) {
-            return manufacturerExporter;
+            exporters.add(manufacturerExporter);
         }
         if (cmd.hasOption(OPTION_EXPORT_TRADE_MARK)) {
-            return tradeMarkExporter;
+            exporters.add(tradeMarkExporter);
         }
-        throw new IllegalArgumentException("No exporter found");
+        if (exporters.isEmpty()) {
+            throw new IllegalArgumentException("No exporter found");
+        }
+        return exporters;
     }
 }

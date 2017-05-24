@@ -62,8 +62,11 @@ public class Application {
         try {
             FileService fileService = context.getBean(FileService.class);
             ExporterFactory exporterFactory = context.getBean(ExporterFactory.class);
-            Exporter exporter = exporterFactory.determineExporterByCommandLine(cmd);
-            fileService.writeBytes(exporter.toXlsx(), exporter.getXlsxFileName());
+            List<Exporter> exporters = exporterFactory.determineExportersByCommandLine(cmd);
+            exporters.forEach(exporter -> {
+                log.debug("Started " + exporter.getClass().getSimpleName() + " export");
+                fileService.writeBytes(exporter.toXlsx(), exporter.getXlsxFileName());
+            });
             log.info("Export completed successfully");
         } catch (Exception e) {
             log.error("Export completed with error: " + e.getMessage(), e);
