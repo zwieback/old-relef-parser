@@ -37,6 +37,13 @@ public class ProductXlsxConverter extends AbstractXlsxConverter<Product> {
                 header("Партия / упаковка").setColumnWidth(15).
                 header("Вес, кг").setColumnWidth(10).
                 header("Объем, м³").setColumnWidth(10).
+                header("XML ID").setColumnWidth(25).
+                header("Тип продукта").setColumnWidth(10).
+                header("Цена").setColumnWidth(10).
+                header("Мин. заказ").setColumnWidth(10).
+                header("Доступно").setColumnWidth(10).
+                header("Старая цена").setColumnWidth(10).
+                header("Черная пятница").setColumnWidth(10).
                 header("Последнее изменение").setColumnWidth(20);
     }
 
@@ -56,6 +63,13 @@ public class ProductXlsxConverter extends AbstractXlsxConverter<Product> {
                 text(stringService.defaultString(product.getParty())).
                 text(stringService.defaultString(product.getWeight())).
                 text(stringService.defaultString(product.getVolume())).
+                text(stringService.defaultString(product.getXmlId())).
+                text(stringService.defaultString(product.getDataType())).
+                text(stringService.defaultString(product.getPrice())).
+                text(stringService.defaultString(product.getAmount())).
+                text(stringService.defaultString(product.getAvailable())).
+                text(stringService.defaultString(product.getOldPrice())).
+                text(stringService.defaultString(product.getBlackFriday())).
                 text(product.getLastUpdate().toString());
     }
 }
