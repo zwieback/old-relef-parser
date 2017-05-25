@@ -12,6 +12,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
@@ -22,7 +23,6 @@ import java.io.UncheckedIOException;
 public class InternalParser implements InitializingBean {
 
     private static final Logger log = LogManager.getLogger(InternalParser.class);
-    private static final String ACCEPT_ENCODING = "accept-encoding";
     private static final String GZIP_DEFLATE_ENCODING = "gzip, deflate";
 
     private final SleepService sleepService;
@@ -56,7 +56,7 @@ public class InternalParser implements InitializingBean {
         Response response;
         try {
             response = Jsoup.connect(url)
-                    .header(ACCEPT_ENCODING, GZIP_DEFLATE_ENCODING)
+                    .header(HttpHeaders.ACCEPT_ENCODING, GZIP_DEFLATE_ENCODING)
                     .userAgent(userAgent)
 //                    .cookie("auth", "token")
                     // The default maximum is 1048576 bytes (1MB). 0 is treated as an infinite amount
@@ -82,16 +82,15 @@ public class InternalParser implements InitializingBean {
 
     Document get(String url, Headers headers) {
         Response response = parseUrl(url, Method.GET, headers);
-        try {
-            return response.parse();
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            throw new UncheckedIOException(e.getMessage(), e);
-        }
+        return parseResponse(response);
     }
 
     Document post(String url, Headers headers) {
         Response response = parseUrl(url, Method.POST, headers);
+        return parseResponse(response);
+    }
+
+    private static Document parseResponse(Response response) {
         try {
             return response.parse();
         } catch (IOException e) {
@@ -101,7 +100,7 @@ public class InternalParser implements InitializingBean {
     }
 
     @NotNull
-    private HeadersBuilder.Headers buildEmptyParams() {
+    private static HeadersBuilder.Headers buildEmptyParams() {
         return HeadersBuilder.create().build();
     }
 }
