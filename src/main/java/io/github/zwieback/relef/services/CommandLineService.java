@@ -81,22 +81,53 @@ public class CommandLineService {
         return parserGroup;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.commons.cli.CommandLineParser#parse(Options, String[])
+     */
     public CommandLine createCommandLine(Options options, String[] args) throws ParseException {
         CommandLineParser cmdParser = new DefaultParser();
         return cmdParser.parse(options, args);
     }
 
+    /**
+     * Print help to console.
+     *
+     * @param options options to print
+     */
     public void printHelp(Options options) {
         String footer = "\nPlease report issues at https://github.com/zwieback/relef-parser/issues";
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("java -jar relef-parser-{version}.jar [command] <command options>", null, options, footer);
     }
 
-    public boolean hasCommandLineParserOption(CommandLine cmd) {
+    /**
+     * Does the command line contains any of the parser options?
+     *
+     * @param cmd command line
+     * @return {@code true} if {@code cmd} contains any of the parser options, {@code false} otherwise
+     */
+    public boolean doesCommandLineContainsAnyParserOptions(CommandLine cmd) {
         return OPTIONS_PARSER.stream().anyMatch(cmd::hasOption);
     }
 
-    public boolean hasCommandLineExportOption(CommandLine cmd) {
+    /**
+     * Does the command line contains any of the export options?
+     *
+     * @param cmd command line
+     * @return {@code true} if {@code cmd} contains any of the export options, {@code false} otherwise
+     */
+    public boolean doesCommandLineContainsAnyExportOptions(CommandLine cmd) {
         return OPTIONS_EXPORT.stream().anyMatch(cmd::hasOption);
+    }
+
+    /**
+     * Does the command line contains a help option?
+     *
+     * @param cmd command line
+     * @return {@code true} if {@code cmd} have no options or contains a help option, {@code false} otherwise
+     */
+    public boolean doesCommandLineContainsHelpOption(CommandLine cmd) {
+        return cmd.getOptions().length == 0 || cmd.hasOption(OPTION_HELP);
     }
 }

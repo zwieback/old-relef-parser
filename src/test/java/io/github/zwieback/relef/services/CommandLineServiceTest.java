@@ -60,30 +60,51 @@ public class CommandLineServiceTest {
     }
 
     @Test
-    public void test_hasCommandLineParserOption_should_return_false() throws ParseException {
+    public void test_doesCommandLineContainsAnyParserOptions_should_return_false() throws ParseException {
         Options options = cmdService.createOptions();
         CommandLine cmd = cmdService.createCommandLine(options, new String[]{});
-        assertFalse(cmdService.hasCommandLineParserOption(cmd));
+        assertFalse(cmdService.doesCommandLineContainsAnyParserOptions(cmd));
     }
 
     @Test
-    public void test_hasCommandLineParserOption_should_return_true() throws ParseException {
+    public void test_doesCommandLineContainsAnyParserOptions_should_return_true() throws ParseException {
         Options options = cmdService.createOptions();
         CommandLine cmd = cmdService.createCommandLine(options, new String[]{"-" + OPTION_PARSER_PRODUCT, "0"});
-        assertTrue(cmdService.hasCommandLineParserOption(cmd));
+        assertTrue(cmdService.doesCommandLineContainsAnyParserOptions(cmd));
     }
 
     @Test
-    public void test_hasCommandLineExportOption_should_return_false() throws ParseException {
+    public void test_doesCommandLineContainsAnyExportOptions_should_return_false() throws ParseException {
         Options options = cmdService.createOptions();
         CommandLine cmd = cmdService.createCommandLine(options, new String[]{});
-        assertFalse(cmdService.hasCommandLineExportOption(cmd));
+        assertFalse(cmdService.doesCommandLineContainsAnyExportOptions(cmd));
     }
 
     @Test
-    public void test_hasCommandLineExportOption_should_return_true() throws ParseException {
+    public void test_doesCommandLineContainsAnyExportOptions_should_return_true() throws ParseException {
         Options options = cmdService.createOptions();
         CommandLine cmd = cmdService.createCommandLine(options, new String[]{"-" + OPTION_EXPORT_PRODUCT});
-        assertTrue(cmdService.hasCommandLineExportOption(cmd));
+        assertTrue(cmdService.doesCommandLineContainsAnyExportOptions(cmd));
+    }
+
+    @Test
+    public void test_doesCommandLineContainsHelpOption_should_return_true() throws ParseException {
+        Options options = cmdService.createOptions();
+        CommandLine cmd = cmdService.createCommandLine(options, new String[]{});
+        assertTrue(cmdService.doesCommandLineContainsHelpOption(cmd));
+    }
+
+    @Test
+    public void test_doesCommandLineContainsHelpOption_should_return_true_too() throws ParseException {
+        Options options = cmdService.createOptions();
+        CommandLine cmd = cmdService.createCommandLine(options, new String[]{"-" + OPTION_HELP});
+        assertTrue(cmdService.doesCommandLineContainsHelpOption(cmd));
+    }
+
+    @Test
+    public void test_doesCommandLineContainsHelpOption_should_return_false() throws ParseException {
+        Options options = cmdService.createOptions();
+        CommandLine cmd = cmdService.createCommandLine(options, new String[]{"-" + OPTION_EXPORT_PRODUCT});
+        assertFalse(cmdService.doesCommandLineContainsHelpOption(cmd));
     }
 }
