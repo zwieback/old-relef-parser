@@ -13,9 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static io.github.zwieback.relef.services.CommandLineService.OPTION_EXPORT_PRODUCT;
-import static io.github.zwieback.relef.services.CommandLineService.OPTION_HELP;
-import static io.github.zwieback.relef.services.CommandLineService.OPTION_PARSER_PRODUCT;
+import static io.github.zwieback.relef.services.CommandLineService.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -36,9 +34,29 @@ public class CommandLineServiceTest {
     }
 
     @Test
+    public void test_createOptions_should_contains_parser_option() {
+        Options options = cmdService.createOptions();
+        assertTrue(options.hasOption(OPTION_PARSER_PRODUCT));
+    }
+
+    @Test
+    public void test_createOptions_should_contains_export_option() {
+        Options options = cmdService.createOptions();
+        assertTrue(options.hasOption(OPTION_EXPORT_PRODUCT));
+    }
+
+    @Test
     public void test_createCommandLine_should_contains_help_argument() throws ParseException {
         Options options = cmdService.createOptions();
         CommandLine cmd = cmdService.createCommandLine(options, new String[]{OPTION_HELP});
+        assertTrue(cmd.getArgList().contains(OPTION_HELP));
+    }
+
+    @Test
+    public void test_createCommandLine_should_contains_parsers_and_exports_and_help_arguments() throws ParseException {
+        Options options = cmdService.createOptions();
+        CommandLine cmd = cmdService.createCommandLine(options, new String[]{OPTION_HELP, OPTION_PARSER_PRODUCT,
+                OPTION_PARSER_CATALOG, OPTION_EXPORT_PRODUCT, OPTION_EXPORT_CATALOG});
         assertTrue(cmd.getArgList().contains(OPTION_HELP));
     }
 
