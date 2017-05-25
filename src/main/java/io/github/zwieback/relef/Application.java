@@ -28,11 +28,13 @@ public class Application {
         CommandLineService cmdService = context.getBean(CommandLineService.class);
         Options options = cmdService.createOptions();
         CommandLine cmd = cmdService.createCommandLine(options, args);
-        if (cmdService.hasCommandLineParserOption(cmd)) {
+        if (cmdService.doesCommandLineContainsAnyParserOptions(cmd)) {
             parse(context, cmd);
-        } else if (cmdService.hasCommandLineExportOption(cmd)) {
+        }
+        if (cmdService.doesCommandLineContainsAnyExportOptions(cmd)) {
             export(context, cmd);
-        } else {
+        }
+        if (cmdService.doesCommandLineContainsHelpOption(cmd)) {
             cmdService.printHelp(options);
         }
         context.close();

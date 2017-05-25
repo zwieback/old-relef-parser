@@ -3,6 +3,7 @@ package io.github.zwieback.relef.services;
 import org.apache.commons.cli.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,77 +27,108 @@ public class CommandLineService {
 
     public Options createOptions() {
         Options options = new Options();
-        options.addOptionGroup(buildParserOptionGroup());
-        options.addOptionGroup(buildExportOptionGroup());
+        buildParserOptions().forEach(options::addOption);
+        buildExportOptions().forEach(options::addOption);
         options.addOption(OPTION_HELP, "help", false, "print this message");
         return options;
     }
 
-    private OptionGroup buildParserOptionGroup() {
-        OptionGroup parserGroup = new OptionGroup();
-        parserGroup.addOption(Option.builder(OPTION_PARSER_FULL)
+    private List<Option> buildParserOptions() {
+        List<Option> parserOptions = new ArrayList<>();
+        parserOptions.add(Option.builder(OPTION_PARSER_FULL)
                 .longOpt("parser-full")
                 .desc("parse all products on site")
                 .hasArg()
                 .argName("0 - fast parsing (no description and not all properties, default)\n" +
                         "1 - slow parsing (every field of product)")
                 .build());
-        parserGroup.addOption(Option.builder(OPTION_PARSER_CATALOG)
+        parserOptions.add(Option.builder(OPTION_PARSER_CATALOG)
                 .longOpt("parser-catalog")
                 .desc("parse only this catalog ids")
                 .hasArg()
                 .argName("id1,id2,...,idN")
                 .build());
-        parserGroup.addOption(Option.builder(OPTION_PARSER_PRODUCT)
+        parserOptions.add(Option.builder(OPTION_PARSER_PRODUCT)
                 .longOpt("parser-product")
                 .desc("parse only this product ids")
                 .hasArg()
                 .argName("id1,id2,...,idN")
                 .build());
-        return parserGroup;
+        return parserOptions;
     }
 
-    private OptionGroup buildExportOptionGroup() {
-        OptionGroup parserGroup = new OptionGroup();
-        parserGroup.addOption(Option.builder(OPTION_EXPORT_BRAND)
+    private List<Option> buildExportOptions() {
+        List<Option> exportOptions = new ArrayList<>();
+        exportOptions.add(Option.builder(OPTION_EXPORT_BRAND)
                 .longOpt("export-brand")
                 .desc("export all brands")
                 .build());
-        parserGroup.addOption(Option.builder(OPTION_EXPORT_CATALOG)
+        exportOptions.add(Option.builder(OPTION_EXPORT_CATALOG)
                 .longOpt("export-catalog")
                 .desc("export all catalogs")
                 .build());
-        parserGroup.addOption(Option.builder(OPTION_EXPORT_PRODUCT)
+        exportOptions.add(Option.builder(OPTION_EXPORT_PRODUCT)
                 .longOpt("export-product")
                 .desc("export all products")
                 .build());
-        parserGroup.addOption(Option.builder(OPTION_EXPORT_MANUFACTURER)
+        exportOptions.add(Option.builder(OPTION_EXPORT_MANUFACTURER)
                 .longOpt("export-manufacturer")
                 .desc("export all manufacturers")
                 .build());
-        parserGroup.addOption(Option.builder(OPTION_EXPORT_TRADE_MARK)
+        exportOptions.add(Option.builder(OPTION_EXPORT_TRADE_MARK)
                 .longOpt("export-trade-mark")
                 .desc("export all trade marks")
                 .build());
-        return parserGroup;
+        return exportOptions;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.commons.cli.CommandLineParser#parse(Options, String[])
+     */
     public CommandLine createCommandLine(Options options, String[] args) throws ParseException {
         CommandLineParser cmdParser = new DefaultParser();
         return cmdParser.parse(options, args);
     }
 
+    /**
+     * Print help to console.
+     *
+     * @param options options to print
+     */
     public void printHelp(Options options) {
         String footer = "\nPlease report issues at https://github.com/zwieback/relef-parser/issues";
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("java -jar relef-parser-{version}.jar [command] <command options>", null, options, footer);
     }
 
-    public boolean hasCommandLineParserOption(CommandLine cmd) {
+    /**
+     * Does the command line contains any of the parser options?
+     *
+     * @param cmd command line
+     * @return {@code true} if {@code cmd} contains any of the parser options, {@code false} otherwise
+     */
+    public boolean doesCommandLineContainsAnyParserOptions(CommandLine cmd) {
         return OPTIONS_PARSER.stream().anyMatch(cmd::hasOption);
     }
 
-    public boolean hasCommandLineExportOption(CommandLine cmd) {
+    /**
+     * Does the command line contains any of the export options?
+     *
+     * @param cmd command line
+     * @return {@code true} if {@code cmd} contains any of the export options, {@code false} otherwise
+     */
+    public boolean doesCommandLineContainsAnyExportOptions(CommandLine cmd) {
         return OPTIONS_EXPORT.stream().anyMatch(cmd::hasOption);
+    }
+
+    /**
+     * Does the command line contains a help option?
+     *
+     * @param cmd command line
+     * @return {@code true} if {@code cmd} have no options or contains a help option, {@code false} otherwise
+     */
+    public boolean doesCommandLineContainsHelpOption(CommandLine cmd) {
+        return cmd.getOptions().length == 0 || cmd.hasOption(OPTION_HELP);
     }
 }
