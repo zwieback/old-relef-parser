@@ -37,8 +37,9 @@ public class TradeMark extends BaseEntity {
         return name;
     }
 
-    public void setName(@NotNull String name) {
+    public TradeMark setName(@NotNull String name) {
         this.name = name;
+        return this;
     }
 
     @NotNull
@@ -46,16 +47,18 @@ public class TradeMark extends BaseEntity {
         return url;
     }
 
-    public void setUrl(@NotNull String url) {
+    public TradeMark setUrl(@NotNull String url) {
         this.url = url;
+        return this;
     }
 
     public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public TradeMark setProducts(List<Product> products) {
         this.products = products;
+        return this;
     }
 
     @Override
