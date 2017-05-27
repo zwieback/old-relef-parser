@@ -11,6 +11,7 @@ import java.util.List;
 
 import static io.github.zwieback.relef.parser.strategies.ParserStrategy.CATALOG_STRATEGY;
 import static io.github.zwieback.relef.parser.strategies.ParserStrategy.FULL_STRATEGY_FAST;
+import static io.github.zwieback.relef.parser.strategies.ParserStrategy.FULL_STRATEGY_HYBRID;
 import static io.github.zwieback.relef.parser.strategies.ParserStrategy.FULL_STRATEGY_SLOW;
 import static io.github.zwieback.relef.parser.strategies.ParserStrategy.PRODUCT_STRATEGY;
 import static io.github.zwieback.relef.services.CommandLineService.OPTION_PARSER_CATALOG;
@@ -22,6 +23,7 @@ public class ParserStrategyFactory {
 
     private final ParserStrategy fullStrategyFast;
     private final ParserStrategy fullStrategySlow;
+    private final ParserStrategy fullStrategyHybrid;
     private final ParserStrategy catalogStrategy;
     private final ParserStrategy productStrategy;
 
@@ -32,10 +34,12 @@ public class ParserStrategyFactory {
     @Autowired
     public ParserStrategyFactory(@Qualifier(FULL_STRATEGY_FAST) ParserStrategy fullStrategyFast,
                                  @Qualifier(FULL_STRATEGY_SLOW) ParserStrategy fullStrategySlow,
+                                 @Qualifier(FULL_STRATEGY_HYBRID) ParserStrategy fullStrategyHybrid,
                                  @Qualifier(CATALOG_STRATEGY) ParserStrategy catalogStrategy,
                                  @Qualifier(PRODUCT_STRATEGY) ParserStrategy productStrategy) {
         this.fullStrategyFast = fullStrategyFast;
         this.fullStrategySlow = fullStrategySlow;
+        this.fullStrategyHybrid = fullStrategyHybrid;
         this.catalogStrategy = catalogStrategy;
         this.productStrategy = productStrategy;
     }
@@ -51,6 +55,9 @@ public class ParserStrategyFactory {
             switch (cmd.getOptionValue(OPTION_PARSER_FULL)) {
                 case "1":
                     fullParserStrategyType = FullParserStrategyType.SLOW;
+                    break;
+                case "2":
+                    fullParserStrategyType = FullParserStrategyType.HYBRID;
                     break;
                 default:
                     fullParserStrategyType = FullParserStrategyType.FAST;
@@ -77,6 +84,9 @@ public class ParserStrategyFactory {
                 break;
             case FAST:
                 strategies.add(fullStrategyFast);
+                break;
+            case HYBRID:
+                strategies.add(fullStrategyHybrid);
                 break;
         }
         return strategies;

@@ -21,6 +21,7 @@ public abstract class ParserStrategy {
 
     static final String FULL_STRATEGY_FAST = "fullStrategyFast";
     static final String FULL_STRATEGY_SLOW = "fullStrategySlow";
+    static final String FULL_STRATEGY_HYBRID = "fullStrategyHybrid";
     static final String CATALOG_STRATEGY = "catalogStrategy";
     static final String PRODUCT_STRATEGY = "productStrategy";
 
@@ -78,11 +79,11 @@ public abstract class ParserStrategy {
         productPriceMerger.mergePrices(products, productPricesDto);
     }
 
-    private Set<Long> collectProductIds(List<Product> parsedProducts) {
-        return parsedProducts.stream().map(Product::getId).collect(Collectors.toSet());
+    Set<Long> collectProductIds(List<Product> products) {
+        return products.stream().map(Product::getId).collect(Collectors.toSet());
     }
 
-    private List<Product> findExistedProducts(Set<Long> productIds) {
+    List<Product> findExistedProducts(Set<Long> productIds) {
         return productRepository.findAll(productIds);
     }
 

@@ -40,7 +40,8 @@ public class CommandLineService {
                 .desc("parse all products on site")
                 .hasArg()
                 .argName("0 - fast parsing (no description and not all properties, default)\n" +
-                        "1 - slow parsing (every field of product)")
+                        "1 - slow parsing (every field of product)\n" +
+                        "2 - hybrid parsing (fast plus slow if product does not exists or has no description)")
                 .build());
         parserOptions.add(Option.builder(OPTION_PARSER_CATALOG)
                 .longOpt("parser-catalog")
