@@ -2,14 +2,16 @@ package io.github.zwieback.relef.parser.strategies;
 
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.entities.dto.product.prices.ProductPricesDto;
-import io.github.zwieback.relef.web.services.ProductPriceService;
 import io.github.zwieback.relef.repositories.ProductRepository;
+import io.github.zwieback.relef.services.mergers.ProductMerger;
 import io.github.zwieback.relef.services.mergers.ProductPriceMerger;
+import io.github.zwieback.relef.web.services.ProductPriceService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class ParserStrategy {
@@ -25,13 +27,16 @@ public abstract class ParserStrategy {
     private final ProductRepository productRepository;
     private final ProductPriceService productPriceService;
     private final ProductPriceMerger productPriceMerger;
+    private final ProductMerger productMerger;
 
     ParserStrategy(ProductRepository productRepository,
                    ProductPriceService productPriceService,
-                   ProductPriceMerger productPriceMerger) {
+                   ProductPriceMerger productPriceMerger,
+                   ProductMerger productMerger) {
         this.productRepository = productRepository;
         this.productPriceService = productPriceService;
         this.productPriceMerger = productPriceMerger;
+        this.productMerger = productMerger;
     }
 
     /**
@@ -49,13 +54,43 @@ public abstract class ParserStrategy {
 
     public abstract void parse();
 
-    void getAndMergeProductPrices(List<Product> products) {
+    /**
+     * Process parsed products:
+     * <ol>
+     * <li>get product prices and apply it to products</li>
+     * <li>merge existed and parsed products</li>
+     * <li>save merged products to database</li>
+     * </ol>
+     *
+     * @param parsedProducts parsed products
+     */
+    void processParsedProducts(List<Product> parsedProducts) {
+        getAndMergeProductPrices(parsedProducts);
+        Set<Long> productIds = collectProductIds(parsedProducts);
+        List<Product> existedProducts = findExistedProducts(productIds);
+        List<Product> mergedProducts = mergeProducts(existedProducts, parsedProducts);
+        saveProducts(mergedProducts);
+    }
+
+    private void getAndMergeProductPrices(List<Product> products) {
         ProductPricesDto productPricesDto = productPriceService.getPrices(products);
         log.info(String.format("Found %d prices for products", productPricesDto.getProductMap().size()));
         productPriceMerger.mergePrices(products, productPricesDto);
     }
 
-    void saveProducts(List<Product> products) {
+    private Set<Long> collectProductIds(List<Product> parsedProducts) {
+        return parsedProducts.stream().map(Product::getId).collect(Collectors.toSet());
+    }
+
+    private List<Product> findExistedProducts(Set<Long> productIds) {
+        return productRepository.findAll(productIds);
+    }
+
+    private List<Product> mergeProducts(List<Product> existedProducts, List<Product> parsedProducts) {
+        return productMerger.merge(existedProducts, parsedProducts);
+    }
+
+    private void saveProducts(List<Product> products) {
         productRepository.save(products);
         productRepository.flush();
     }

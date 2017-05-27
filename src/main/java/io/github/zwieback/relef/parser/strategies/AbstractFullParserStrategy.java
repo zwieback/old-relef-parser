@@ -5,6 +5,7 @@ import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.CatalogLevel;
 import io.github.zwieback.relef.parser.strategies.exceptions.ExceededErrorsCountException;
 import io.github.zwieback.relef.parsers.CatalogsParser;
+import io.github.zwieback.relef.services.mergers.ProductMerger;
 import io.github.zwieback.relef.web.services.ProductPriceService;
 import io.github.zwieback.relef.repositories.BrandRepository;
 import io.github.zwieback.relef.repositories.CatalogRepository;
@@ -45,8 +46,9 @@ public abstract class AbstractFullParserStrategy extends ParserStrategy {
                                CatalogLevelService catalogLevelService,
                                ProductRepository productRepository,
                                ProductPriceService productPriceService,
-                               ProductPriceMerger productPriceMerger) {
-        super(productRepository, productPriceService, productPriceMerger);
+                               ProductPriceMerger productPriceMerger,
+                               ProductMerger productMerger) {
+        super(productRepository, productPriceService, productPriceMerger, productMerger);
         this.catalogsParser = catalogsParser;
         this.brandRepository = brandRepository;
         this.catalogRepository = catalogRepository;

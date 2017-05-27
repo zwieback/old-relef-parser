@@ -2,6 +2,7 @@ package io.github.zwieback.relef.parser.strategies;
 
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.parsers.ProductParser;
+import io.github.zwieback.relef.services.mergers.ProductMerger;
 import io.github.zwieback.relef.web.services.ProductPriceService;
 import io.github.zwieback.relef.repositories.ProductRepository;
 import io.github.zwieback.relef.services.mergers.ProductPriceMerger;
@@ -32,8 +33,9 @@ public class ProductParserStrategy extends ParserStrategy {
     public ProductParserStrategy(ProductParser parser,
                                  ProductRepository repository,
                                  ProductPriceService priceService,
-                                 ProductPriceMerger priceMerger) {
-        super(repository, priceService, priceMerger);
+                                 ProductPriceMerger priceMerger,
+                                 ProductMerger productMerger) {
+        super(repository, priceService, priceMerger, productMerger);
         this.parser = parser;
         this.repository = repository;
     }
@@ -52,8 +54,7 @@ public class ProductParserStrategy extends ParserStrategy {
         }
         List<Product> existedProducts = repository.findAll(existedIds);
         List<Product> parsedProducts = existedProducts.stream().map(this::parseProduct).collect(Collectors.toList());
-        getAndMergeProductPrices(parsedProducts);
-        saveProducts(parsedProducts);
+        processParsedProducts(parsedProducts);
     }
 
     @NotNull

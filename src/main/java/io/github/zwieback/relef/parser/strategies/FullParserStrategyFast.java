@@ -4,6 +4,7 @@ import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.parsers.CatalogParser;
 import io.github.zwieback.relef.parsers.CatalogsParser;
+import io.github.zwieback.relef.services.mergers.ProductMerger;
 import io.github.zwieback.relef.web.services.ProductPriceService;
 import io.github.zwieback.relef.repositories.BrandRepository;
 import io.github.zwieback.relef.repositories.CatalogRepository;
@@ -36,9 +37,10 @@ public class FullParserStrategyFast extends AbstractFullParserStrategy {
                                   CatalogParser catalogParser,
                                   ProductRepository productRepository,
                                   ProductPriceService productPriceService,
-                                  ProductPriceMerger productPriceMerger) {
+                                  ProductPriceMerger productPriceMerger,
+                                  ProductMerger productMerger) {
         super(catalogsParser, brandRepository, catalogRepository, catalogLevelService, productRepository,
-                productPriceService, productPriceMerger);
+                productPriceService, productPriceMerger, productMerger);
         this.catalogParser = catalogParser;
     }
 
@@ -51,7 +53,6 @@ public class FullParserStrategyFast extends AbstractFullParserStrategy {
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
         log.info(String.format("Found %d products in catalog %d", products.size(), catalog.getId()));
-        getAndMergeProductPrices(products);
-        saveProducts(products);
+        processParsedProducts(products);
     }
 }

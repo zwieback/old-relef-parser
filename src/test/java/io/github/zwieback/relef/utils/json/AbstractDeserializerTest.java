@@ -26,7 +26,7 @@ public abstract class AbstractDeserializerTest {
     @Autowired
     private ObjectMapper mapper;
 
-    <T> T readValue(String fileName, Class<T> clazz) throws IOException {
+    protected <T> T readValue(String fileName, Class<T> clazz) throws IOException {
         Resource resource = resourceLoader.getResource(fileName);
         try (InputStream inputStream = resource.getInputStream()) {
             return mapper.readValue(inputStream, clazz);
