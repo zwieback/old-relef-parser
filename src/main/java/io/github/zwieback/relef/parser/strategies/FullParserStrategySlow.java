@@ -7,6 +7,7 @@ import io.github.zwieback.relef.repositories.BrandRepository;
 import io.github.zwieback.relef.repositories.CatalogRepository;
 import io.github.zwieback.relef.repositories.ProductRepository;
 import io.github.zwieback.relef.services.CatalogLevelService;
+import io.github.zwieback.relef.services.mergers.ProductMerger;
 import io.github.zwieback.relef.services.mergers.ProductPriceMerger;
 import io.github.zwieback.relef.web.services.ProductPriceService;
 import org.apache.log4j.LogManager;
@@ -41,9 +42,10 @@ public class FullParserStrategySlow extends AbstractFullParserStrategy {
                                   UrlParser urlParser,
                                   ProductRepository productRepository,
                                   ProductPriceService productPriceService,
-                                  ProductPriceMerger productPriceMerger) {
+                                  ProductPriceMerger productPriceMerger,
+                                  ProductMerger productMerger) {
         super(catalogsParser, brandRepository, catalogRepository, catalogLevelService, productRepository,
-                productPriceService, productPriceMerger);
+                productPriceService, productPriceMerger, productMerger);
         this.catalogParser = catalogParser;
         this.productParser = productParser;
         this.urlParser = urlParser;

@@ -3,6 +3,7 @@ package io.github.zwieback.relef.parser.strategies;
 import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.parsers.CatalogParser;
+import io.github.zwieback.relef.services.mergers.ProductMerger;
 import io.github.zwieback.relef.web.services.ProductPriceService;
 import io.github.zwieback.relef.repositories.CatalogRepository;
 import io.github.zwieback.relef.repositories.ProductRepository;
@@ -34,8 +35,9 @@ public class CatalogParserStrategy extends ParserStrategy {
                                  CatalogRepository catalogRepository,
                                  ProductRepository productRepository,
                                  ProductPriceService productPriceService,
-                                 ProductPriceMerger productPriceMerger) {
-        super(productRepository, productPriceService, productPriceMerger);
+                                 ProductPriceMerger productPriceMerger,
+                                 ProductMerger productMerger) {
+        super(productRepository, productPriceService, productPriceMerger, productMerger);
         this.parser = parser;
         this.catalogRepository = catalogRepository;
     }
