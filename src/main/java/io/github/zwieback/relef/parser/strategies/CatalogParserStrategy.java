@@ -64,7 +64,6 @@ public class CatalogParserStrategy extends ParserStrategy {
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
         log.info(String.format("Found %d products in catalog %d", parsedProducts.size(), existedCatalog.getId()));
-        getAndMergeProductPrices(parsedProducts);
-        saveProducts(parsedProducts);
+        processParsedProducts(parsedProducts);
     }
 }

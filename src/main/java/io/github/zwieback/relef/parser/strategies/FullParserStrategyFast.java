@@ -51,7 +51,6 @@ public class FullParserStrategyFast extends AbstractFullParserStrategy {
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
         log.info(String.format("Found %d products in catalog %d", products.size(), catalog.getId()));
-        getAndMergeProductPrices(products);
-        saveProducts(products);
+        processParsedProducts(products);
     }
 }

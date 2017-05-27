@@ -71,8 +71,7 @@ public class FullParserStrategySlow extends AbstractFullParserStrategy {
                 })
                 .collect(Collectors.toList());
 
-        getAndMergeProductPrices(products);
-        saveProducts(products);
+        processParsedProducts(products);
     }
 
     @NotNull

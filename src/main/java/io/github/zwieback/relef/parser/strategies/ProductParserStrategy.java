@@ -52,8 +52,7 @@ public class ProductParserStrategy extends ParserStrategy {
         }
         List<Product> existedProducts = repository.findAll(existedIds);
         List<Product> parsedProducts = existedProducts.stream().map(this::parseProduct).collect(Collectors.toList());
-        getAndMergeProductPrices(parsedProducts);
-        saveProducts(parsedProducts);
+        processParsedProducts(parsedProducts);
     }
 
     @NotNull

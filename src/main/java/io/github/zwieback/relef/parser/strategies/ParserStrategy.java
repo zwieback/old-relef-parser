@@ -2,9 +2,9 @@ package io.github.zwieback.relef.parser.strategies;
 
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.entities.dto.product.prices.ProductPricesDto;
-import io.github.zwieback.relef.web.services.ProductPriceService;
 import io.github.zwieback.relef.repositories.ProductRepository;
 import io.github.zwieback.relef.services.mergers.ProductPriceMerger;
+import io.github.zwieback.relef.web.services.ProductPriceService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -49,13 +49,27 @@ public abstract class ParserStrategy {
 
     public abstract void parse();
 
-    void getAndMergeProductPrices(List<Product> products) {
+    /**
+     * Process parsed products:
+     * <ol>
+     * <li>get product prices and apply it to products</li>
+     * <li>save products to database</li>
+     * </ol>
+     *
+     * @param products parsed products
+     */
+    void processParsedProducts(List<Product> products) {
+        getAndMergeProductPrices(products);
+        saveProducts(products);
+    }
+
+    private void getAndMergeProductPrices(List<Product> products) {
         ProductPricesDto productPricesDto = productPriceService.getPrices(products);
         log.info(String.format("Found %d prices for products", productPricesDto.getProductMap().size()));
         productPriceMerger.mergePrices(products, productPricesDto);
     }
 
-    void saveProducts(List<Product> products) {
+    private void saveProducts(List<Product> products) {
         productRepository.save(products);
         productRepository.flush();
     }
