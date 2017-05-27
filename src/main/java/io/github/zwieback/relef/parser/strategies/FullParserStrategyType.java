@@ -15,5 +15,12 @@ public enum FullParserStrategyType {
     /**
      * parse each product from its own page
      */
-    SLOW
+    SLOW,
+
+    /**
+     * parse products from catalog pages and
+     * if product has no description then
+     * parse product from its own page
+     */
+    HYBRID
 }
