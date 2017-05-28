@@ -32,7 +32,7 @@ public class FileService {
     public void writeBytes(byte[] bytes, String fileName) {
         try {
             Path parentDir = Paths.get(fileName).getParent();
-            if (!Files.exists(parentDir)) {
+            if (parentDir != null && !Files.exists(parentDir)) {
                 Files.createDirectories(parentDir);
             }
             Files.write(Paths.get(fileName), bytes);
