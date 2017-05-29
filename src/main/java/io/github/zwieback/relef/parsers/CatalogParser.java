@@ -206,21 +206,33 @@ public class CatalogParser {
     private String parseUrl(Element productNode) {
         String cssQuery = "div.rc-catalog__description > p.rc-catalog__name > a.rc-catalog__prod";
         Element url = productNode.select(cssQuery).first();
-        return url == null ? null : urlBuilder.buildPathUrl(url.attr("href"));
+        if (url == null) {
+            return null;
+        }
+        String urlValue = url.attr("href");
+        return urlValue == null ? null : urlBuilder.buildPathUrl(urlValue);
     }
 
     @Nullable
     private String parsePhotoUrl(Element productNode) {
         String cssQuery = "div.rc-catalog__description > a.rc-catalog__photo";
         Element photoUrl = productNode.select(cssQuery).first();
-        return photoUrl == null ? null : urlBuilder.buildQueryUrl(photoUrl.attr("href"));
+        if (photoUrl == null) {
+            return null;
+        }
+        String photoUrlValue = photoUrl.attr("href");
+        return photoUrlValue == null ? null : urlBuilder.buildQueryUrl(photoUrlValue);
     }
 
     @Nullable
     private String parsePhotoCachedUrl(Element productNode) {
         String cssQuery = "div.rc-catalog__description > a.rc-catalog__photo > img.rc-catalog__img";
         Element photoCachedUrl = productNode.select(cssQuery).first();
-        return photoCachedUrl == null ? null : urlBuilder.buildQueryUrl(photoCachedUrl.attr("data-src"));
+        if (photoCachedUrl == null) {
+            return null;
+        }
+        String photoCachedUrlValue = photoCachedUrl.attr("data-src");
+        return photoCachedUrlValue == null ? null : urlBuilder.buildQueryUrl(photoCachedUrlValue);
     }
 
     @Nullable
