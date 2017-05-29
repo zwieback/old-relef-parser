@@ -1,4 +1,4 @@
-package io.github.zwieback.relef.parser.strategies.exceptions;
+package io.github.zwieback.relef.exceptions;
 
 public class ExceededErrorsCountException extends RuntimeException {
 
