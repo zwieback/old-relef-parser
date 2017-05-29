@@ -4,8 +4,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
+
 @Service
 public class StringService {
+
+    private static final Pattern SPECIAL_CHARS = Pattern.compile("\\W");
+    private static final String UNDERSCORE = "_";
 
     /**
      * Clean string from redundant symbols.
@@ -21,6 +26,16 @@ public class StringService {
     @NotNull
     public String clean(String toClean) {
         return toClean.replace("\u00A0", "").trim();
+    }
+
+    /**
+     * Replace all special characters by underscore character.
+     *
+     * @param source source string
+     * @return string with replaced characters
+     */
+    public String replaceSpecialCharsByUnderscore(String source) {
+        return SPECIAL_CHARS.matcher(source).replaceAll(UNDERSCORE);
     }
 
     /**
