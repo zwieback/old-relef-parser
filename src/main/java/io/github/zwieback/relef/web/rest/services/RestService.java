@@ -28,15 +28,24 @@ public class RestService {
     }
 
     public HttpHeaders buildHeaders() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(HttpHeaders.USER_AGENT, userAgent);
+        HttpHeaders httpHeaders = buildEmptyHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         return httpHeaders;
     }
 
+    public HttpHeaders buildEmptyHeaders() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.USER_AGENT, userAgent);
+        return httpHeaders;
+    }
+
     public <T> HttpEntity<T> buildEntity(T body, HttpHeaders httpHeaders) {
         return new HttpEntity<>(body, httpHeaders);
+    }
+
+    public <T> T get(String url, HttpEntity<?> entity, Class<T> responseType) {
+        return exchange(url, HttpMethod.GET, entity, responseType, new HashMap<>());
     }
 
     public <T> T post(String url, HttpEntity<?> entity, Class<T> responseType) {
