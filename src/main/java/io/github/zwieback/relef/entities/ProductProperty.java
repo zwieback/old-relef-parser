@@ -11,12 +11,30 @@ import java.io.Serializable;
 @Table(name = "T_PRODUCT_PROPERTY")
 public class ProductProperty extends BaseEntity {
 
+    private static final long serialVersionUID = -1631635019093322789L;
+
     public static class Pk implements Serializable {
 
         private static final long serialVersionUID = -5815488450521721603L;
 
-        Long productId;
-        Property property;
+        private Long productId;
+        private Property property;
+
+        public Long getProductId() {
+            return productId;
+        }
+
+        public void setProductId(Long productId) {
+            this.productId = productId;
+        }
+
+        public Property getProperty() {
+            return property;
+        }
+
+        public void setProperty(Property property) {
+            this.property = property;
+        }
 
         @Override
         public boolean equals(Object o) {

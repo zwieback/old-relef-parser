@@ -10,6 +10,8 @@ import java.util.List;
 @Table(name = "T_TRADE_MARK")
 public class TradeMark extends BaseEntity {
 
+    private static final long serialVersionUID = 8861559741783219433L;
+
     @Id
     @NotNull
     private String name;

@@ -5,10 +5,13 @@ import org.jetbrains.annotations.NotNull;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "T_PROPERTY")
 public class Property extends BaseEntity {
+
+    private static final long serialVersionUID = 6908666417340046198L;
 
     @Id
     @NotNull
