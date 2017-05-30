@@ -21,6 +21,7 @@ public class ProductXlsxConverter extends AbstractXlsxConverter<Product> {
         return "products";
     }
 
+    @Override
     void buildHeader(RowContext rowCtx) {
         rowCtx.
                 header("ID").setColumnWidth(10).
@@ -47,6 +48,7 @@ public class ProductXlsxConverter extends AbstractXlsxConverter<Product> {
                 header("Последнее изменение").setColumnWidth(20);
     }
 
+    @Override
     void writeRow(Product product, RowContext rowCtx) {
         rowCtx.
                 number(product.getId()).

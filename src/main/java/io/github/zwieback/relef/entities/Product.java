@@ -15,6 +15,7 @@ import static io.github.zwieback.relef.utils.StringFormatter.formatDouble;
 @Table(name = "T_PRODUCT")
 public class Product extends BaseEntity {
 
+    private static final long serialVersionUID = 1008672614485818576L;
     private static final int MAX_LENGTH_OF_DESCRIPTION = 4000;
 
     @Id

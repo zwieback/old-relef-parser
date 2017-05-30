@@ -12,9 +12,12 @@ import org.supercsv.prefs.CsvPreference;
 import org.supercsv.quote.AlwaysQuoteMode;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.io.Writer;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -22,6 +25,8 @@ import java.util.Map;
 public class NameExporter {
 
     private static final Logger log = LogManager.getLogger(NameExporter.class);
+
+    private final Charset defaultCharset;
 
     @Value("${download.path}")
     private String downloadPath;
@@ -32,8 +37,12 @@ public class NameExporter {
     @Value("${download.csv.delimiter}")
     private Character downloadCsvDelimiter;
 
+    public NameExporter(Charset defaultCharset) {
+        this.defaultCharset = defaultCharset;
+    }
+
     public void export(Map<String, String> names) {
-        try (ICsvListWriter writer = new CsvListWriter(new FileWriter(buildFileName()), buildCsvPreference())) {
+        try (ICsvListWriter writer = new CsvListWriter(buildWriter(), buildCsvPreference())) {
             CellProcessor[] processors = buildProcessors();
             for (Map.Entry<String, String> nameEntry : names.entrySet()) {
                 String processedName = nameEntry.getKey();
@@ -44,6 +53,10 @@ public class NameExporter {
             log.error(e.getMessage(), e);
             throw new UncheckedIOException(e.getMessage(), e);
         }
+    }
+
+    private Writer buildWriter() throws IOException {
+        return Files.newBufferedWriter(Paths.get(buildFileName()), defaultCharset);
     }
 
     private String buildFileName() {

@@ -12,6 +12,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 import static io.github.zwieback.relef.services.CommandLineService.*;
 import static org.junit.Assert.assertFalse;
@@ -26,6 +28,10 @@ public class CommandLineServiceTest {
     @SuppressWarnings("unused")
     @Autowired
     private CommandLineService cmdService;
+
+    @SuppressWarnings("unused")
+    @Autowired
+    private Charset defaultCharset;
 
     @Test
     public void test_createOptions_should_contains_help_option() {
@@ -61,16 +67,16 @@ public class CommandLineServiceTest {
     }
 
     @Test
-    public void test_printHelp_should_print_help_argument() throws ParseException {
+    public void test_printHelp_should_print_help_argument() throws ParseException, UnsupportedEncodingException {
         PrintStream defaultStdOut = System.out;
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            System.setOut(new PrintStream(outputStream));
+            System.setOut(new PrintStream(outputStream, false, defaultCharset.name()));
 
             Options options = cmdService.createOptions();
             cmdService.printHelp(options);
 
-            String help = outputStream.toString();
+            String help = outputStream.toString(defaultCharset.name());
             assertTrue(help.contains(OPTION_HELP));
         } finally {
             System.setOut(defaultStdOut);

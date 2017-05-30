@@ -21,6 +21,7 @@ public class ManufacturerXlsxConverter extends AbstractXlsxConverter<Manufacture
         return "manufacturers";
     }
 
+    @Override
     void buildHeader(RowContext rowCtx) {
         rowCtx.
                 header("Название").setColumnWidth(25).
@@ -28,6 +29,7 @@ public class ManufacturerXlsxConverter extends AbstractXlsxConverter<Manufacture
                 header("Последнее изменение").setColumnWidth(20);
     }
 
+    @Override
     void writeRow(Manufacturer manufacturer, RowContext rowCtx) {
         rowCtx.
                 text(stringService.defaultString(manufacturer.getName())).

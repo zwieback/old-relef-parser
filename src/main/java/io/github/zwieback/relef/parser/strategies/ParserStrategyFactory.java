@@ -88,6 +88,9 @@ public class ParserStrategyFactory {
             case HYBRID:
                 strategies.add(fullStrategyHybrid);
                 break;
+            default:
+                throw new IllegalArgumentException(String.format("This type '%s' of full strategy is not supported!",
+                        fullParserStrategyType));
         }
         return strategies;
     }

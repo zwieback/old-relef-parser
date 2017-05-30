@@ -27,6 +27,7 @@ public class CatalogEmptyProductFieldsParserTest extends AbstractCatalogParserTe
         return PRODUCT_QUANTITIES;
     }
 
+    @Override
     void validateParseProducts(Document catalogDocument, int productQuantity) {
         List<Product> products = catalogParser.parseProducts(catalogDocument, getCatalogId());
         products.forEach(product -> {

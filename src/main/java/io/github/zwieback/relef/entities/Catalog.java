@@ -13,6 +13,8 @@ import java.util.List;
 @Table(name = "T_CATALOG")
 public class Catalog extends BaseEntity {
 
+    private static final long serialVersionUID = -4120555435017913704L;
+
     @Id
     @NotNull
     private Long id;

@@ -1,5 +1,6 @@
 package io.github.zwieback.relef.services;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -32,7 +33,8 @@ public class TransliterateService {
      * @param message source message
      * @return transliterated message
      */
-    public String transliterate(String message) {
+    @NotNull
+    public String transliterate(@NotNull String message) {
         return message.chars()
                 .mapToObj(i -> (char) i)
                 .map(TransliterateService::transliterate)

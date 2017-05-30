@@ -10,6 +10,8 @@ import java.util.List;
 @Table(name = "T_MANUFACTURER")
 public class Manufacturer extends BaseEntity {
 
+    private static final long serialVersionUID = -4916567614029320314L;
+
     @Id
     @NotNull
     private String name;

@@ -9,6 +9,8 @@ import javax.persistence.*;
 @Table(name = "T_BRAND")
 public class Brand extends BaseEntity {
 
+    private static final long serialVersionUID = 8102240085155881341L;
+
     @Id
     @NotNull
     private Long id;

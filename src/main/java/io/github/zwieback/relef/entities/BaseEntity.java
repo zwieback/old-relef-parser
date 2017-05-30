@@ -3,11 +3,14 @@ package io.github.zwieback.relef.entities;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = 341024496048209619L;
 
     @Column(name = "last_update")
     @NotNull

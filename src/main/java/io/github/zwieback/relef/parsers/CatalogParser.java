@@ -86,7 +86,7 @@ public class CatalogParser {
         if (totalProductsElement == null) {
             return 1;
         }
-        int totalProducts = Integer.valueOf(totalProductsElement.text());
+        int totalProducts = Integer.parseInt(totalProductsElement.text());
         if (totalProducts % productsOnPage == 0) {
             return totalProducts / productsOnPage;
         }

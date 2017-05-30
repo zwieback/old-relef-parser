@@ -21,6 +21,7 @@ public class CatalogXlsxConverter extends AbstractXlsxConverter<Catalog> {
         return "catalogs";
     }
 
+    @Override
     void buildHeader(RowContext rowCtx) {
         rowCtx.
                 header("ID").setColumnWidth(10).
@@ -31,6 +32,7 @@ public class CatalogXlsxConverter extends AbstractXlsxConverter<Catalog> {
                 header("Последнее изменение").setColumnWidth(20);
     }
 
+    @Override
     void writeRow(Catalog catalog, RowContext rowCtx) {
         rowCtx.
                 number(catalog.getId()).

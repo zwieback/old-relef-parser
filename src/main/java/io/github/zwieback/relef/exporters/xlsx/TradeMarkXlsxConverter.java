@@ -21,6 +21,7 @@ public class TradeMarkXlsxConverter extends AbstractXlsxConverter<TradeMark> {
         return "trade_marks";
     }
 
+    @Override
     void buildHeader(RowContext rowCtx) {
         rowCtx.
                 header("Название").setColumnWidth(20).
@@ -28,6 +29,7 @@ public class TradeMarkXlsxConverter extends AbstractXlsxConverter<TradeMark> {
                 header("Последнее изменение").setColumnWidth(20);
     }
 
+    @Override
     void writeRow(TradeMark tradeMark, RowContext rowCtx) {
         rowCtx.
                 text(stringService.defaultString(tradeMark.getName())).
