@@ -106,6 +106,20 @@ public class CommandLineServiceTest {
     }
 
     @Test
+    public void test_doesCommandLineContainsAnyDownloadOptions_should_return_false() throws ParseException {
+        Options options = cmdService.createOptions();
+        CommandLine cmd = cmdService.createCommandLine(options, new String[]{});
+        assertFalse(cmdService.doesCommandLineContainsAnyDownloadOptions(cmd));
+    }
+
+    @Test
+    public void test_doesCommandLineContainsAnyDownloadOptions_should_return_true() throws ParseException {
+        Options options = cmdService.createOptions();
+        CommandLine cmd = cmdService.createCommandLine(options, new String[]{"-" + OPTION_DOWNLOAD_PRODUCT_IMAGE});
+        assertTrue(cmdService.doesCommandLineContainsAnyDownloadOptions(cmd));
+    }
+
+    @Test
     public void test_doesCommandLineContainsHelpOption_should_return_true() throws ParseException {
         Options options = cmdService.createOptions();
         CommandLine cmd = cmdService.createCommandLine(options, new String[]{});

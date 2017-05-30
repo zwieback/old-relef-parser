@@ -1,6 +1,8 @@
 package io.github.zwieback.relef;
 
 import io.github.zwieback.relef.configs.ApplicationConfig;
+import io.github.zwieback.relef.downloaders.Downloader;
+import io.github.zwieback.relef.downloaders.DownloaderFactory;
 import io.github.zwieback.relef.exporters.Exporter;
 import io.github.zwieback.relef.exporters.ExporterFactory;
 import io.github.zwieback.relef.parser.strategies.ParserStrategy;
@@ -34,6 +36,9 @@ public class Application {
         if (cmdService.doesCommandLineContainsAnyExportOptions(cmd)) {
             export(context, cmd);
         }
+        if (cmdService.doesCommandLineContainsAnyDownloadOptions(cmd)) {
+            download(context, cmd);
+        }
         if (cmdService.doesCommandLineContainsHelpOption(cmd)) {
             cmdService.printHelp(options);
         }
@@ -49,7 +54,7 @@ public class Application {
             strategyFactory.parseCommandLine(cmd);
             List<ParserStrategy> strategies = strategyFactory.createStrategies();
             strategies.forEach(strategy -> {
-                log.debug("Started " + strategy.getClass().getSimpleName() + " strategy");
+                log.info("Started " + strategy.getClass().getSimpleName() + " strategy");
                 strategy.parse();
             });
             authService.logout();
@@ -66,12 +71,27 @@ public class Application {
             ExporterFactory exporterFactory = context.getBean(ExporterFactory.class);
             List<Exporter> exporters = exporterFactory.determineExportersByCommandLine(cmd);
             exporters.forEach(exporter -> {
-                log.debug("Started " + exporter.getClass().getSimpleName() + " export");
+                log.info("Started " + exporter.getClass().getSimpleName() + " export");
                 fileService.writeBytes(exporter.toXlsx(), exporter.getXlsxFileName());
             });
             log.info("Export completed successfully");
         } catch (Exception e) {
             log.error("Export completed with error: " + e.getMessage(), e);
+        }
+    }
+
+    private static void download(AbstractApplicationContext context, CommandLine cmd) {
+        log.info("Download started...");
+        try {
+            DownloaderFactory downloaderFactory = context.getBean(DownloaderFactory.class);
+            List<Downloader> downloaders = downloaderFactory.determineDownloadersByCommandLine(cmd);
+            downloaders.forEach(downloader -> {
+                log.info("Started " + downloader.getClass().getSimpleName() + " download");
+                downloader.download();
+            });
+            log.info("Download completed successfully");
+        } catch (Exception e) {
+            log.error("Download completed with error: " + e.getMessage(), e);
         }
     }
 }

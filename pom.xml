@@ -49,6 +49,7 @@
         <jackson.version>2.8.8</jackson.version>
         <jsoup.version>1.10.2</jsoup.version>
         <poi.builder.version>1.0.4</poi.builder.version>
+        <supercsv.version>2.4.0</supercsv.version>
         <junit.version>4.12</junit.version>
         <mockito.version>1.10.19</mockito.version>
         <commons.cli.version>1.4</commons.cli.version>
@@ -168,11 +169,16 @@
             <version>${jsoup.version}</version>
         </dependency>
 
-        <!-- Export -->
+        <!-- Export/Import -->
         <dependency>
             <groupId>org.subtlelib</groupId>
             <artifactId>poi.builder</artifactId>
             <version>${poi.builder.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.supercsv</groupId>
+            <artifactId>super-csv</artifactId>
+            <version>${supercsv.version}</version>
         </dependency>
 
         <!-- Test -->

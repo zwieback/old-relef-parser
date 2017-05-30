@@ -3,7 +3,7 @@ package io.github.zwieback.relef.parser.strategies;
 import io.github.zwieback.relef.entities.Brand;
 import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.CatalogLevel;
-import io.github.zwieback.relef.parser.strategies.exceptions.ExceededErrorsCountException;
+import io.github.zwieback.relef.exceptions.ExceededErrorsCountException;
 import io.github.zwieback.relef.parsers.CatalogsParser;
 import io.github.zwieback.relef.services.mergers.ProductMerger;
 import io.github.zwieback.relef.web.services.ProductPriceService;
