@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.UUID;
 
 @Service
 public class UrlBuilder {
@@ -47,6 +48,17 @@ public class UrlBuilder {
     @NotNull
     public String buildTrickyProductUrl(String productUrl) {
         return productUrl + "?bxrand=" + dateTimeService.nowAsMilliseconds();
+    }
+
+    /**
+     * Build a product photo url.
+     *
+     * @param productXmlId xml id of product
+     * @return url to photo of product
+     */
+    @NotNull
+    public String buildProductPhotoUrl(@NotNull UUID productXmlId) {
+        return buildQueryUrl("getimage.php?guid=" + productXmlId.toString());
     }
 
     /**
