@@ -96,6 +96,9 @@ public abstract class Downloader<T> {
             return true;
         }
         byte[] bytes = downloadContentAsBytes(url);
+        if (bytes == null) {
+            return false;
+        }
         fileService.writeBytes(bytes, fileNameToSave);
         return true;
     }

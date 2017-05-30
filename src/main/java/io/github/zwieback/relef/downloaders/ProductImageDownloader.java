@@ -7,6 +7,7 @@ import io.github.zwieback.relef.repositories.ProductRepository;
 import io.github.zwieback.relef.services.FileService;
 import io.github.zwieback.relef.services.StringService;
 import io.github.zwieback.relef.services.TransliterateService;
+import io.github.zwieback.relef.services.UrlBuilder;
 import io.github.zwieback.relef.web.rest.services.RestService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +28,7 @@ public class ProductImageDownloader extends Downloader<Product> {
     private final TransliterateService transliterateService;
     private final ProductRepository productRepository;
     private final NameExporter nameExporter;
+    private final UrlBuilder urlBuilder;
 
     private final Map<String, String> names;
 
@@ -39,12 +41,14 @@ public class ProductImageDownloader extends Downloader<Product> {
                                   StringService stringService,
                                   TransliterateService transliterateService,
                                   ProductRepository productRepository,
-                                  NameExporter nameExporter) {
+                                  NameExporter nameExporter,
+                                  UrlBuilder urlBuilder) {
         super(restService, fileService);
         this.stringService = stringService;
         this.transliterateService = transliterateService;
         this.productRepository = productRepository;
         this.nameExporter = nameExporter;
+        this.urlBuilder = urlBuilder;
 
         this.names = new HashMap<>();
     }
@@ -76,6 +80,9 @@ public class ProductImageDownloader extends Downloader<Product> {
     @Nullable
     @Override
     String getEntityUrl(Product entity) {
+        if (entity.getXmlId() != null) {
+            return urlBuilder.buildProductPhotoUrl(entity.getXmlId());
+        }
         if (StringUtils.isEmpty(entity.getPhotoUrl()) || domainUrl.equals(entity.getPhotoUrl())) {
             return null;
         }
