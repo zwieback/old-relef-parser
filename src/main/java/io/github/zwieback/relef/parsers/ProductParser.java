@@ -30,6 +30,7 @@ public class ProductParser {
     private static final int INFO_PROPERTY_NOT_FOUND_INDEX = -1;
     private static final int MANUFACTURER_INDEX = 0;
     private static final int TRADE_MARK_INDEX = 1;
+    private static final String NO_BARCODE = "not";
 
     private final InternalParser internalParser;
     private final StringService stringService;
@@ -282,7 +283,8 @@ public class ProductParser {
 
     @Nullable
     private String parseBarcode(Product product) {
-        return parseCommonProductProperty(product, "Штрих код");
+        String barcode = parseCommonProductProperty(product, "Штрих код");
+        return NO_BARCODE.equals(barcode) ? null : barcode;
     }
 
     @Nullable
