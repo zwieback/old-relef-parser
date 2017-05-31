@@ -20,17 +20,20 @@ public class CommandLineService {
     public static final String OPTION_EXPORT_MANUFACTURER = "em";
     public static final String OPTION_EXPORT_TRADE_MARK = "etm";
     public static final String OPTION_DOWNLOAD_PRODUCT_IMAGE = "dpi";
+    public static final String OPTION_IMPORT_MY_SKLAD_PRODUCT = "imsp";
 
     private static final List<String> OPTIONS_PARSER = Arrays.asList(OPTION_PARSER_FULL, OPTION_PARSER_CATALOG,
             OPTION_PARSER_PRODUCT);
     private static final List<String> OPTIONS_EXPORT = Arrays.asList(OPTION_EXPORT_BRAND, OPTION_EXPORT_CATALOG,
             OPTION_EXPORT_PRODUCT, OPTION_EXPORT_MANUFACTURER, OPTION_EXPORT_TRADE_MARK);
+    private static final List<String> OPTIONS_IMPORT = Arrays.asList(OPTION_IMPORT_MY_SKLAD_PRODUCT);
     private static final List<String> OPTIONS_DOWNLOAD = Arrays.asList(OPTION_DOWNLOAD_PRODUCT_IMAGE);
 
     public Options createOptions() {
         Options options = new Options();
         buildParserOptions().forEach(options::addOption);
         buildExportOptions().forEach(options::addOption);
+        buildImportOptions().forEach(options::addOption);
         buildDownloadOptions().forEach(options::addOption);
         options.addOption(OPTION_HELP, "help", false, "print this message");
         return options;
@@ -86,6 +89,17 @@ public class CommandLineService {
         return exportOptions;
     }
 
+    private List<Option> buildImportOptions() {
+        List<Option> importOptions = new ArrayList<>();
+        importOptions.add(Option.builder(OPTION_IMPORT_MY_SKLAD_PRODUCT)
+                .longOpt("import-my-sklad-product")
+                .desc("import products of MySklad system from file")
+                .hasArg()
+                .argName("fileName")
+                .build());
+        return importOptions;
+    }
+
     private List<Option> buildDownloadOptions() {
         List<Option> downloadOptions = new ArrayList<>();
         downloadOptions.add(Option.builder(OPTION_DOWNLOAD_PRODUCT_IMAGE)
@@ -133,6 +147,16 @@ public class CommandLineService {
      */
     public boolean doesCommandLineContainsAnyExportOptions(CommandLine cmd) {
         return doesCommandLineContainsAnyOptions(OPTIONS_EXPORT, cmd);
+    }
+
+    /**
+     * Does the command line contains any of the import options?
+     *
+     * @param cmd command line
+     * @return {@code true} if {@code cmd} contains any of the import options, {@code false} otherwise
+     */
+    public boolean doesCommandLineContainsAnyImportOptions(CommandLine cmd) {
+        return doesCommandLineContainsAnyOptions(OPTIONS_IMPORT, cmd);
     }
 
     /**
