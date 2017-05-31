@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Import;
         DatabaseConfig.class,
         DownloaderConfig.class,
         ExporterConfig.class,
+        ImporterConfig.class,
         JacksonConfig.class,
         ParserConfig.class,
         ParserStrategyConfig.class,

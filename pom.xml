@@ -48,6 +48,7 @@
         <sl4j.version>1.7.25</sl4j.version>
         <jackson.version>2.8.8</jackson.version>
         <jsoup.version>1.10.2</jsoup.version>
+        <poi.ooxml.version>3.16</poi.ooxml.version>
         <poi.builder.version>1.0.4</poi.builder.version>
         <supercsv.version>2.4.0</supercsv.version>
         <junit.version>4.12</junit.version>
@@ -171,9 +172,20 @@
 
         <!-- Export/Import -->
         <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.ooxml.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.subtlelib</groupId>
             <artifactId>poi.builder</artifactId>
             <version>${poi.builder.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.poi</groupId>
+                    <artifactId>poi-ooxml</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.sf.supercsv</groupId>
