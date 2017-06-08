@@ -14,7 +14,7 @@ public abstract class Importer<T> {
     @Value("${import.path}")
     private String importPath;
 
-    protected void setFileName(String fileName) {
+    public void setFileName(String fileName) {
         Objects.requireNonNull(fileName);
         this.fileName = fileName;
     }

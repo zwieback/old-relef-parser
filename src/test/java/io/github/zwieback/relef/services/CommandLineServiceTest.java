@@ -130,6 +130,18 @@ public class CommandLineServiceTest {
     }
 
     @Test
+    public void test_doesCommandLineContainsAnyAnalyzeOptions_should_return_false() throws ParseException {
+        CommandLine cmd = buildEmptyCommandLine();
+        assertFalse(cmdService.doesCommandLineContainsAnyAnalyzeOptions(cmd));
+    }
+
+    @Test
+    public void test_doesCommandLineContainsAnyAnalyzeOptions_should_return_true() throws ParseException {
+        CommandLine cmd = buildCommandLine(new String[]{"-" + OPTION_ANALYZE_MY_SKLAD_PRODUCT, "f.xlsx"});
+        assertTrue(cmdService.doesCommandLineContainsAnyAnalyzeOptions(cmd));
+    }
+
+    @Test
     public void test_doesCommandLineContainsHelpOption_should_return_true() throws ParseException {
         CommandLine cmd = buildEmptyCommandLine();
         assertTrue(cmdService.doesCommandLineContainsHelpOption(cmd));

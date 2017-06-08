@@ -38,4 +38,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "    inner join p.manufacturer m" +
             "    inner join p.tradeMark tm")
     List<MsProductDto> findAllMsProducts();
+
+    Long countByArticle(String article);
 }
