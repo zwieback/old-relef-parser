@@ -4,6 +4,8 @@ This online store displays prices only to authorized users.
 The content of specific products is formed by a separate ajax request.
 
 ## History
+1.6 (2017-06-08): Change DB to PostgreSQL. Added import of products from MySklad system.
+
 1.5 (2017-05-23): Added authorization.
 
 1.4 (2017-05-15): Added export to xlsx.

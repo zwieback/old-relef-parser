@@ -6,7 +6,7 @@
 
     <groupId>io.github.zwieback</groupId>
     <artifactId>relef-parser</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Relef parser</name>
     <description>Project to parse catalogs and products from site relefopt.ru</description>
@@ -39,6 +39,7 @@
         <!-- Dependencies -->
         <spring.version>4.3.7.RELEASE</spring.version>
         <httpclient.version>4.5.3</httpclient.version>
+        <postgresql.version>42.1.1</postgresql.version>
         <hsqldb.version>2.4.0</hsqldb.version>
         <hibernate.version>5.2.8.Final</hibernate.version>
         <spring.data.version>1.11.3.RELEASE</spring.data.version>
@@ -91,6 +92,11 @@
         </dependency>
 
         <!-- Database -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
