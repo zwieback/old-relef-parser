@@ -98,6 +98,34 @@ public class MsProductDto {
     public MsProductDto() {
     }
 
+    public MsProductDto(@Nullable String catalogName,
+                        @Nullable String code,
+                        @Nullable String article,
+                        @Nullable String name,
+                        @Nullable String description,
+                        @Nullable BigDecimal purchasePrice,
+                        @Nullable BigDecimal oldPrice,
+                        @Nullable String barcodeEan13,
+                        @Nullable String manufacturerCountry,
+                        @Nullable String manufacturer,
+                        @Nullable String provider,
+                        @Nullable Double weight,
+                        @Nullable Double volume) {
+        this.catalogName = catalogName;
+        this.code = code;
+        this.article = article;
+        this.name = name;
+        this.description = description;
+        this.purchasePrice = purchasePrice;
+        this.oldPrice = oldPrice;
+        this.barcodeEan13 = barcodeEan13;
+        this.manufacturerCountry = manufacturerCountry;
+        this.manufacturer = manufacturer;
+        this.provider = provider;
+        this.weight = weight;
+        this.volume = volume;
+    }
+
     @Nullable
     public String getCatalogName() {
         return catalogName;

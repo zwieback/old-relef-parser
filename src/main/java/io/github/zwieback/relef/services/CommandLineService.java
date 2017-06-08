@@ -19,13 +19,14 @@ public class CommandLineService {
     public static final String OPTION_EXPORT_PRODUCT = "ep";
     public static final String OPTION_EXPORT_MANUFACTURER = "em";
     public static final String OPTION_EXPORT_TRADE_MARK = "etm";
-    public static final String OPTION_DOWNLOAD_PRODUCT_IMAGE = "dpi";
+    public static final String OPTION_EXPORT_MS_PRODUCT = "emsp";
     public static final String OPTION_IMPORT_MY_SKLAD_PRODUCT = "imsp";
+    public static final String OPTION_DOWNLOAD_PRODUCT_IMAGE = "dpi";
 
     private static final List<String> OPTIONS_PARSER = Arrays.asList(OPTION_PARSER_FULL, OPTION_PARSER_CATALOG,
             OPTION_PARSER_PRODUCT);
     private static final List<String> OPTIONS_EXPORT = Arrays.asList(OPTION_EXPORT_BRAND, OPTION_EXPORT_CATALOG,
-            OPTION_EXPORT_PRODUCT, OPTION_EXPORT_MANUFACTURER, OPTION_EXPORT_TRADE_MARK);
+            OPTION_EXPORT_PRODUCT, OPTION_EXPORT_MANUFACTURER, OPTION_EXPORT_TRADE_MARK, OPTION_EXPORT_MS_PRODUCT);
     private static final List<String> OPTIONS_IMPORT = Arrays.asList(OPTION_IMPORT_MY_SKLAD_PRODUCT);
     private static final List<String> OPTIONS_DOWNLOAD = Arrays.asList(OPTION_DOWNLOAD_PRODUCT_IMAGE);
 
@@ -85,6 +86,10 @@ public class CommandLineService {
         exportOptions.add(Option.builder(OPTION_EXPORT_TRADE_MARK)
                 .longOpt("export-trade-mark")
                 .desc("export all trade marks")
+                .build());
+        exportOptions.add(Option.builder(OPTION_EXPORT_MS_PRODUCT)
+                .longOpt("export-my-sklad-product")
+                .desc("export all products of MySklad system")
                 .build());
         return exportOptions;
     }
