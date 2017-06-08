@@ -10,6 +10,7 @@ import java.util.List;
 import static io.github.zwieback.relef.services.CommandLineService.OPTION_EXPORT_BRAND;
 import static io.github.zwieback.relef.services.CommandLineService.OPTION_EXPORT_CATALOG;
 import static io.github.zwieback.relef.services.CommandLineService.OPTION_EXPORT_MANUFACTURER;
+import static io.github.zwieback.relef.services.CommandLineService.OPTION_EXPORT_MS_PRODUCT;
 import static io.github.zwieback.relef.services.CommandLineService.OPTION_EXPORT_PRODUCT;
 import static io.github.zwieback.relef.services.CommandLineService.OPTION_EXPORT_TRADE_MARK;
 
@@ -21,18 +22,21 @@ public class ExporterFactory {
     private final ProductExporter productExporter;
     private final ManufacturerExporter manufacturerExporter;
     private final TradeMarkExporter tradeMarkExporter;
+    private final MsProductExporter msProductExporter;
 
     @Autowired
     public ExporterFactory(BrandExporter brandExporter,
                            CatalogExporter catalogExporter,
                            ProductExporter productExporter,
                            ManufacturerExporter manufacturerExporter,
-                           TradeMarkExporter tradeMarkExporter) {
+                           TradeMarkExporter tradeMarkExporter,
+                           MsProductExporter msProductExporter) {
         this.brandExporter = brandExporter;
         this.catalogExporter = catalogExporter;
         this.productExporter = productExporter;
         this.manufacturerExporter = manufacturerExporter;
         this.tradeMarkExporter = tradeMarkExporter;
+        this.msProductExporter = msProductExporter;
     }
 
     /**
@@ -58,6 +62,9 @@ public class ExporterFactory {
         }
         if (cmd.hasOption(OPTION_EXPORT_TRADE_MARK)) {
             exporters.add(tradeMarkExporter);
+        }
+        if (cmd.hasOption(OPTION_EXPORT_MS_PRODUCT)) {
+            exporters.add(msProductExporter);
         }
         if (exporters.isEmpty()) {
             throw new IllegalArgumentException("No exporter found");

@@ -2,12 +2,10 @@ package io.github.zwieback.relef.exporters;
 
 import io.github.zwieback.relef.services.DateTimeService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.time.format.DateTimeFormatter;
 
-@Component
 public abstract class Exporter {
 
     static final String EXTENSION_XLSX = ".xlsx";

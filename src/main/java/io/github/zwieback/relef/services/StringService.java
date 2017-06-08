@@ -2,8 +2,13 @@ package io.github.zwieback.relef.services;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 @Service
@@ -11,6 +16,13 @@ public class StringService {
 
     private static final Pattern SPECIAL_CHARS = Pattern.compile("\\W");
     private static final String UNDERSCORE = "_";
+
+    private final NumberFormat numberFormat;
+
+    @Autowired
+    public StringService(Locale defaultLocale) {
+        this.numberFormat = NumberFormat.getInstance(defaultLocale);
+    }
 
     /**
      * Clean string from redundant symbols.
@@ -67,5 +79,40 @@ public class StringService {
     @NotNull
     public String defaultString(@Nullable Object nullableObject) {
         return nullableObject == null ? "" : nullableObject.toString();
+    }
+
+    /**
+     * Parse the string and return Double as the value representation.
+     *
+     * @param value source string value
+     * @return parsed Double
+     * @throws ParseException if the beginning of the specified string cannot be parsed
+     */
+    @Nullable
+    public Double parseToDouble(@Nullable String value) throws ParseException {
+        if (StringUtils.isEmpty(value)) {
+            return null;
+        }
+        Number number = numberFormat.parse(value);
+        return number.doubleValue();
+    }
+
+    /**
+     * Parse the string and return Boolean as the value representation.
+     *
+     * @param value source string value
+     * @return parsed Boolean
+     */
+    @Nullable
+    public Boolean parseToBoolean(@Nullable String value) {
+        if (StringUtils.isEmpty(value)) {
+            return null;
+        }
+        switch (value.toLowerCase()) {
+            case "да":
+                return Boolean.TRUE;
+            default:
+                return Boolean.valueOf(value);
+        }
     }
 }

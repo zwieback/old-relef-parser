@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.text.ParseException;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
@@ -72,5 +75,34 @@ public class StringServiceTest {
     public void test_defaultString_object_should_return_empty_string() {
         String result = stringService.defaultString((Long) null);
         assertEquals(EMPTY_STRING, result);
+    }
+
+    @Test
+    public void test_parseToDouble_should_return_null() throws ParseException {
+        assertNull(stringService.parseToDouble(null));
+        assertNull(stringService.parseToDouble(""));
+    }
+
+    @Test(expected = ParseException.class)
+    public void test_parseToDouble_should_throw_exception() throws ParseException {
+        stringService.parseToDouble("_abc_");
+    }
+
+    @Test
+    public void test_parseToDouble_should_return_parsed_double() throws ParseException {
+        assertEquals((Double) 123.456, stringService.parseToDouble("123,456"));
+    }
+
+    @Test
+    public void test_parseToBoolean_should_return_null() {
+        assertNull(stringService.parseToBoolean(null));
+        assertNull(stringService.parseToBoolean(""));
+    }
+
+    @Test
+    public void test_parseToBoolean_should_return_parsed_boolean() {
+        assertEquals(Boolean.TRUE, stringService.parseToBoolean("да"));
+        assertEquals(Boolean.TRUE, stringService.parseToBoolean("true"));
+        assertEquals(Boolean.FALSE, stringService.parseToBoolean("нет"));
     }
 }

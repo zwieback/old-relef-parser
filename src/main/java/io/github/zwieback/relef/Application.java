@@ -1,5 +1,7 @@
 package io.github.zwieback.relef;
 
+import io.github.zwieback.relef.analyzers.Analyzer;
+import io.github.zwieback.relef.analyzers.AnalyzerFactory;
 import io.github.zwieback.relef.configs.ApplicationConfig;
 import io.github.zwieback.relef.downloaders.Downloader;
 import io.github.zwieback.relef.downloaders.DownloaderFactory;
@@ -38,6 +40,9 @@ public class Application {
         }
         if (cmdService.doesCommandLineContainsAnyDownloadOptions(cmd)) {
             download(context, cmd);
+        }
+        if (cmdService.doesCommandLineContainsAnyAnalyzeOptions(cmd)) {
+            analyze(context, cmd);
         }
         if (cmdService.doesCommandLineContainsHelpOption(cmd)) {
             cmdService.printHelp(options);
@@ -92,6 +97,21 @@ public class Application {
             log.info("Download completed successfully");
         } catch (Exception e) {
             log.error("Download completed with error: " + e.getMessage(), e);
+        }
+    }
+
+    private static void analyze(AbstractApplicationContext context, CommandLine cmd) {
+        log.info("Analyze started...");
+        try {
+            AnalyzerFactory analyzerFactory = context.getBean(AnalyzerFactory.class);
+            List<Analyzer> analyzers = analyzerFactory.determineImportersByCommandLine(cmd);
+            analyzers.forEach(analyzer -> {
+                log.info("Started " + analyzer.getClass().getSimpleName() + " analyze");
+                analyzer.analyze();
+            });
+            log.info("Analyze completed successfully");
+        } catch (Exception e) {
+            log.error("Analyze completed with error: " + e.getMessage(), e);
         }
     }
 }

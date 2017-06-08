@@ -19,19 +19,26 @@ public class CommandLineService {
     public static final String OPTION_EXPORT_PRODUCT = "ep";
     public static final String OPTION_EXPORT_MANUFACTURER = "em";
     public static final String OPTION_EXPORT_TRADE_MARK = "etm";
+    public static final String OPTION_EXPORT_MS_PRODUCT = "emsp";
+    public static final String OPTION_IMPORT_MY_SKLAD_PRODUCT = "imsp";
     public static final String OPTION_DOWNLOAD_PRODUCT_IMAGE = "dpi";
+    public static final String OPTION_ANALYZE_MY_SKLAD_PRODUCT = "amsp";
 
     private static final List<String> OPTIONS_PARSER = Arrays.asList(OPTION_PARSER_FULL, OPTION_PARSER_CATALOG,
             OPTION_PARSER_PRODUCT);
     private static final List<String> OPTIONS_EXPORT = Arrays.asList(OPTION_EXPORT_BRAND, OPTION_EXPORT_CATALOG,
-            OPTION_EXPORT_PRODUCT, OPTION_EXPORT_MANUFACTURER, OPTION_EXPORT_TRADE_MARK);
+            OPTION_EXPORT_PRODUCT, OPTION_EXPORT_MANUFACTURER, OPTION_EXPORT_TRADE_MARK, OPTION_EXPORT_MS_PRODUCT);
+    private static final List<String> OPTIONS_IMPORT = Arrays.asList(OPTION_IMPORT_MY_SKLAD_PRODUCT);
     private static final List<String> OPTIONS_DOWNLOAD = Arrays.asList(OPTION_DOWNLOAD_PRODUCT_IMAGE);
+    private static final List<String> OPTIONS_ANALYZE = Arrays.asList(OPTION_ANALYZE_MY_SKLAD_PRODUCT);
 
     public Options createOptions() {
         Options options = new Options();
         buildParserOptions().forEach(options::addOption);
         buildExportOptions().forEach(options::addOption);
+        buildImportOptions().forEach(options::addOption);
         buildDownloadOptions().forEach(options::addOption);
+        buildAnalyzeOptions().forEach(options::addOption);
         options.addOption(OPTION_HELP, "help", false, "print this message");
         return options;
     }
@@ -83,7 +90,22 @@ public class CommandLineService {
                 .longOpt("export-trade-mark")
                 .desc("export all trade marks")
                 .build());
+        exportOptions.add(Option.builder(OPTION_EXPORT_MS_PRODUCT)
+                .longOpt("export-my-sklad-product")
+                .desc("export all products of MySklad system")
+                .build());
         return exportOptions;
+    }
+
+    private List<Option> buildImportOptions() {
+        List<Option> importOptions = new ArrayList<>();
+        importOptions.add(Option.builder(OPTION_IMPORT_MY_SKLAD_PRODUCT)
+                .longOpt("import-my-sklad-product")
+                .desc("import products of MySklad system from file")
+                .hasArg()
+                .argName("fileName")
+                .build());
+        return importOptions;
     }
 
     private List<Option> buildDownloadOptions() {
@@ -93,6 +115,17 @@ public class CommandLineService {
                 .desc("download main image of all products")
                 .build());
         return downloadOptions;
+    }
+
+    private List<Option> buildAnalyzeOptions() {
+        List<Option> analyzeOptions = new ArrayList<>();
+        analyzeOptions.add(Option.builder(OPTION_ANALYZE_MY_SKLAD_PRODUCT)
+                .longOpt("analyze-my-sklad-product")
+                .desc("analyze products of MySklad system from file")
+                .hasArg()
+                .argName("fileName")
+                .build());
+        return analyzeOptions;
     }
 
     /*
@@ -136,6 +169,16 @@ public class CommandLineService {
     }
 
     /**
+     * Does the command line contains any of the import options?
+     *
+     * @param cmd command line
+     * @return {@code true} if {@code cmd} contains any of the import options, {@code false} otherwise
+     */
+    public boolean doesCommandLineContainsAnyImportOptions(CommandLine cmd) {
+        return doesCommandLineContainsAnyOptions(OPTIONS_IMPORT, cmd);
+    }
+
+    /**
      * Does the command line contains any of the download options?
      *
      * @param cmd command line
@@ -143,6 +186,16 @@ public class CommandLineService {
      */
     public boolean doesCommandLineContainsAnyDownloadOptions(CommandLine cmd) {
         return doesCommandLineContainsAnyOptions(OPTIONS_DOWNLOAD, cmd);
+    }
+
+    /**
+     * Does the command line contains any of the analyze options?
+     *
+     * @param cmd command line
+     * @return {@code true} if {@code cmd} contains any of the analyze options, {@code false} otherwise
+     */
+    public boolean doesCommandLineContainsAnyAnalyzeOptions(CommandLine cmd) {
+        return doesCommandLineContainsAnyOptions(OPTIONS_ANALYZE, cmd);
     }
 
     private static boolean doesCommandLineContainsAnyOptions(List<String> options, CommandLine cmd) {
