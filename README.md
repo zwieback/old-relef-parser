@@ -1,10 +1,11 @@
-Application for parsing of catalogs and products of the site http://relefopt.ru
+Application for parsing of catalogs and products of the site http://old.relefopt.ru
 
 This online store displays prices only to authorized users.
 The content of specific products is formed by a separate ajax request.
 
 ## History
-1.6 (2017-06-08): Change DB to PostgreSQL. Added import of products from MySklad system.
+1.7 (2017-06-08): Changed address of the site.
+
 1.6 (2017-06-08): Changed DB to PostgreSQL. Added import of products from MySklad system.
 
 1.5 (2017-05-23): Added authorization.
