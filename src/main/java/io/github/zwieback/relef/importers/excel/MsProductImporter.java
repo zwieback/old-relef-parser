@@ -19,6 +19,16 @@ public class MsProductImporter extends ExcelImporter<MsProductDto> {
     }
 
     @Override
+    int getDataSheetNumber() {
+        return 0;
+    }
+
+    @Override
+    int skipNumberOfRows() {
+        return 1;
+    }
+
+    @Override
     MsProductDto processRow(Row currentRow) throws ParseException {
         MsProductDto result = new MsProductDto();
         int cellNumber = 0;
@@ -144,10 +154,5 @@ public class MsProductImporter extends ExcelImporter<MsProductDto> {
             cellNumber++;
         }
         return result;
-    }
-
-    @Override
-    boolean skipFirstRow() {
-        return true;
     }
 }
