@@ -16,7 +16,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 
-import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -91,7 +91,8 @@ public abstract class Downloader<T> {
         if (StringUtils.isEmpty(url) || StringUtils.isEmpty(fileName)) {
             return false;
         }
-        String fileNameToSave = buildFileName(fileName);
+        String catalogPath = getEntityCatalog(entity);
+        String fileNameToSave = buildFileName(catalogPath, fileName);
         if (skipDownloaded && fileService.exists(fileNameToSave)) {
             return true;
         }
@@ -118,8 +119,11 @@ public abstract class Downloader<T> {
     abstract String getFileName(T entity);
 
     @NotNull
-    private String buildFileName(String relativeFileName) {
-        return downloadPath + File.separator + relativeFileName;
+    abstract String getEntityCatalog(T entity);
+
+    @NotNull
+    private String buildFileName(@NotNull String catalogPath, @NotNull String relativeFileName) {
+        return Paths.get(downloadPath, catalogPath, relativeFileName).toString();
     }
 
     @NotNull
