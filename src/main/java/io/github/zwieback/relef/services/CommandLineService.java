@@ -21,15 +21,19 @@ public class CommandLineService {
     public static final String OPTION_EXPORT_TRADE_MARK = "etm";
     public static final String OPTION_EXPORT_MS_PRODUCT = "emsp";
     public static final String OPTION_IMPORT_MY_SKLAD_PRODUCT = "imsp";
+    public static final String OPTION_IMPORT_SAMSON_PRODUCT = "isp";
     public static final String OPTION_DOWNLOAD_PRODUCT_IMAGE = "dpi";
+    public static final String OPTION_DOWNLOAD_SAMSON_PRODUCT_IMAGE = "dspi";
     public static final String OPTION_ANALYZE_MY_SKLAD_PRODUCT = "amsp";
 
     private static final List<String> OPTIONS_PARSER = Arrays.asList(OPTION_PARSER_FULL, OPTION_PARSER_CATALOG,
             OPTION_PARSER_PRODUCT);
     private static final List<String> OPTIONS_EXPORT = Arrays.asList(OPTION_EXPORT_BRAND, OPTION_EXPORT_CATALOG,
             OPTION_EXPORT_PRODUCT, OPTION_EXPORT_MANUFACTURER, OPTION_EXPORT_TRADE_MARK, OPTION_EXPORT_MS_PRODUCT);
-    private static final List<String> OPTIONS_IMPORT = Arrays.asList(OPTION_IMPORT_MY_SKLAD_PRODUCT);
-    private static final List<String> OPTIONS_DOWNLOAD = Arrays.asList(OPTION_DOWNLOAD_PRODUCT_IMAGE);
+    private static final List<String> OPTIONS_IMPORT = Arrays.asList(OPTION_IMPORT_MY_SKLAD_PRODUCT,
+            OPTION_IMPORT_SAMSON_PRODUCT);
+    private static final List<String> OPTIONS_DOWNLOAD = Arrays.asList(OPTION_DOWNLOAD_PRODUCT_IMAGE,
+            OPTION_DOWNLOAD_SAMSON_PRODUCT_IMAGE);
     private static final List<String> OPTIONS_ANALYZE = Arrays.asList(OPTION_ANALYZE_MY_SKLAD_PRODUCT);
 
     public Options createOptions() {
@@ -105,6 +109,12 @@ public class CommandLineService {
                 .hasArg()
                 .argName("fileName")
                 .build());
+        importOptions.add(Option.builder(OPTION_IMPORT_SAMSON_PRODUCT)
+                .longOpt("import-samson-product")
+                .desc("import products of Samson system from file")
+                .hasArg()
+                .argName("fileName")
+                .build());
         return importOptions;
     }
 
@@ -113,6 +123,12 @@ public class CommandLineService {
         downloadOptions.add(Option.builder(OPTION_DOWNLOAD_PRODUCT_IMAGE)
                 .longOpt("download-product-image")
                 .desc("download main image of all products")
+                .build());
+        downloadOptions.add(Option.builder(OPTION_DOWNLOAD_SAMSON_PRODUCT_IMAGE)
+                .longOpt("download-samson-product-image")
+                .desc("download main image of all products from Samson system")
+                .hasArg()
+                .argName("fileName")
                 .build());
         return downloadOptions;
     }

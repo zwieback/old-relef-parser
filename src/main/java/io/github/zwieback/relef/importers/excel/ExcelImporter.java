@@ -21,7 +21,6 @@ import java.util.List;
 public abstract class ExcelImporter<T> extends Importer<T> {
 
     private static final Logger log = LogManager.getLogger(ExcelImporter.class);
-    private static final int SHEET_NUMBER = 0;
 
     private final StringService stringService;
 
@@ -34,7 +33,7 @@ public abstract class ExcelImporter<T> extends Importer<T> {
         try (FileInputStream excelFile = new FileInputStream(buildFileName(fileName))) {
             Workbook workbook = new XSSFWorkbook(excelFile);
             log.info(String.format("Number of sheets = %d", workbook.getNumberOfSheets()));
-            Sheet sheet = workbook.getSheetAt(SHEET_NUMBER);
+            Sheet sheet = workbook.getSheetAt(getDataSheetNumber());
             log.info(String.format("Number of rows = %d", sheet.getLastRowNum()));
             return processRows(sheet);
         } catch (IOException e) {
@@ -46,21 +45,26 @@ public abstract class ExcelImporter<T> extends Importer<T> {
         }
     }
 
+    abstract int getDataSheetNumber();
+
+    abstract int skipNumberOfRows();
+
     private List<T> processRows(Sheet sheet) throws ParseException {
-        List<T> resultList = new ArrayList<>();
+        List<T> resultList = new ArrayList<>(sheet.getLastRowNum());
         Iterator<Row> rowIterator = sheet.rowIterator();
-        if (skipFirstRow() && rowIterator.hasNext()) {
+        for (int row = 0; row < skipNumberOfRows() && rowIterator.hasNext(); row++) {
             rowIterator.next();
         }
         while (rowIterator.hasNext()) {
-            resultList.add(processRow(rowIterator.next()));
+            T entity = processRow(rowIterator.next());
+            if (entity != null) {
+                resultList.add(entity);
+            }
         }
         return resultList;
     }
 
     abstract T processRow(Row currentRow) throws ParseException;
-
-    abstract boolean skipFirstRow();
 
     @Nullable
     static String getStringValue(Cell currentCell) {
