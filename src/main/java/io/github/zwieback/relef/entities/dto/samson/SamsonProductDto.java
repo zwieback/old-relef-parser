@@ -6,15 +6,23 @@ public class SamsonProductDto {
 
     // Наименование
     @NotNull
-    private String name;
+    private String catalog = "";
+
+    // Наименование
+    @NotNull
+    private String name = "";
 
     // Ссылка на изображение
     @NotNull
-    private String photoUrl;
+    private String photoUrl = "";
 
-    public SamsonProductDto() {
-        name = "";
-        photoUrl = "";
+    @NotNull
+    public String getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(@NotNull String catalog) {
+        this.catalog = catalog;
     }
 
     @NotNull

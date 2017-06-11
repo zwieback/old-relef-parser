@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -74,7 +75,7 @@ public class SamsonProductImageDownloader extends ImageDownloader<SamsonProductD
     @NotNull
     @Override
     String getEntityCatalog(SamsonProductDto entity) {
-        return "samson";
+        return Paths.get("samson", entity.getCatalog()).toString();
     }
 
     /**
