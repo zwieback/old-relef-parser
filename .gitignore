@@ -38,4 +38,5 @@ db/**
 downloads/**
 exports/**
 imports/**
+lib/**
 logs/**

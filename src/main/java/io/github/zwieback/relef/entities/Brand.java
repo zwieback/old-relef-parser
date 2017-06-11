@@ -1,10 +1,18 @@
 package io.github.zwieback.relef.entities;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Objects;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "T_BRAND")
 public class Brand extends BaseEntity {
@@ -13,7 +21,7 @@ public class Brand extends BaseEntity {
 
     @Id
     @NotNull
-    private Long id;
+    private Long id = 0L;
 
     @Nullable
     private String name;
@@ -25,78 +33,22 @@ public class Brand extends BaseEntity {
     @Nullable
     private String imageUrl;
 
-    public Brand() {
-        id = 0L;
-    }
-
     public Brand(@NotNull Long id, @Nullable String url, @Nullable String imageUrl) {
         this.id = id;
         this.url = url;
         this.imageUrl = imageUrl;
     }
 
-    @NotNull
-    public Long getId() {
-        return id;
-    }
-
-    public Brand setId(@NotNull Long id) {
-        this.id = id;
-        return this;
-    }
-
-    @Nullable
-    public String getName() {
-        return name;
-    }
-
-    public Brand setName(@Nullable String name) {
-        this.name = name;
-        return this;
-    }
-
-    @Nullable
-    public String getUrl() {
-        return url;
-    }
-
-    public Brand setUrl(@Nullable String url) {
-        this.url = url;
-        return this;
-    }
-
-    @Nullable
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public Brand setImageUrl(@Nullable String imageUrl) {
-        this.imageUrl = imageUrl;
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Brand brand = (Brand) o;
-
-        return id.equals(brand.id);
+        return Objects.equals(id, brand.id);
     }
 
     @Override
     public int hashCode() {
         return id.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "Brand{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                '}';
     }
 }

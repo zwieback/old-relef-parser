@@ -2,6 +2,8 @@ package io.github.zwieback.relef.importers.excel;
 
 import io.github.zwieback.relef.importers.Importer;
 import io.github.zwieback.relef.services.StringService;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.*;
@@ -11,9 +13,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,28 +28,22 @@ public abstract class ExcelImporter<T> extends Importer<T> {
         this.stringService = stringService;
     }
 
+    @SneakyThrows(IOException.class)
     @Override
     public List<T> doImport() {
-        try (FileInputStream excelFile = new FileInputStream(buildFileName(fileName))) {
-            Workbook workbook = new XSSFWorkbook(excelFile);
-            log.info(String.format("Number of sheets = %d", workbook.getNumberOfSheets()));
-            Sheet sheet = workbook.getSheetAt(getDataSheetNumber());
-            log.info(String.format("Number of rows = %d", sheet.getLastRowNum()));
-            return processRows(sheet);
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            throw new UncheckedIOException(e.getMessage(), e);
-        } catch (ParseException e) {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        @Cleanup FileInputStream excelFile = new FileInputStream(buildFileName(fileName));
+        Workbook workbook = new XSSFWorkbook(excelFile);
+        log.info(String.format("Number of sheets = %d", workbook.getNumberOfSheets()));
+        Sheet sheet = workbook.getSheetAt(getDataSheetNumber());
+        log.info(String.format("Number of rows = %d", sheet.getLastRowNum()));
+        return processRows(sheet);
     }
 
     abstract int getDataSheetNumber();
 
     abstract int skipNumberOfRows();
 
-    private List<T> processRows(Sheet sheet) throws ParseException {
+    private List<T> processRows(Sheet sheet) {
         List<T> resultList = new ArrayList<>(sheet.getLastRowNum());
         Iterator<Row> rowIterator = sheet.rowIterator();
         for (int row = 0; row < skipNumberOfRows() && rowIterator.hasNext(); row++) {
@@ -64,7 +58,7 @@ public abstract class ExcelImporter<T> extends Importer<T> {
         return resultList;
     }
 
-    abstract T processRow(Row currentRow) throws ParseException;
+    abstract T processRow(Row currentRow);
 
     @Nullable
     static String getStringValue(Cell currentCell) {
@@ -76,7 +70,7 @@ public abstract class ExcelImporter<T> extends Importer<T> {
     }
 
     @Nullable
-    BigDecimal getPriceValue(Cell currentCell) throws ParseException {
+    BigDecimal getPriceValue(Cell currentCell) {
         Double doubleValue = getDoubleValue(currentCell);
         if (doubleValue == null) {
             return null;
@@ -85,7 +79,7 @@ public abstract class ExcelImporter<T> extends Importer<T> {
     }
 
     @Nullable
-    Double getDoubleValue(Cell currentCell) throws ParseException {
+    Double getDoubleValue(Cell currentCell) {
         if (CellType.NUMERIC.equals(currentCell.getCellTypeEnum())) {
             return currentCell.getNumericCellValue();
         }

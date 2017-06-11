@@ -1,7 +1,6 @@
 package io.github.zwieback.relef.services;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,8 +12,6 @@ import java.util.UUID;
 
 @Service
 public class UrlBuilder {
-
-    private static final Logger log = LogManager.getLogger(UrlBuilder.class);
 
     private final DateTimeService dateTimeService;
 
@@ -95,14 +92,10 @@ public class UrlBuilder {
         return buildUrl(relativeUrl, false);
     }
 
+    @SneakyThrows(URISyntaxException.class)
     @NotNull
     private String buildUrl(String relativeUrl, boolean addPostfixDelimiter) {
         String path = domainUrl + relativeUrl + (addPostfixDelimiter ? "/" : "");
-        try {
-            return new URI(path).normalize().toString();
-        } catch (URISyntaxException e) {
-            log.error(e.getMessage(), e);
-            throw new IllegalArgumentException(e.getMessage(), e);
-        }
+        return new URI(path).normalize().toString();
     }
 }

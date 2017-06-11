@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,8 +48,8 @@ public class FileServiceTest {
         assertTrue(Files.exists(Paths.get(tempFile)));
     }
 
-    @Test(expected = UncheckedIOException.class)
-    public void test_writeDocument_should_throws_exception() throws IOException {
+    @Test(expected = IOException.class)
+    public void test_writeDocument_should_throws_exception() {
         fileService.writeDocument(buildEmptyDocument(), INCORRECT_FILE_NAME);
     }
 
