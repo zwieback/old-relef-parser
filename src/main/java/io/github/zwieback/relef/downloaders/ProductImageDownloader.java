@@ -7,6 +7,7 @@ import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.repositories.ProductRepository;
 import io.github.zwieback.relef.services.FileService;
+import io.github.zwieback.relef.services.StringService;
 import io.github.zwieback.relef.services.UrlBuilder;
 import io.github.zwieback.relef.web.rest.services.RestService;
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +25,7 @@ import java.nio.file.Paths;
 public class ProductImageDownloader extends ImageDownloader<Product> {
 
     private final ProductRepository productRepository;
+    private final StringService stringService;
     private final NameProcessor nameProcessor;
     private final UrlBuilder urlBuilder;
 
@@ -34,11 +36,13 @@ public class ProductImageDownloader extends ImageDownloader<Product> {
     public ProductImageDownloader(RestService restService,
                                   FileService fileService,
                                   ProductRepository productRepository,
+                                  StringService stringService,
                                   NameProcessor nameProcessor,
                                   NameExporter nameExporter,
                                   UrlBuilder urlBuilder) {
         super(restService, fileService, nameProcessor, nameExporter);
         this.productRepository = productRepository;
+        this.stringService = stringService;
         this.nameProcessor = nameProcessor;
         this.urlBuilder = urlBuilder;
     }
@@ -83,7 +87,9 @@ public class ProductImageDownloader extends ImageDownloader<Product> {
     @NotNull
     @Override
     String getEntityCatalog(Product entity) {
-        return Paths.get("relef", getCatalogPath(entity.getCatalog())).toString();
+        String catalogPath = getCatalogPath(entity.getCatalog());
+        String normalizedPath = stringService.normalizeWindowsPath(catalogPath);
+        return Paths.get("relef", normalizedPath).toString();
     }
 
     @NotNull

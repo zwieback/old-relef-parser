@@ -6,6 +6,7 @@ import io.github.zwieback.relef.downloaders.samson.SamsonProductDataProvider;
 import io.github.zwieback.relef.entities.dto.samson.SamsonProductDto;
 import io.github.zwieback.relef.importers.excel.SamsonProductImporter;
 import io.github.zwieback.relef.services.FileService;
+import io.github.zwieback.relef.services.StringService;
 import io.github.zwieback.relef.web.rest.services.RestService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +22,7 @@ import java.util.List;
 public class SamsonProductImageDownloader extends ImageDownloader<SamsonProductDto> {
 
     private final SamsonProductImporter productImporter;
+    private final StringService stringService;
     private final NameProcessor nameProcessor;
 
     private SamsonProductDataProvider dataProvider;
@@ -30,11 +32,13 @@ public class SamsonProductImageDownloader extends ImageDownloader<SamsonProductD
     public SamsonProductImageDownloader(RestService restService,
                                         FileService fileService,
                                         SamsonProductImporter productImporter,
+                                        StringService stringService,
                                         NameProcessor nameProcessor,
                                         NameExporter nameExporter) {
         super(restService, fileService, nameProcessor, nameExporter);
         this.productImporter = productImporter;
         this.nameProcessor = nameProcessor;
+        this.stringService = stringService;
     }
 
     @Override
@@ -75,7 +79,8 @@ public class SamsonProductImageDownloader extends ImageDownloader<SamsonProductD
     @NotNull
     @Override
     String getEntityCatalog(SamsonProductDto entity) {
-        return Paths.get("samson", entity.getCatalog()).toString();
+        String normalizedPath = stringService.normalizeWindowsPath(entity.getCatalog());
+        return Paths.get("samson", normalizedPath).toString();
     }
 
     /**
