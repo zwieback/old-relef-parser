@@ -3,11 +3,14 @@ package io.github.zwieback.relef.downloaders;
 import com.google.common.io.Files;
 import io.github.zwieback.relef.downloaders.exporters.NameExporter;
 import io.github.zwieback.relef.downloaders.processors.NameProcessor;
+import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.repositories.ProductRepository;
 import io.github.zwieback.relef.services.FileService;
+import io.github.zwieback.relef.services.StringService;
 import io.github.zwieback.relef.services.UrlBuilder;
 import io.github.zwieback.relef.web.rest.services.RestService;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,18 +19,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.file.Paths;
 
 @Service
-public class ProductImageDownloader extends Downloader<Product> {
+public class ProductImageDownloader extends ImageDownloader<Product> {
 
     private final ProductRepository productRepository;
+    private final StringService stringService;
     private final NameProcessor nameProcessor;
-    private final NameExporter nameExporter;
     private final UrlBuilder urlBuilder;
-
-    private final Map<String, String> names;
 
     @Value("${site.domain}")
     private String domainUrl;
@@ -36,41 +36,26 @@ public class ProductImageDownloader extends Downloader<Product> {
     public ProductImageDownloader(RestService restService,
                                   FileService fileService,
                                   ProductRepository productRepository,
+                                  StringService stringService,
                                   NameProcessor nameProcessor,
                                   NameExporter nameExporter,
                                   UrlBuilder urlBuilder) {
-        super(restService, fileService);
+        super(restService, fileService, nameProcessor, nameExporter);
         this.productRepository = productRepository;
+        this.stringService = stringService;
         this.nameProcessor = nameProcessor;
-        this.nameExporter = nameExporter;
         this.urlBuilder = urlBuilder;
-
-        this.names = new HashMap<>();
-    }
-
-    @Override
-    public void download() {
-        super.download();
-        nameExporter.export(names);
-    }
-
-    @Override
-    boolean downloadEntity(Product entity) {
-        boolean downloaded = super.downloadEntity(entity);
-        if (!StringUtils.isEmpty(entity.getName())) {
-            if (downloaded) {
-                names.put(nameProcessor.getProcessedFileName(entity.getName()),
-                        nameProcessor.getProcessedName(entity.getName()));
-            } else {
-                names.remove(entity.getName());
-            }
-        }
-        return downloaded;
     }
 
     @Override
     Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
+    }
+
+    @Nullable
+    @Override
+    String getEntityName(Product entity) {
+        return entity.getName();
     }
 
     @Nullable
@@ -97,5 +82,21 @@ public class ProductImageDownloader extends Downloader<Product> {
             extension = StringUtils.isEmpty(extension) ? "" : "." + extension;
         }
         return nameProcessor.getProcessedFileName(entity.getName()) + extension;
+    }
+
+    @NotNull
+    @Override
+    String getEntityCatalog(Product entity) {
+        String catalogPath = getCatalogPath(entity.getCatalog());
+        String normalizedPath = stringService.normalizeWindowsPath(catalogPath);
+        return Paths.get("relef", normalizedPath).toString();
+    }
+
+    @NotNull
+    private String getCatalogPath(@Nullable Catalog catalog) {
+        if (catalog == null) {
+            return "";
+        }
+        return Paths.get(getCatalogPath(catalog.getParent()), catalog.getName()).toString();
     }
 }

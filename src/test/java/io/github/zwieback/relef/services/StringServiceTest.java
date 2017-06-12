@@ -23,6 +23,8 @@ public class StringServiceTest {
     private static final String DIRTY_STRING = "\u00A0" + EXPECTED_STRING;
     private static final String SPECIAL_CHARS_IN_STRING = EXPECTED_STRING + "~!@#$%^&*()_+|{}:\"<>?№;-=\\[]',./";
     private static final String REPLACED_BY_UNDERSCORES_STRING = EXPECTED_STRING + "________________________________";
+    private static final String WINDOWS_PATH_WITH_SPECIAL_CHARS = EXPECTED_STRING + "|<>:\"/\\|?*";
+    private static final String NORMALIZED_WINDOWS_PATH = EXPECTED_STRING + "__________";
     private static final Long SOURCE_OBJECT = 100L;
 
     @SuppressWarnings("unused")
@@ -51,6 +53,18 @@ public class StringServiceTest {
     public void test_replaceSpecialCharsByUnderscore_should_return_same_string() {
         String cleaned = stringService.replaceSpecialCharsByUnderscore(EXPECTED_STRING);
         assertEquals(EXPECTED_STRING, cleaned);
+    }
+
+    @Test
+    public void test_normalizeWindowsPath_should_normalize_path() {
+        String normalized = stringService.normalizeWindowsPath(WINDOWS_PATH_WITH_SPECIAL_CHARS);
+        assertEquals(NORMALIZED_WINDOWS_PATH, normalized);
+    }
+
+    @Test
+    public void test_normalizeWindowsPath_should_return_same_string() {
+        String normalized = stringService.normalizeWindowsPath(EXPECTED_STRING);
+        assertEquals(EXPECTED_STRING, normalized);
     }
 
     @Test
