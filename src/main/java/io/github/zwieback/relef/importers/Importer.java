@@ -9,12 +9,12 @@ import java.util.Objects;
 
 public abstract class Importer<T> {
 
-    protected String fileName;
+    private final String fileName;
 
     @Value("${import.path}")
     private String importPath;
 
-    public void setFileName(String fileName) {
+    protected Importer(String fileName) {
         Objects.requireNonNull(fileName);
         this.fileName = fileName;
     }
@@ -24,5 +24,9 @@ public abstract class Importer<T> {
     @NotNull
     protected String buildFileName(@NotNull String fileName) {
         return importPath + File.separator + fileName;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 }

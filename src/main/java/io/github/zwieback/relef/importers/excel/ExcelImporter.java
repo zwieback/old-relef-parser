@@ -24,13 +24,14 @@ public abstract class ExcelImporter<T> extends Importer<T> {
 
     private final StringService stringService;
 
-    ExcelImporter(StringService stringService) {
+    ExcelImporter(StringService stringService, String fileName) {
+        super(fileName);
         this.stringService = stringService;
     }
 
     @Override
     public List<T> doImport() {
-        try (FileInputStream excelFile = new FileInputStream(buildFileName(fileName))) {
+        try (FileInputStream excelFile = new FileInputStream(buildFileName(getFileName()))) {
             Workbook workbook = new XSSFWorkbook(excelFile);
             log.info(String.format("Number of sheets = %d", workbook.getNumberOfSheets()));
             Sheet sheet = workbook.getSheetAt(getDataSheetNumber());

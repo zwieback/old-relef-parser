@@ -21,24 +21,23 @@ import java.util.List;
 @Service
 public class SamsonProductImageDownloader extends ImageDownloader<SamsonProductDto> {
 
-    private final SamsonProductImporter productImporter;
-    private final StringService stringService;
     private final NameProcessor nameProcessor;
+    private final StringService stringService;
+    private final SamsonProductImporter productImporter;
 
     private SamsonProductDataProvider dataProvider;
-    private String importFileName;
 
     @Autowired
     public SamsonProductImageDownloader(RestService restService,
                                         FileService fileService,
-                                        SamsonProductImporter productImporter,
-                                        StringService stringService,
                                         NameProcessor nameProcessor,
-                                        NameExporter nameExporter) {
+                                        NameExporter nameExporter,
+                                        StringService stringService,
+                                        SamsonProductImporter productImporter) {
         super(restService, fileService, nameProcessor, nameExporter);
-        this.productImporter = productImporter;
         this.nameProcessor = nameProcessor;
         this.stringService = stringService;
+        this.productImporter = productImporter;
     }
 
     @Override
@@ -48,7 +47,6 @@ public class SamsonProductImageDownloader extends ImageDownloader<SamsonProductD
     }
 
     private void importProducts() {
-        productImporter.setFileName(importFileName);
         List<SamsonProductDto> products = productImporter.doImport();
         dataProvider = new SamsonProductDataProvider(products);
     }
@@ -81,14 +79,5 @@ public class SamsonProductImageDownloader extends ImageDownloader<SamsonProductD
     String getEntityCatalog(SamsonProductDto entity) {
         String normalizedPath = stringService.normalizeWindowsPath(entity.getCatalog());
         return Paths.get("samson", normalizedPath).toString();
-    }
-
-    /**
-     * For SamsonProductImporter only.
-     *
-     * @param importFileName source file name for product imports
-     */
-    void setImportFileName(String importFileName) {
-        this.importFileName = importFileName;
     }
 }

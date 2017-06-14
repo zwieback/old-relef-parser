@@ -4,16 +4,16 @@ import java.util.Objects;
 
 public abstract class Analyzer {
 
-    public abstract void analyze();
+    private final String fileName;
 
-    private String fileName;
+    Analyzer(String fileName) {
+        Objects.requireNonNull(fileName);
+        this.fileName = fileName;
+    }
+
+    public abstract void analyze();
 
     public String getFileName() {
         return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        Objects.requireNonNull(fileName);
-        this.fileName = fileName;
     }
 }

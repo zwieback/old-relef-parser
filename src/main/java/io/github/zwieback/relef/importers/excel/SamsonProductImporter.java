@@ -19,8 +19,8 @@ public class SamsonProductImporter extends ExcelImporter<SamsonProductDto> {
     private String lastCatalog = "undefined";
 
     @Autowired
-    public SamsonProductImporter(StringService stringService) {
-        super(stringService);
+    public SamsonProductImporter(StringService stringService, String fileName) {
+        super(stringService, fileName);
     }
 
     @Override
