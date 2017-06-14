@@ -31,6 +31,6 @@ public class AnalyzerConfig {
     @Lazy
     public MsProductAnalyzer msProductAnalyzer(String fileName) {
         MsProductImporter msProductImporter = beanFactory.getBean(MsProductImporter.class, fileName);
-        return new MsProductAnalyzer(fileName, jdbcTemplate, productRepository, msProductImporter);
+        return new MsProductAnalyzer(jdbcTemplate, productRepository, msProductImporter);
     }
 }

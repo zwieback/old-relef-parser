@@ -30,8 +30,8 @@ public class ImporterFactory {
      * @return list of importers specified in the command line
      * @throws IllegalArgumentException if no importer found
      */
-    public List<Importer> determineImportersByCommandLine(CommandLine cmd) {
-        List<Importer> importers = new ArrayList<>();
+    public List<Importer<?>> determineImportersByCommandLine(CommandLine cmd) {
+        List<Importer<?>> importers = new ArrayList<>();
         if (cmd.hasOption(OPTION_IMPORT_MY_SKLAD_PRODUCT)) {
             String fileName = cmd.getOptionValue(OPTION_IMPORT_MY_SKLAD_PRODUCT);
             importers.add(beanFactory.getBean(MsProductImporter.class, fileName));
