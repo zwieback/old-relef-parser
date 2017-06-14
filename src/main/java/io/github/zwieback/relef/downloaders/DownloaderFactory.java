@@ -24,8 +24,8 @@ public class DownloaderFactory {
         this.productImageDownloader = productImageDownloader;
     }
 
-    public List<Downloader> determineDownloadersByCommandLine(CommandLine cmd) {
-        List<Downloader> downloaders = new ArrayList<>();
+    public List<Downloader<?>> determineDownloadersByCommandLine(CommandLine cmd) {
+        List<Downloader<?>> downloaders = new ArrayList<>();
         if (cmd.hasOption(OPTION_DOWNLOAD_PRODUCT_IMAGE)) {
             downloaders.add(productImageDownloader);
         }
