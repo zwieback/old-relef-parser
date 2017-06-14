@@ -38,7 +38,6 @@ public class MsProductAnalyzer extends Analyzer {
 
     @Override
     public void analyze() {
-        msProductImporter.setFileName(this.getFileName());
         List<MsProductDto> entities = msProductImporter.doImport();
         log.info(String.format("Number of product from MySklad = %d", entities.size()));
         analyzeMatchingByNames(entities);

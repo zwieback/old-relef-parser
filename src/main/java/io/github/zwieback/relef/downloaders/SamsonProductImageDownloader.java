@@ -24,7 +24,6 @@ public class SamsonProductImageDownloader extends ImageDownloader<SamsonProductD
     private final NameProcessor nameProcessor;
     private final StringService stringService;
     private final SamsonProductImporter productImporter;
-    private final String importFileName;
 
     private SamsonProductDataProvider dataProvider;
 
@@ -34,13 +33,11 @@ public class SamsonProductImageDownloader extends ImageDownloader<SamsonProductD
                                         NameProcessor nameProcessor,
                                         NameExporter nameExporter,
                                         StringService stringService,
-                                        SamsonProductImporter productImporter,
-                                        String importFileName) {
+                                        SamsonProductImporter productImporter) {
         super(restService, fileService, nameProcessor, nameExporter);
         this.nameProcessor = nameProcessor;
         this.stringService = stringService;
         this.productImporter = productImporter;
-        this.importFileName = importFileName;
     }
 
     @Override
@@ -50,7 +47,6 @@ public class SamsonProductImageDownloader extends ImageDownloader<SamsonProductD
     }
 
     private void importProducts() {
-        productImporter.setFileName(importFileName);
         List<SamsonProductDto> products = productImporter.doImport();
         dataProvider = new SamsonProductDataProvider(products);
     }

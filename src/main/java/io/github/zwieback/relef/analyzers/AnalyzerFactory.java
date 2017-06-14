@@ -31,8 +31,7 @@ public class AnalyzerFactory {
         List<Analyzer> analyzers = new ArrayList<>();
         if (cmd.hasOption(OPTION_ANALYZE_MY_SKLAD_PRODUCT)) {
             String fileName = cmd.getOptionValue(OPTION_ANALYZE_MY_SKLAD_PRODUCT);
-            MsProductAnalyzer msProductAnalyzer = beanFactory.getBean(MsProductAnalyzer.class, fileName);
-            analyzers.add(msProductAnalyzer);
+            analyzers.add(beanFactory.getBean(MsProductAnalyzer.class, fileName));
         }
         if (analyzers.isEmpty()) {
             throw new IllegalArgumentException("No analyzer found");
