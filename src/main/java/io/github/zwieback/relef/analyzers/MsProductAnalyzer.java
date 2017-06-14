@@ -26,9 +26,11 @@ public class MsProductAnalyzer extends Analyzer {
     private final MsProductImporter msProductImporter;
 
     @Autowired
-    public MsProductAnalyzer(JdbcTemplate jdbcTemplate,
+    public MsProductAnalyzer(String fileName,
+                             JdbcTemplate jdbcTemplate,
                              ProductRepository productRepository,
                              MsProductImporter msProductImporter) {
+        super(fileName);
         this.jdbcTemplate = jdbcTemplate;
         this.productRepository = productRepository;
         this.msProductImporter = msProductImporter;

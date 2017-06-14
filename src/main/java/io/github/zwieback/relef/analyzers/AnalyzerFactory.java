@@ -1,6 +1,7 @@
 package io.github.zwieback.relef.analyzers;
 
 import org.apache.commons.cli.CommandLine;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,11 @@ import static io.github.zwieback.relef.services.CommandLineService.OPTION_ANALYZ
 @Service
 public class AnalyzerFactory {
 
-    private final MsProductAnalyzer msProductAnalyzer;
+    private final BeanFactory beanFactory;
 
     @Autowired
-    public AnalyzerFactory(MsProductAnalyzer msProductAnalyzer) {
-        this.msProductAnalyzer = msProductAnalyzer;
+    public AnalyzerFactory(BeanFactory beanFactory) {
+        this.beanFactory = beanFactory;
     }
 
     /**
@@ -29,7 +30,8 @@ public class AnalyzerFactory {
     public List<Analyzer> determineImportersByCommandLine(CommandLine cmd) {
         List<Analyzer> analyzers = new ArrayList<>();
         if (cmd.hasOption(OPTION_ANALYZE_MY_SKLAD_PRODUCT)) {
-            msProductAnalyzer.setFileName(cmd.getOptionValue(OPTION_ANALYZE_MY_SKLAD_PRODUCT));
+            String fileName = cmd.getOptionValue(OPTION_ANALYZE_MY_SKLAD_PRODUCT);
+            MsProductAnalyzer msProductAnalyzer = beanFactory.getBean(MsProductAnalyzer.class, fileName);
             analyzers.add(msProductAnalyzer);
         }
         if (analyzers.isEmpty()) {
