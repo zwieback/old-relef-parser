@@ -28,7 +28,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "  m.name," +
             "  tm.name," +
             "  p.weight," +
-            "  p.volume" +
+            "  p.volume," +
+            "  'http://relefopt.ru/getimage.php?guid=' || p.xmlId as photo_url" +
             ")" +
             "  from Product p" +
             "    inner join p.catalog c4" +
