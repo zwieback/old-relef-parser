@@ -95,6 +95,10 @@ public class MsProductDto {
     @Nullable
     private String modificationCode;
 
+    // URL на изображение
+    @Nullable
+    private String photoUrl;
+
     public MsProductDto() {
     }
 
@@ -110,7 +114,8 @@ public class MsProductDto {
                         @Nullable String manufacturer,
                         @Nullable String provider,
                         @Nullable Double weight,
-                        @Nullable Double volume) {
+                        @Nullable Double volume,
+                        @Nullable String photoUrl) {
         this.catalogName = catalogName;
         this.code = code;
         this.article = article;
@@ -124,6 +129,7 @@ public class MsProductDto {
         this.provider = provider;
         this.weight = weight;
         this.volume = volume;
+        this.photoUrl = photoUrl;
     }
 
     @Nullable
@@ -346,6 +352,16 @@ public class MsProductDto {
         return this;
     }
 
+    @Nullable
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public MsProductDto setPhotoUrl(@Nullable String photoUrl) {
+        this.photoUrl = photoUrl;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -372,14 +388,15 @@ public class MsProductDto {
                 Objects.equals(weight, that.weight) &&
                 Objects.equals(volume, that.volume) &&
                 Objects.equals(archival, that.archival) &&
-                Objects.equals(modificationCode, that.modificationCode);
+                Objects.equals(modificationCode, that.modificationCode) &&
+                Objects.equals(photoUrl, that.photoUrl);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(catalogName, code, externalCode, article, name, description, unit, sellingPrice,
                 oldPrice, newPrice, minPrice, purchasePrice, barcodeEan13, barcodeEan8, barcodeCode128,
-                manufacturerCountry, manufacturer, provider, weight, volume, archival, modificationCode);
+                manufacturerCountry, manufacturer, provider, weight, volume, archival, modificationCode, photoUrl);
     }
 
     @Override
@@ -407,6 +424,7 @@ public class MsProductDto {
                 ", volume=" + volume +
                 ", archival=" + archival +
                 ", modificationCode='" + modificationCode + '\'' +
+                ", photoUrl='" + photoUrl + '\'' +
                 '}';
     }
 }
