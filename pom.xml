@@ -270,7 +270,7 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>${file.encoding}</encoding>
-                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <compilerArgument>-Xlint:all,-processing</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
                 </configuration>
