@@ -55,7 +55,8 @@ public class MsProductXlsxConverter extends AbstractXlsxConverter<MsProductDto> 
                 .header("Вес").setColumnWidth(10)
                 .header("Объем").setColumnWidth(10)
                 .header("Код модификации").setColumnWidth(10)
-                .header("Производитель").setColumnWidth(10);
+                .header("Производитель").setColumnWidth(10)
+                .header("Ссылка на изображение").setColumnWidth(10);
     }
 
     @Override
@@ -89,6 +90,7 @@ public class MsProductXlsxConverter extends AbstractXlsxConverter<MsProductDto> 
                 .text(stringService.defaultString(product.getWeight()))
                 .text(stringService.defaultString(product.getVolume()))
                 .text(stringService.defaultString(product.getModificationCode()))
-                .text(stringService.defaultString(product.getManufacturer()));
+                .text(stringService.defaultString(product.getManufacturer()))
+                .text(stringService.defaultString(product.getPhotoUrl()));
     }
 }

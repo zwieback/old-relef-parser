@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 public class StringService {
 
     private static final Pattern SPECIAL_CHARS = Pattern.compile("\\W");
+    private static final Pattern WINDOWS_PATH_SPECIAL_CHARS = Pattern.compile("[<>:\"/\\\\|?*]");
     private static final String UNDERSCORE = "_";
 
     private final NumberFormat numberFormat;
@@ -49,6 +50,17 @@ public class StringService {
      */
     public String replaceSpecialCharsByUnderscore(String source) {
         return SPECIAL_CHARS.matcher(source).replaceAll(UNDERSCORE);
+    }
+
+    /**
+     * Read the <a href="https://msdn.microsoft.com/ru-ru/library/windows/desktop/aa365247(v=vs.85).aspx">Naming
+     * Files, Paths, and Namespaces</a> for details.
+     *
+     * @param path source path
+     * @return normalized path (for Windows)
+     */
+    public String normalizeWindowsPath(String path) {
+        return WINDOWS_PATH_SPECIAL_CHARS.matcher(path).replaceAll(UNDERSCORE);
     }
 
     /**

@@ -1,6 +1,7 @@
 package io.github.zwieback.relef.downloaders;
 
 import org.apache.commons.cli.CommandLine;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,24 +14,24 @@ import static io.github.zwieback.relef.services.CommandLineService.OPTION_DOWNLO
 @Service
 public class DownloaderFactory {
 
+    private final BeanFactory beanFactory;
     private final ProductImageDownloader productImageDownloader;
-    private final SamsonProductImageDownloader samsonProductImageDownloader;
 
     @Autowired
-    public DownloaderFactory(ProductImageDownloader productImageDownloader,
-                             SamsonProductImageDownloader samsonProductImageDownloader) {
+    public DownloaderFactory(BeanFactory beanFactory,
+                             ProductImageDownloader productImageDownloader) {
+        this.beanFactory = beanFactory;
         this.productImageDownloader = productImageDownloader;
-        this.samsonProductImageDownloader = samsonProductImageDownloader;
     }
 
-    public List<Downloader> determineDownloadersByCommandLine(CommandLine cmd) {
-        List<Downloader> downloaders = new ArrayList<>();
+    public List<Downloader<?>> determineDownloadersByCommandLine(CommandLine cmd) {
+        List<Downloader<?>> downloaders = new ArrayList<>();
         if (cmd.hasOption(OPTION_DOWNLOAD_PRODUCT_IMAGE)) {
             downloaders.add(productImageDownloader);
         }
         if (cmd.hasOption(OPTION_DOWNLOAD_SAMSON_PRODUCT_IMAGE)) {
-            samsonProductImageDownloader.setImportFileName(cmd.getOptionValue(OPTION_DOWNLOAD_SAMSON_PRODUCT_IMAGE));
-            downloaders.add(samsonProductImageDownloader);
+            String importFileName = cmd.getOptionValue(OPTION_DOWNLOAD_SAMSON_PRODUCT_IMAGE);
+            downloaders.add(beanFactory.getBean(SamsonProductImageDownloader.class, importFileName));
         }
         if (downloaders.isEmpty()) {
             throw new IllegalArgumentException("No downloader found");

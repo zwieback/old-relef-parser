@@ -89,7 +89,7 @@ public class Application {
         log.info("Download started...");
         try {
             DownloaderFactory downloaderFactory = context.getBean(DownloaderFactory.class);
-            List<Downloader> downloaders = downloaderFactory.determineDownloadersByCommandLine(cmd);
+            List<Downloader<?>> downloaders = downloaderFactory.determineDownloadersByCommandLine(cmd);
             downloaders.forEach(downloader -> {
                 log.info("Started " + downloader.getClass().getSimpleName() + " download");
                 downloader.download();

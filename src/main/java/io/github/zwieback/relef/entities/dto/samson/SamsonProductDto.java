@@ -8,6 +8,10 @@ public class SamsonProductDto {
 
     // Наименование
     @NotNull
+    private String catalog = "";
+
+    // Наименование
+    @NotNull
     private String name = "";
 
     // Ссылка на изображение

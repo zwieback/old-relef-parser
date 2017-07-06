@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 public class MsProductImporter extends ExcelImporter<MsProductDto> {
 
     @Autowired
-    public MsProductImporter(StringService stringService) {
-        super(stringService);
+    public MsProductImporter(StringService stringService, String fileName) {
+        super(stringService, fileName);
     }
 
     @Override

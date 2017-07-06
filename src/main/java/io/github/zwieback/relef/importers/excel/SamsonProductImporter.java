@@ -14,11 +14,13 @@ import org.springframework.util.StringUtils;
 @Service
 public class SamsonProductImporter extends ExcelImporter<SamsonProductDto> {
 
-    private static int MAX_CELL_NUMBER = 2;
+    private static final int MAX_CELL_NUMBER = 2;
+
+    private String lastCatalog = "undefined";
 
     @Autowired
-    public SamsonProductImporter(StringService stringService) {
-        super(stringService);
+    public SamsonProductImporter(StringService stringService, String fileName) {
+        super(stringService, fileName);
     }
 
     @Override
@@ -49,6 +51,9 @@ public class SamsonProductImporter extends ExcelImporter<SamsonProductDto> {
                     // Ссылка на изображение
                     String photoUrl = determinePhotoUrl(currentCell);
                     if (StringUtils.isEmpty(photoUrl)) {
+                        // in this case, the catalog doesn't have a photo URL,
+                        // so the name is the name of the catalog, not the entity
+                        lastCatalog = result.getName();
                         return null;
                     }
                     result.setPhotoUrl(photoUrl);
@@ -62,6 +67,7 @@ public class SamsonProductImporter extends ExcelImporter<SamsonProductDto> {
                 break;
             }
         }
+        result.setCatalog(lastCatalog);
         return result;
     }
 

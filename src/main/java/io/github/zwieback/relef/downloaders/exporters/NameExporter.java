@@ -11,7 +11,6 @@ import org.supercsv.io.ICsvListWriter;
 import org.supercsv.prefs.CsvPreference;
 import org.supercsv.quote.AlwaysQuoteMode;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
@@ -39,8 +38,8 @@ public class NameExporter {
     }
 
     @SneakyThrows(IOException.class)
-    public void export(Map<String, String> names) {
-        @Cleanup ICsvListWriter writer = new CsvListWriter(buildWriter(), buildCsvPreference());
+    public void export(String path, Map<String, String> names) {
+        @Cleanup ICsvListWriter writer = new CsvListWriter(buildWriter(path), buildCsvPreference());
         CellProcessor[] processors = buildProcessors();
         for (Map.Entry<String, String> nameEntry : names.entrySet()) {
             String processedName = nameEntry.getKey();
@@ -50,12 +49,12 @@ public class NameExporter {
     }
 
     @SneakyThrows(IOException.class)
-    private Writer buildWriter() {
-        return Files.newBufferedWriter(Paths.get(buildFileName()), defaultCharset);
+    private Writer buildWriter(String path) {
+        return Files.newBufferedWriter(Paths.get(buildFileName(path)), defaultCharset);
     }
 
-    private String buildFileName() {
-        return downloadPath + File.separator + downloadCsvNames;
+    private String buildFileName(String path) {
+        return Paths.get(downloadPath, path, downloadCsvNames).toString();
     }
 
     private CsvPreference buildCsvPreference() {

@@ -17,8 +17,8 @@ import java.util.List;
 public class MsProductAnalyzer extends Analyzer {
 
     private static final Logger log = LogManager.getLogger(MsProductAnalyzer.class);
-    private static double NAME_DISTANCE = 0.1;  // 10%, i.e. 90% of matching symbols
-    private static String NAME_DISTANCE_QUERY =
+    private static final double NAME_DISTANCE = 0.1;  // 10%, i.e. 90% of matching symbols
+    private static final String NAME_DISTANCE_QUERY =
             "SELECT id, name, name <-> ? AS dist FROM t_product ORDER BY dist LIMIT 1";
 
     private final JdbcTemplate jdbcTemplate;
@@ -36,7 +36,6 @@ public class MsProductAnalyzer extends Analyzer {
 
     @Override
     public void analyze() {
-        msProductImporter.setFileName(this.getFileName());
         List<MsProductDto> entities = msProductImporter.doImport();
         log.info(String.format("Number of product from MySklad = %d", entities.size()));
         analyzeMatchingByNames(entities);
