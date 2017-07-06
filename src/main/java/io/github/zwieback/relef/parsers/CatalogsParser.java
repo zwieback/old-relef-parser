@@ -4,8 +4,6 @@ import io.github.zwieback.relef.entities.Brand;
 import io.github.zwieback.relef.entities.Catalog;
 import io.github.zwieback.relef.entities.CatalogLevel;
 import io.github.zwieback.relef.services.UrlBuilder;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,8 +18,6 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class CatalogsParser {
-
-    private static final Logger log = LogManager.getLogger(CatalogsParser.class);
 
     private final InternalParser internalParser;
     private final UrlBuilder urlBuilder;

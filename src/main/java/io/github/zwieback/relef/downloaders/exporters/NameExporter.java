@@ -1,7 +1,7 @@
 package io.github.zwieback.relef.downloaders.exporters;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.supercsv.cellprocessor.constraint.NotNull;
@@ -12,7 +12,6 @@ import org.supercsv.prefs.CsvPreference;
 import org.supercsv.quote.AlwaysQuoteMode;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -22,8 +21,6 @@ import java.util.Map;
 
 @Service
 public class NameExporter {
-
-    private static final Logger log = LogManager.getLogger(NameExporter.class);
 
     private final Charset defaultCharset;
 
@@ -40,21 +37,19 @@ public class NameExporter {
         this.defaultCharset = defaultCharset;
     }
 
+    @SneakyThrows(IOException.class)
     public void export(String path, Map<String, String> names) {
-        try (ICsvListWriter writer = new CsvListWriter(buildWriter(path), buildCsvPreference())) {
-            CellProcessor[] processors = buildProcessors();
-            for (Map.Entry<String, String> nameEntry : names.entrySet()) {
-                String processedName = nameEntry.getKey();
-                String nativeName = nameEntry.getValue();
-                writer.write(Arrays.asList(processedName, nativeName), processors);
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            throw new UncheckedIOException(e.getMessage(), e);
+        @Cleanup ICsvListWriter writer = new CsvListWriter(buildWriter(path), buildCsvPreference());
+        CellProcessor[] processors = buildProcessors();
+        for (Map.Entry<String, String> nameEntry : names.entrySet()) {
+            String processedName = nameEntry.getKey();
+            String nativeName = nameEntry.getValue();
+            writer.write(Arrays.asList(processedName, nativeName), processors);
         }
     }
 
-    private Writer buildWriter(String path) throws IOException {
+    @SneakyThrows(IOException.class)
+    private Writer buildWriter(String path) {
         return Files.newBufferedWriter(Paths.get(buildFileName(path)), defaultCharset);
     }
 

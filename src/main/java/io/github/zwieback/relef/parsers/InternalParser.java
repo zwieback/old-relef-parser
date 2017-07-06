@@ -3,6 +3,7 @@ package io.github.zwieback.relef.parsers;
 import io.github.zwieback.relef.services.HeadersBuilder;
 import io.github.zwieback.relef.services.HeadersBuilder.Headers;
 import io.github.zwieback.relef.services.SleepService;
+import lombok.SneakyThrows;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 
 @Component
 public class InternalParser implements InitializingBean {
@@ -49,28 +49,24 @@ public class InternalParser implements InitializingBean {
      * @param headers request query headers
      * @return response
      */
+    @SneakyThrows(IOException.class)
     private Response parseUrl(String url, Method method, HeadersBuilder.Headers headers) {
         StopWatch watch = new StopWatch();
         watch.start();
 
         Response response;
-        try {
-            response = Jsoup.connect(url)
-                    .header(HttpHeaders.ACCEPT_ENCODING, GZIP_DEFLATE_ENCODING)
-                    .userAgent(userAgent)
-//                    .cookie("auth", "token")
-                    // The default maximum is 1048576 bytes (1MB). 0 is treated as an infinite amount
-                    .maxBodySize(0)
-                    // The default is 30_000 ms. Time before IOException is thrown. 0 is treated as an infinite timeout
-//                    .timeout(60_000)
-                    .data(headers)
-                    .method(method) // The default is GET
-//                    .ignoreHttpErrors(true)
-                    .execute();
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            throw new UncheckedIOException(e.getMessage(), e);
-        }
+        response = Jsoup.connect(url)
+                .header(HttpHeaders.ACCEPT_ENCODING, GZIP_DEFLATE_ENCODING)
+                .userAgent(userAgent)
+//                .cookie("auth", "token")
+                // The default maximum is 1048576 bytes (1MB). 0 is treated as an infinite amount
+                .maxBodySize(0)
+                // The default is 30_000 ms. Time before IOException is thrown. 0 is treated as an infinite timeout
+//                .timeout(60_000)
+                .data(headers)
+                .method(method) // The default is GET
+//                .ignoreHttpErrors(true)
+                .execute();
         watch.stop();
         sleepService.sleepIfNeeded(watch.getTotalTimeMillis());
         return response;
@@ -90,13 +86,9 @@ public class InternalParser implements InitializingBean {
         return parseResponse(response);
     }
 
+    @SneakyThrows(IOException.class)
     private static Document parseResponse(Response response) {
-        try {
-            return response.parse();
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            throw new UncheckedIOException(e.getMessage(), e);
-        }
+        return response.parse();
     }
 
     @NotNull

@@ -1,14 +1,12 @@
 package io.github.zwieback.relef.services;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,8 +14,6 @@ import java.nio.file.Paths;
 
 @Service
 public class FileService {
-
-    private static final Logger log = LogManager.getLogger(FileService.class);
 
     private final Charset defaultCharset;
 
@@ -30,17 +26,13 @@ public class FileService {
         writeBytes(document.toString().getBytes(defaultCharset), fileName);
     }
 
+    @SneakyThrows(IOException.class)
     public void writeBytes(byte[] bytes, String fileName) {
-        try {
-            Path parentDir = Paths.get(fileName).getParent();
-            if (parentDir != null && !Files.exists(parentDir)) {
-                Files.createDirectories(parentDir);
-            }
-            Files.write(Paths.get(fileName), bytes);
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            throw new UncheckedIOException(e.getMessage(), e);
+        Path parentDir = Paths.get(fileName).getParent();
+        if (parentDir != null && !Files.exists(parentDir)) {
+            Files.createDirectories(parentDir);
         }
+        Files.write(Paths.get(fileName), bytes);
     }
 
     /**

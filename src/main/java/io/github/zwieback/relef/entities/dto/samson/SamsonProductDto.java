@@ -1,7 +1,9 @@
 package io.github.zwieback.relef.entities.dto.samson;
 
+import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
+@Data
 public class SamsonProductDto {
 
     // Наименование
@@ -15,31 +17,4 @@ public class SamsonProductDto {
     // Ссылка на изображение
     @NotNull
     private String photoUrl = "";
-
-    @NotNull
-    public String getCatalog() {
-        return catalog;
-    }
-
-    public void setCatalog(@NotNull String catalog) {
-        this.catalog = catalog;
-    }
-
-    @NotNull
-    public String getName() {
-        return name;
-    }
-
-    public void setName(@NotNull String name) {
-        this.name = name;
-    }
-
-    @NotNull
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setPhotoUrl(@NotNull String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
 }

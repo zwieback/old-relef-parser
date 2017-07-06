@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -108,7 +109,7 @@ public class UrlBuilderTest {
         assertFalse(resultUrl.endsWith("/"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = URISyntaxException.class)
     public void test_buildQueryUrl_should_throw_exception() {
         urlBuilder.buildQueryUrl(INCORRECT_RELATIVE_URL);
     }

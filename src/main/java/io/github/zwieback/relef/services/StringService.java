@@ -1,5 +1,6 @@
 package io.github.zwieback.relef.services;
 
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,10 +99,10 @@ public class StringService {
      *
      * @param value source string value
      * @return parsed Double
-     * @throws ParseException if the beginning of the specified string cannot be parsed
      */
+    @SneakyThrows(ParseException.class)
     @Nullable
-    public Double parseToDouble(@Nullable String value) throws ParseException {
+    public Double parseToDouble(@Nullable String value) {
         if (StringUtils.isEmpty(value)) {
             return null;
         }

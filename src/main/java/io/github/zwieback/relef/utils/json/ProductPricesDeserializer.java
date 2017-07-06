@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import io.github.zwieback.relef.entities.dto.product.prices.ErrorDto;
 import io.github.zwieback.relef.entities.dto.product.prices.ProductDto;
 import io.github.zwieback.relef.entities.dto.product.prices.ProductPricesDto;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -29,10 +30,9 @@ public class ProductPricesDeserializer extends StdDeserializer<ProductPricesDto>
         super(ProductPricesDto.class);
     }
 
+    @SneakyThrows(IOException.class)
     @Override
-    public ProductPricesDto deserialize(JsonParser jsonParser, DeserializationContext context)
-            throws IOException {
-
+    public ProductPricesDto deserialize(JsonParser jsonParser, DeserializationContext context) {
         ObjectCodec objectCodec = jsonParser.getCodec();
         JsonNode rootNode = objectCodec.readTree(jsonParser);
 
@@ -45,15 +45,17 @@ public class ProductPricesDeserializer extends StdDeserializer<ProductPricesDto>
                 .setProductMap(parseProductMap(objectCodec, rootNode));
     }
 
+    @SneakyThrows(JsonProcessingException.class)
     @Nullable
-    private ErrorDto parseError(ObjectCodec objectCodec, JsonNode rootNode) throws JsonProcessingException {
+    private ErrorDto parseError(ObjectCodec objectCodec, JsonNode rootNode) {
         if (rootNode.has("error")) {
             return objectCodec.treeToValue(rootNode.path("error"), ErrorDto.class);
         }
         return null;
     }
 
-    private Map<Long, ProductDto> parseProductMap(ObjectCodec objectCodec, JsonNode rootNode) throws IOException {
+    @SneakyThrows(IOException.class)
+    private Map<Long, ProductDto> parseProductMap(ObjectCodec objectCodec, JsonNode rootNode) {
         if (rootNode.has("product")) {
             JsonNode productsNode = rootNode.path("product");
             if (productsNode.isObject()) {
@@ -64,8 +66,8 @@ public class ProductPricesDeserializer extends StdDeserializer<ProductPricesDto>
         return new LinkedHashMap<>();
     }
 
-    private Map<Long, ProductDto> alternativeWayToParseProductMap(ObjectCodec objectCodec, JsonNode rootNode)
-            throws IOException {
+    @SneakyThrows(IOException.class)
+    private Map<Long, ProductDto> alternativeWayToParseProductMap(ObjectCodec objectCodec, JsonNode rootNode) {
         Map<Long, ProductDto> productMap = new LinkedHashMap<>();
         if (rootNode.has("product")) {
             Iterator<Map.Entry<String, JsonNode>> iterator = rootNode.path("product").fields();

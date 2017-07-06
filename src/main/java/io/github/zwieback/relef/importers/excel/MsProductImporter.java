@@ -8,8 +8,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-
 @Service
 public class MsProductImporter extends ExcelImporter<MsProductDto> {
 
@@ -29,7 +27,7 @@ public class MsProductImporter extends ExcelImporter<MsProductDto> {
     }
 
     @Override
-    MsProductDto processRow(Row currentRow) throws ParseException {
+    MsProductDto processRow(Row currentRow) {
         MsProductDto result = new MsProductDto();
         int cellNumber = 0;
         for (Cell currentCell : currentRow) {

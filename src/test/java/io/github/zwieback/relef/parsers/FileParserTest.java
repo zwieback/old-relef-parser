@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
@@ -25,8 +24,8 @@ public class FileParserTest {
     private FileParser fileParser;
 
 
-    @Test(expected = UncheckedIOException.class)
-    public void test_parseInputStream_should_throws_exception() throws IOException {
+    @Test(expected = IOException.class)
+    public void test_parseInputStream_should_throws_exception() {
         fileParser.parseInputStream(getInputStreamThatThrowsIOException());
     }
 
