@@ -1,8 +1,8 @@
 package io.github.zwieback.relef.configs;
 
+import io.github.zwieback.relef.importers.excel.ExcelCellReader;
 import io.github.zwieback.relef.importers.excel.MsProductImporter;
 import io.github.zwieback.relef.importers.excel.SamsonProductImporter;
-import io.github.zwieback.relef.services.StringService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -16,11 +16,11 @@ import java.util.function.Function;
 @ComponentScan("io.github.zwieback.relef.importers")
 public class ImporterConfig {
 
-    private final StringService stringService;
+    private final ExcelCellReader excelCellReader;
 
     @Autowired
-    public ImporterConfig(StringService stringService) {
-        this.stringService = stringService;
+    public ImporterConfig(ExcelCellReader excelCellReader) {
+        this.excelCellReader = excelCellReader;
     }
 
     @Bean
@@ -36,12 +36,12 @@ public class ImporterConfig {
     @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     MsProductImporter msProductImporter(String fileName) {
-        return new MsProductImporter(stringService, fileName);
+        return new MsProductImporter(excelCellReader, fileName);
     }
 
     @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     SamsonProductImporter samsonProductImporter(String fileName) {
-        return new SamsonProductImporter(stringService, fileName);
+        return new SamsonProductImporter(excelCellReader, fileName);
     }
 }

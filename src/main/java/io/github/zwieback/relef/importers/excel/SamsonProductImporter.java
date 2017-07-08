@@ -1,12 +1,8 @@
 package io.github.zwieback.relef.importers.excel;
 
 import io.github.zwieback.relef.entities.dto.samson.SamsonProductDto;
-import io.github.zwieback.relef.services.StringService;
-import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.Row;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,8 +15,8 @@ public class SamsonProductImporter extends ExcelImporter<SamsonProductDto> {
     private String lastCatalog = "undefined";
 
     @Autowired
-    public SamsonProductImporter(StringService stringService, String fileName) {
-        super(stringService, fileName);
+    public SamsonProductImporter(ExcelCellReader excelCellReader, String fileName) {
+        super(excelCellReader, fileName);
     }
 
     @Override
@@ -41,7 +37,7 @@ public class SamsonProductImporter extends ExcelImporter<SamsonProductDto> {
             switch (cellNumber) {
                 case 1:
                     // Наименование
-                    String name = getStringValue(currentCell);
+                    String name = excelCellReader.readString(currentCell);
                     if (StringUtils.isEmpty(name)) {
                         return null;
                     }
@@ -49,7 +45,7 @@ public class SamsonProductImporter extends ExcelImporter<SamsonProductDto> {
                     break;
                 case 2:
                     // Ссылка на изображение
-                    String photoUrl = determinePhotoUrl(currentCell);
+                    String photoUrl = excelCellReader.readUrl(currentCell);
                     if (StringUtils.isEmpty(photoUrl)) {
                         // in this case, the catalog doesn't have a photo URL,
                         // so the name is the name of the catalog, not the entity
@@ -69,20 +65,5 @@ public class SamsonProductImporter extends ExcelImporter<SamsonProductDto> {
         }
         result.setCatalog(lastCatalog);
         return result;
-    }
-
-    @Nullable
-    private static String determinePhotoUrl(Cell cell) {
-        if (getStringValue(cell) == null) {
-            return null;
-        }
-        Hyperlink hyperlink = cell.getHyperlink();
-        if (hyperlink == null) {
-            return null;
-        }
-        if (HyperlinkType.URL != hyperlink.getTypeEnum()) {
-            return null;
-        }
-        return hyperlink.getAddress();
     }
 }
