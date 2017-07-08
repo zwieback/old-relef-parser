@@ -1,19 +1,17 @@
 package io.github.zwieback.relef.importers.excel;
 
 import io.github.zwieback.relef.importers.Importer;
-import io.github.zwieback.relef.services.StringService;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.jetbrains.annotations.Nullable;
-import org.springframework.util.StringUtils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,11 +20,11 @@ public abstract class ExcelImporter<T> extends Importer<T> {
 
     private static final Logger log = LogManager.getLogger(ExcelImporter.class);
 
-    private final StringService stringService;
+    final ExcelCellReader excelCellReader;
 
-    ExcelImporter(StringService stringService, String fileName) {
+    ExcelImporter(ExcelCellReader excelCellReader, String fileName) {
         super(fileName);
-        this.stringService = stringService;
+        this.excelCellReader = excelCellReader;
     }
 
     @SneakyThrows(IOException.class)
@@ -60,44 +58,4 @@ public abstract class ExcelImporter<T> extends Importer<T> {
     }
 
     abstract T processRow(Row currentRow);
-
-    @Nullable
-    static String getStringValue(Cell currentCell) {
-        if (!CellType.STRING.equals(currentCell.getCellTypeEnum())
-                || StringUtils.isEmpty(currentCell.getStringCellValue())) {
-            return null;
-        }
-        return currentCell.getStringCellValue();
-    }
-
-    @Nullable
-    BigDecimal getPriceValue(Cell currentCell) {
-        Double doubleValue = getDoubleValue(currentCell);
-        if (doubleValue == null) {
-            return null;
-        }
-        return BigDecimal.valueOf(doubleValue);
-    }
-
-    @Nullable
-    Double getDoubleValue(Cell currentCell) {
-        if (CellType.NUMERIC.equals(currentCell.getCellTypeEnum())) {
-            return currentCell.getNumericCellValue();
-        }
-        if (CellType.STRING.equals(currentCell.getCellTypeEnum())) {
-            return stringService.parseToDouble(currentCell.getStringCellValue());
-        }
-        return null;
-    }
-
-    @Nullable
-    Boolean getBooleanValue(Cell currentCell) {
-        if (CellType.BOOLEAN.equals(currentCell.getCellTypeEnum())) {
-            return currentCell.getBooleanCellValue();
-        }
-        if (CellType.STRING.equals(currentCell.getCellTypeEnum())) {
-            return stringService.parseToBoolean(currentCell.getStringCellValue());
-        }
-        return null;
-    }
 }

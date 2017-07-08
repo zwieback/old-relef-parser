@@ -1,7 +1,6 @@
 package io.github.zwieback.relef.importers.excel;
 
 import io.github.zwieback.relef.entities.dto.my.sklad.MsProductDto;
-import io.github.zwieback.relef.services.StringService;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Service;
 public class MsProductImporter extends ExcelImporter<MsProductDto> {
 
     @Autowired
-    public MsProductImporter(StringService stringService, String fileName) {
-        super(stringService, fileName);
+    public MsProductImporter(ExcelCellReader excelCellReader, String fileName) {
+        super(excelCellReader, fileName);
     }
 
     @Override
@@ -38,52 +37,52 @@ public class MsProductImporter extends ExcelImporter<MsProductDto> {
             switch (cellNumber) {
                 case 0:
                     // Группы
-                    result.setCatalogName(getStringValue(currentCell));
+                    result.setCatalogName(excelCellReader.readString(currentCell));
                     break;
                 case 1:
                     // Код
-                    result.setCode(getStringValue(currentCell));
+                    result.setCode(excelCellReader.readString(currentCell));
                     break;
                 case 2:
                     // Наименование
-                    result.setName(getStringValue(currentCell));
+                    result.setName(excelCellReader.readString(currentCell));
                     break;
                 case 3:
                     // Внешний код
-                    result.setExternalCode(getStringValue(currentCell));
+                    result.setExternalCode(excelCellReader.readString(currentCell));
                     break;
                 case 4:
                     // Артикул
-                    result.setArticle(getStringValue(currentCell));
+                    result.setArticle(excelCellReader.readString(currentCell));
                     break;
                 case 5:
                     // Единица измерения
-                    result.setUnit(getStringValue(currentCell));
+                    result.setUnit(excelCellReader.readString(currentCell));
                     break;
                 case 6:
                     // Цена продажи
-                    result.setSellingPrice(getPriceValue(currentCell));
+                    result.setSellingPrice(excelCellReader.readPrice(currentCell));
                     break;
                 case 7:
                     // Валюта (Цена продажи)
                     break;
                 case 8:
                     // Старая Цена
-                    result.setOldPrice(getPriceValue(currentCell));
+                    result.setOldPrice(excelCellReader.readPrice(currentCell));
                     break;
                 case 9:
                     // Валюта (Старая Цена)
                     break;
                 case 10:
                     // Новая Цена
-                    result.setNewPrice(getPriceValue(currentCell));
+                    result.setNewPrice(excelCellReader.readPrice(currentCell));
                     break;
                 case 11:
                     // Валюта (Новая Цена)
                     break;
                 case 12:
                     // Закупочная цена
-                    result.setPurchasePrice(getPriceValue(currentCell));
+                    result.setPurchasePrice(excelCellReader.readPrice(currentCell));
                     break;
                 case 13:
                     // Валюта (Закупочная цена)
@@ -93,57 +92,57 @@ public class MsProductImporter extends ExcelImporter<MsProductDto> {
                     break;
                 case 15:
                     // Штрихкод EAN13
-                    result.setBarcodeEan13(getStringValue(currentCell));
+                    result.setBarcodeEan13(excelCellReader.readString(currentCell));
                     break;
                 case 16:
                     // Штрихкод EAN8
-                    result.setBarcodeEan8(getStringValue(currentCell));
+                    result.setBarcodeEan8(excelCellReader.readString(currentCell));
                     break;
                 case 17:
                     // Штрихкод Code128
-                    result.setBarcodeCode128(getStringValue(currentCell));
+                    result.setBarcodeCode128(excelCellReader.readString(currentCell));
                     break;
                 case 18:
                     // Описание
-                    result.setDescription(getStringValue(currentCell));
+                    result.setDescription(excelCellReader.readString(currentCell));
                     break;
                 case 19:
                     // Минимальная цена
-                    result.setMinPrice(getPriceValue(currentCell));
+                    result.setMinPrice(excelCellReader.readPrice(currentCell));
                     break;
                 case 20:
                     // Валюта (Минимальная цена)
                     break;
                 case 21:
                     // Страна
-                    result.setManufacturerCountry(getStringValue(currentCell));
+                    result.setManufacturerCountry(excelCellReader.readString(currentCell));
                     break;
                 case 22:
                     // НДС
                     break;
                 case 23:
                     // Поставщик
-                    result.setProvider(getStringValue(currentCell));
+                    result.setProvider(excelCellReader.readString(currentCell));
                     break;
                 case 24:
                     // Архивный
-                    result.setArchival(getBooleanValue(currentCell));
+                    result.setArchival(excelCellReader.readBoolean(currentCell));
                     break;
                 case 25:
                     // Вес
-                    result.setWeight(getDoubleValue(currentCell));
+                    result.setWeight(excelCellReader.readDouble(currentCell));
                     break;
                 case 26:
                     // Объем
-                    result.setVolume(getDoubleValue(currentCell));
+                    result.setVolume(excelCellReader.readDouble(currentCell));
                     break;
                 case 27:
                     // Код модификации
-                    result.setModificationCode(getStringValue(currentCell));
+                    result.setModificationCode(excelCellReader.readString(currentCell));
                     break;
                 case 28:
                     // Производитель
-                    result.setManufacturer(getStringValue(currentCell));
+                    result.setManufacturer(excelCellReader.readString(currentCell));
                     break;
                 default:
                     // Unaccounted field
