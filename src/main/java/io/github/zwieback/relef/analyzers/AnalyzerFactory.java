@@ -1,23 +1,23 @@
 package io.github.zwieback.relef.analyzers;
 
 import org.apache.commons.cli.CommandLine;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import static io.github.zwieback.relef.services.CommandLineService.OPTION_ANALYZE_MY_SKLAD_PRODUCT;
 
 @Service
 public class AnalyzerFactory {
 
-    private final BeanFactory beanFactory;
+    private final Function<String, MsProductAnalyzer> msProductAnalyzerFactory;
 
     @Autowired
-    public AnalyzerFactory(BeanFactory beanFactory) {
-        this.beanFactory = beanFactory;
+    public AnalyzerFactory(Function<String, MsProductAnalyzer> msProductAnalyzerFactory) {
+        this.msProductAnalyzerFactory = msProductAnalyzerFactory;
     }
 
     /**
@@ -31,7 +31,7 @@ public class AnalyzerFactory {
         List<Analyzer> analyzers = new ArrayList<>();
         if (cmd.hasOption(OPTION_ANALYZE_MY_SKLAD_PRODUCT)) {
             String fileName = cmd.getOptionValue(OPTION_ANALYZE_MY_SKLAD_PRODUCT);
-            analyzers.add(beanFactory.getBean(MsProductAnalyzer.class, fileName));
+            analyzers.add(msProductAnalyzerFactory.apply(fileName));
         }
         if (analyzers.isEmpty()) {
             throw new IllegalArgumentException("No analyzer found");

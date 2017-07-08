@@ -3,12 +3,12 @@ package io.github.zwieback.relef.importers;
 import io.github.zwieback.relef.importers.excel.MsProductImporter;
 import io.github.zwieback.relef.importers.excel.SamsonProductImporter;
 import org.apache.commons.cli.CommandLine;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import static io.github.zwieback.relef.services.CommandLineService.OPTION_IMPORT_MY_SKLAD_PRODUCT;
 import static io.github.zwieback.relef.services.CommandLineService.OPTION_IMPORT_SAMSON_PRODUCT;
@@ -16,11 +16,14 @@ import static io.github.zwieback.relef.services.CommandLineService.OPTION_IMPORT
 @Service
 public class ImporterFactory {
 
-    private final BeanFactory beanFactory;
+    private final Function<String, MsProductImporter> msProductImporterFactory;
+    private final Function<String, SamsonProductImporter> samsonProductImporterFactory;
 
     @Autowired
-    public ImporterFactory(BeanFactory beanFactory) {
-        this.beanFactory = beanFactory;
+    public ImporterFactory(Function<String, MsProductImporter> msProductImporterFactory,
+                           Function<String, SamsonProductImporter> samsonProductImporterFactory) {
+        this.msProductImporterFactory = msProductImporterFactory;
+        this.samsonProductImporterFactory = samsonProductImporterFactory;
     }
 
     /**
@@ -34,11 +37,11 @@ public class ImporterFactory {
         List<Importer<?>> importers = new ArrayList<>();
         if (cmd.hasOption(OPTION_IMPORT_MY_SKLAD_PRODUCT)) {
             String fileName = cmd.getOptionValue(OPTION_IMPORT_MY_SKLAD_PRODUCT);
-            importers.add(beanFactory.getBean(MsProductImporter.class, fileName));
+            importers.add(msProductImporterFactory.apply(fileName));
         }
         if (cmd.hasOption(OPTION_IMPORT_SAMSON_PRODUCT)) {
             String fileName = cmd.getOptionValue(OPTION_IMPORT_SAMSON_PRODUCT);
-            importers.add(beanFactory.getBean(SamsonProductImporter.class, fileName));
+            importers.add(samsonProductImporterFactory.apply(fileName));
         }
         if (importers.isEmpty()) {
             throw new IllegalArgumentException("No importer found");

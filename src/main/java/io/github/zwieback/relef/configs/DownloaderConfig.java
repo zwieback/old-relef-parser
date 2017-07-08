@@ -7,42 +7,50 @@ import io.github.zwieback.relef.importers.excel.SamsonProductImporter;
 import io.github.zwieback.relef.services.FileService;
 import io.github.zwieback.relef.services.StringService;
 import io.github.zwieback.relef.web.rest.services.RestService;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+import java.util.function.Function;
 
 @Configuration
 @ComponentScan("io.github.zwieback.relef.downloaders")
 public class DownloaderConfig {
 
-    private final BeanFactory beanFactory;
     private final RestService restService;
     private final FileService fileService;
     private final NameProcessor nameProcessor;
     private final NameExporter nameExporter;
     private final StringService stringService;
+    private final Function<String, SamsonProductImporter> samsonProductImporterFactory;
 
     @Autowired
-    public DownloaderConfig(BeanFactory beanFactory,
-                            RestService restService,
+    public DownloaderConfig(RestService restService,
                             FileService fileService,
                             NameProcessor nameProcessor,
                             NameExporter nameExporter,
-                            StringService stringService) {
-        this.beanFactory = beanFactory;
+                            StringService stringService,
+                            Function<String, SamsonProductImporter> samsonProductImporterFactory) {
         this.restService = restService;
         this.fileService = fileService;
         this.nameProcessor = nameProcessor;
         this.nameExporter = nameExporter;
         this.stringService = stringService;
+        this.samsonProductImporterFactory = samsonProductImporterFactory;
+    }
+
+    @Bean
+    public Function<String, SamsonProductImageDownloader> samsonProductImageDownloaderFactory() {
+        return this::samsonProductImageDownloader;
     }
 
     @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    @Lazy
-    public SamsonProductImageDownloader samsonProductImageDownloader(String importFileName) {
-        SamsonProductImporter samsonProductImporter = beanFactory.getBean(SamsonProductImporter.class, importFileName);
+    SamsonProductImageDownloader samsonProductImageDownloader(String importFileName) {
+        SamsonProductImporter samsonProductImporter = samsonProductImporterFactory.apply(importFileName);
         return new SamsonProductImageDownloader(restService, fileService, nameProcessor, nameExporter, stringService,
                 samsonProductImporter);
     }
