@@ -5,7 +5,12 @@ import io.github.zwieback.relef.importers.excel.SamsonProductImporter;
 import io.github.zwieback.relef.services.StringService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
+import java.util.function.Function;
 
 @Configuration
 @ComponentScan("io.github.zwieback.relef.importers")
@@ -19,16 +24,24 @@ public class ImporterConfig {
     }
 
     @Bean
+    public Function<String, MsProductImporter> msProductImporterFactory() {
+        return this::msProductImporter;
+    }
+
+    @Bean
+    public Function<String, SamsonProductImporter> samsonProductImporterFactory() {
+        return this::samsonProductImporter;
+    }
+
+    @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    @Lazy
-    public MsProductImporter msProductImporter(String fileName) {
+    MsProductImporter msProductImporter(String fileName) {
         return new MsProductImporter(stringService, fileName);
     }
 
     @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    @Lazy
-    public SamsonProductImporter samsonProductImporter(String fileName) {
+    SamsonProductImporter samsonProductImporter(String fileName) {
         return new SamsonProductImporter(stringService, fileName);
     }
 }
