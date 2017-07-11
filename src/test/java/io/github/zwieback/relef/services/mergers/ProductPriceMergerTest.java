@@ -16,9 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
@@ -42,8 +40,8 @@ public class ProductPriceMergerTest {
         ProductPricesDto productPricesDto = new ProductPricesDto().setProductMap(productMap);
 
         productPriceMerger.mergePrices(products, productPricesDto);
-        assertNotNull(productPricesDto.getProductMap().get(PRODUCT_ID));
-        assertEquals(products.get(0).getPrice(), productPricesDto.getProductMap().get(PRODUCT_ID).getPrice());
+        assertThat(productPricesDto.getProductMap().get(PRODUCT_ID)).isNotNull();
+        assertThat(productPricesDto.getProductMap().get(PRODUCT_ID).getPrice()).isEqualTo(products.get(0).getPrice());
     }
 
     @Test
@@ -53,7 +51,7 @@ public class ProductPriceMergerTest {
         ProductPricesDto productPricesDto = new ProductPricesDto().setProductMap(productMap);
 
         productPriceMerger.mergePrices(products, productPricesDto);
-        assertNull(productPricesDto.getProductMap().get(PRODUCT_ID));
-        assertEquals(OLD_PRICE, products.get(0).getPrice());
+        assertThat(productPricesDto.getProductMap().get(PRODUCT_ID)).isNull();
+        assertThat(products.get(0).getPrice()).isEqualTo(OLD_PRICE);
     }
 }

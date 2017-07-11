@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doAnswer;
@@ -79,13 +79,13 @@ abstract class AbstractCatalogParserTest {
     @Test
     public void test_parseUrl_should_returns_not_empty_catalog_documents() {
         List<Document> catalogDocuments = catalogParser.parseUrl("");
-        assertEquals(getPageCount(), catalogDocuments.size());
+        assertThat(catalogDocuments).hasSize(getPageCount());
     }
 
     @Test
     public void test_parseProductUrls_should_returns_parsed_product_urls() {
         List<Document> catalogDocuments = catalogParser.parseUrl("");
-        assertEquals(catalogDocuments.size(), getProductQuantities().size());
+        assertThat(catalogDocuments).hasSameSizeAs(getProductQuantities());
 
         IntStream.range(0, catalogDocuments.size())
                 .forEach(i -> validateParseProductUrls(catalogDocuments.get(i), getProductQuantities().get(i)));
@@ -93,13 +93,13 @@ abstract class AbstractCatalogParserTest {
 
     private void validateParseProductUrls(Document catalogDocument, int productQuantity) {
         List<String> productUrls = catalogParser.parseProductUrls(catalogDocument);
-        assertEquals(productQuantity, productUrls.size());
+        assertThat(productUrls).hasSize(productQuantity);
     }
 
     @Test
     public void test_parseProducts_should_returns_parsed_products() {
         List<Document> catalogDocuments = catalogParser.parseUrl("");
-        assertEquals(getProductQuantities().size(), catalogDocuments.size());
+        assertThat(catalogDocuments).hasSameSizeAs(getProductQuantities());
 
         IntStream.range(0, catalogDocuments.size())
                 .forEach(i -> validateParseProducts(catalogDocuments.get(i), getProductQuantities().get(i)));
@@ -107,6 +107,6 @@ abstract class AbstractCatalogParserTest {
 
     void validateParseProducts(Document catalogDocument, int productQuantity) {
         List<Product> products = catalogParser.parseProducts(catalogDocument, getCatalogId());
-        assertEquals(productQuantity, products.size());
+        assertThat(products).hasSize(productQuantity);
     }
 }

@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
@@ -45,7 +45,7 @@ public class FileServiceTest {
         tempDir = Files.createTempDirectory("temp_files");
         String tempFile = tempDir.toFile().getAbsolutePath() + File.separator + ".tmp";
         fileService.writeDocument(buildEmptyDocument(), tempFile);
-        assertTrue(Files.exists(Paths.get(tempFile)));
+        assertThat(Paths.get(tempFile)).exists();
     }
 
     @Test(expected = IOException.class)

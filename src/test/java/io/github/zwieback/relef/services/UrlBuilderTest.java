@@ -11,9 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -44,14 +42,14 @@ public class UrlBuilderTest {
     public void test_buildProductUrl_should_be_full_url() {
         String resultUrl = urlBuilder.buildProductUrl(CATALOG_ID, PRODUCT_ID);
         String expectedUrl = DOMAIN_URL + "catalog" + PRODUCT_URL;
-        assertEquals(expectedUrl, resultUrl);
+        assertThat(resultUrl).isEqualTo(expectedUrl);
     }
 
 
     @Test
     public void test_buildTrickyProductUrl_should_contains_bxrand() {
         String resultUrl = urlBuilder.buildTrickyProductUrl(PRODUCT_URL);
-        assertTrue(resultUrl.contains("bxrand"));
+        assertThat(resultUrl).contains("bxrand");
     }
 
     @Test
@@ -61,52 +59,52 @@ public class UrlBuilderTest {
         String resultUrl = urlBuilder.buildTrickyProductUrl(PRODUCT_URL);
         String[] dividedUrl = resultUrl.split("="); // timestamp as ms in last value
         Long timestamp = Long.valueOf(dividedUrl[dividedUrl.length - 1]);
-        assertEquals(NOW, timestamp);
+        assertThat(timestamp).isEqualTo(NOW);
     }
 
 
     @Test
     public void test_buildProductPhotoUrl_should_ends_with_xmlId_of_product() {
         String resultUrl = urlBuilder.buildProductPhotoUrl(PRODUCT_XML_ID);
-        assertTrue(resultUrl.endsWith(PRODUCT_XML_ID.toString()));
+        assertThat(resultUrl).endsWith(PRODUCT_XML_ID.toString());
     }
 
 
     @Test
     public void test_buildPathUrl_should_starts_with_domainUrl() {
         String resultUrl = urlBuilder.buildPathUrl(PRODUCT_URL);
-        assertTrue(resultUrl.startsWith(DOMAIN_URL));
+        assertThat(resultUrl).startsWith(DOMAIN_URL);
     }
 
     @Test
     public void test_buildPathUrl_should_contains_productUrl() {
         String resultUrl = urlBuilder.buildPathUrl(PRODUCT_URL);
-        assertTrue(resultUrl.contains(PRODUCT_URL));
+        assertThat(resultUrl).contains(PRODUCT_URL);
     }
 
     @Test
     public void test_buildPathUrl_should_ends_with_slash() {
         String resultUrl = urlBuilder.buildPathUrl(PRODUCT_URL);
-        assertTrue(resultUrl.endsWith("/"));
+        assertThat(resultUrl).endsWith("/");
     }
 
 
     @Test
     public void test_buildQueryUrl_should_starts_with_domainUrl() {
         String resultUrl = urlBuilder.buildPathUrl(PRODUCT_URL);
-        assertTrue(resultUrl.startsWith(DOMAIN_URL));
+        assertThat(resultUrl).startsWith(DOMAIN_URL);
     }
 
     @Test
     public void test_buildQueryUrl_should_contains_brandUrl() {
         String resultUrl = urlBuilder.buildPathUrl(BRAND_URL);
-        assertTrue(resultUrl.contains(BRAND_URL));
+        assertThat(resultUrl).contains(BRAND_URL);
     }
 
     @Test
     public void test_buildQueryUrl_should_not_ends_with_slash() {
         String resultUrl = urlBuilder.buildQueryUrl(BRAND_URL);
-        assertFalse(resultUrl.endsWith("/"));
+        assertThat(resultUrl).doesNotEndWith("/");
     }
 
     @Test(expected = URISyntaxException.class)

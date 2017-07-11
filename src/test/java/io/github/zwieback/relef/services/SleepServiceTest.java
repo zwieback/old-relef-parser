@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StopWatch;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
@@ -35,7 +35,7 @@ public class SleepServiceTest {
         watch.start();
         sleepService.sleepIfNeeded(RESPONSE_EXECUTION_TIME_SMALL);
         watch.stop();
-        assertTrue(watch.getTotalTimeMillis() >= requestTimeout - RESPONSE_EXECUTION_TIME_SMALL);
+        assertThat(watch.getTotalTimeMillis()).isGreaterThanOrEqualTo(requestTimeout - RESPONSE_EXECUTION_TIME_SMALL);
     }
 
     @Test
@@ -44,6 +44,6 @@ public class SleepServiceTest {
         watch.start();
         sleepService.sleepIfNeeded(RESPONSE_EXECUTION_TIME_BIG);
         watch.stop();
-        assertTrue(watch.getTotalTimeMillis() >= 0L && watch.getTotalTimeMillis() <= 10L);
+        assertThat(watch.getTotalTimeMillis()).isGreaterThanOrEqualTo(0L).isLessThanOrEqualTo(10L);
     }
 }

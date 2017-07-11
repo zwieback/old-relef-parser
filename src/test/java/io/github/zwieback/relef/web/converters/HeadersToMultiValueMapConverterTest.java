@@ -10,8 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.MultiValueMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
@@ -27,8 +26,8 @@ public class HeadersToMultiValueMapConverterTest {
     public void test_result_of_convert_should_be_empty() {
         Headers headers = HeadersBuilder.create().build();
         MultiValueMap<String, String> convertedMap = converter.convert(headers);
-        assertTrue(headers.isEmpty());
-        assertTrue(convertedMap.isEmpty());
+        assertThat(headers).isEmpty();
+        assertThat(convertedMap).isEmpty();
     }
 
     @Test
@@ -39,10 +38,10 @@ public class HeadersToMultiValueMapConverterTest {
                 .add("key3", "value3")
                 .build();
         MultiValueMap<String, String> convertedMap = converter.convert(headers);
-        assertEquals(headers.size(), convertedMap.size());
+        assertThat(headers).hasSameSizeAs(convertedMap);
         headers.forEach((key, value) -> {
-            assertTrue(convertedMap.containsKey(key));
-            assertTrue(value.equals(convertedMap.getFirst(key)));
+            assertThat(convertedMap).containsKey(key);
+            assertThat(convertedMap.getFirst(key)).isEqualTo(value);
         });
     }
 }

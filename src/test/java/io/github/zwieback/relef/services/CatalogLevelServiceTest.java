@@ -11,9 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.EnumSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
@@ -30,19 +28,19 @@ public class CatalogLevelServiceTest {
         Set<CatalogLevel> activeLevels = EnumSet.of(CatalogLevel.FIRST, CatalogLevel.SECOND, CatalogLevel.THIRD,
                 CatalogLevel.FOURTH);
         Set<CatalogLevel> levels = catalogLevelService.collectActiveCatalogLevels();
-        activeLevels.forEach(level -> assertTrue(levels.contains(level)));
-        assertEquals(CatalogLevel.values().length - 1, levels.size());
+        assertThat(levels).containsExactlyElementsOf(activeLevels);
+        assertThat(levels.size()).isEqualTo(CatalogLevel.values().length - 1);
     }
 
     @Test
     public void test_collectActiveCatalogLevels_should_not_contains_NONE() {
         Set<CatalogLevel> levels = catalogLevelService.collectActiveCatalogLevels();
-        assertFalse(levels.contains(CatalogLevel.NONE));
+        assertThat(levels).doesNotContain(CatalogLevel.NONE);
     }
 
     @Test
     public void test_determineLastCatalogLevel_should_return_same_string() {
         CatalogLevel lastLevel = catalogLevelService.determineLastCatalogLevel();
-        assertEquals(CatalogLevel.FOURTH, lastLevel);
+        assertThat(lastLevel).isEqualByComparingTo(CatalogLevel.FOURTH);
     }
 }

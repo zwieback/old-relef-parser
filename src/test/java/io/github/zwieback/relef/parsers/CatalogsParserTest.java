@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.EnumMap;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CatalogsParserTest extends AbstractParserTest {
 
@@ -38,7 +38,7 @@ public class CatalogsParserTest extends AbstractParserTest {
     public void test_parseBrands_should_returns_parsed_brands() {
         Document catalogsDocument = catalogsParser.parseUrl("");
         List<Brand> brands = catalogsParser.parseBrands(catalogsDocument);
-        assertEquals(brands.size(), 83);
+        assertThat(brands).hasSize(83);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class CatalogsParserTest extends AbstractParserTest {
     private void validateParseCatalogsOfLevel(CatalogLevel level, int expectedSize) {
         Document catalogsDocument = catalogsParser.parseUrl("");
         List<Catalog> catalogs = catalogsParser.parseCatalogsOfLevel(catalogsDocument, level);
-        assertEquals(catalogs.size(), expectedSize);
+        assertThat(catalogs).hasSize(expectedSize);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class CatalogsParserTest extends AbstractParserTest {
     private void validateParseTreeOfCatalogs(CatalogLevel level, int expectedSize) {
         Document catalogsDocument = catalogsParser.parseUrl("");
         List<Catalog> catalogs = catalogsParser.parseTreeOfCatalogs(catalogsDocument, level);
-        assertEquals(catalogs.size(), expectedSize);
+        assertThat(catalogs).hasSize(expectedSize);
     }
 
     @Test
@@ -71,6 +71,6 @@ public class CatalogsParserTest extends AbstractParserTest {
     private void validateParseCatalogUrls(CatalogLevel level, int expectedSize) {
         Document catalogsDocument = catalogsParser.parseUrl("");
         List<String> catalogs = catalogsParser.parseCatalogUrls(catalogsDocument, level);
-        assertEquals(catalogs.size(), expectedSize);
+        assertThat(catalogs).hasSize(expectedSize);
     }
 }

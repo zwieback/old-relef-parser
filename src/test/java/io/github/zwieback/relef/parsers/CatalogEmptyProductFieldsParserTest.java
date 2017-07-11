@@ -6,7 +6,7 @@ import org.jsoup.nodes.Document;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CatalogEmptyProductFieldsParserTest extends AbstractCatalogParserTest {
 
@@ -31,10 +31,10 @@ public class CatalogEmptyProductFieldsParserTest extends AbstractCatalogParserTe
     void validateParseProducts(Document catalogDocument, int productQuantity) {
         List<Product> products = catalogParser.parseProducts(catalogDocument, getCatalogId());
         products.forEach(product -> {
-            assertNull(product.getArticle());
-            assertNull(product.getManufacturer());
-            assertNull(product.getTradeMark());
-            assertNull(product.getParty());
+            assertThat(product.getArticle()).isNull();
+            assertThat(product.getManufacturer()).isNull();
+            assertThat(product.getTradeMark()).isNull();
+            assertThat(product.getParty()).isNull();
         });
     }
 }
