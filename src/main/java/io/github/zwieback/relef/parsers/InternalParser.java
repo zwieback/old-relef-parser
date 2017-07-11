@@ -72,16 +72,16 @@ public class InternalParser {
         return response;
     }
 
-    Document get(String url) {
+    public Document get(String url) {
         return get(url, buildEmptyParams());
     }
 
-    Document get(String url, Headers headers) {
+    public Document get(String url, Headers headers) {
         Response response = parseUrl(url, Method.GET, headers);
         return parseResponse(response);
     }
 
-    Document post(String url, Headers headers) {
+    public Document post(String url, Headers headers) {
         Response response = parseUrl(url, Method.POST, headers);
         return parseResponse(response);
     }
