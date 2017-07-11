@@ -3,14 +3,12 @@ package io.github.zwieback.relef.utils.json;
 import io.github.zwieback.relef.entities.dto.auth.AuthDto;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AuthDeserializerTest extends AbstractDeserializerTest {
 
     @Test
-    public void test_deserialize_should_return_sid() throws IOException {
+    public void test_deserialize_should_return_sid() {
         AuthDto authDto = readValue("classpath:json/auth/sid.json", AuthDto.class);
         assertThat(authDto.getAction()).isEmpty();
         assertThat(authDto.getSid()).isEmpty();
@@ -20,7 +18,7 @@ public class AuthDeserializerTest extends AbstractDeserializerTest {
     }
 
     @Test
-    public void test_deserialize_should_return_authorized() throws IOException {
+    public void test_deserialize_should_return_authorized() {
         AuthDto authDto = readValue("classpath:json/auth/authorized.json", AuthDto.class);
         assertThat(authDto.getAction()).isEqualTo("auth");
         assertThat(authDto.getSid()).isNotEmpty();
@@ -31,7 +29,7 @@ public class AuthDeserializerTest extends AbstractDeserializerTest {
     }
 
     @Test
-    public void test_deserialize_should_return_not_authorized() throws IOException {
+    public void test_deserialize_should_return_not_authorized() {
         AuthDto authDto = readValue("classpath:json/auth/not_authorized.json", AuthDto.class);
         assertThat(authDto.getAction()).isEqualTo("auth");
         assertThat(authDto.getSid()).isNotEmpty();
@@ -40,7 +38,7 @@ public class AuthDeserializerTest extends AbstractDeserializerTest {
     }
 
     @Test
-    public void test_deserialize_should_return_logout() throws IOException {
+    public void test_deserialize_should_return_logout() {
         AuthDto authDto = readValue("classpath:json/auth/logout.json", AuthDto.class);
         assertThat(authDto.getAction()).isEqualTo("logout");
         assertThat(authDto.getSid()).isEmpty();

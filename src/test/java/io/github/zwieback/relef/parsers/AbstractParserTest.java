@@ -3,6 +3,7 @@ package io.github.zwieback.relef.parsers;
 import io.github.zwieback.relef.configs.ParserConfigForTest;
 import io.github.zwieback.relef.configs.PropertyConfig;
 import io.github.zwieback.relef.configs.ServiceConfig;
+import lombok.SneakyThrows;
 import org.jsoup.nodes.Document;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -42,14 +43,18 @@ abstract class AbstractParserTest {
     private ResourceLoader resourceLoader;
 
     @Before
-    public void setUp() throws IOException {
-        Resource resource = resourceLoader.getResource(getResourcePage());
-        InputStream inputStream = resource.getInputStream();
-        Document document = fileParser.parseInputStream(inputStream);
-
+    public void setUp() {
+        Document document = getDocument();
         when(internalParser.post(anyString(), anyObject())).thenReturn(document);
         when(internalParser.get(anyString(), anyObject())).thenReturn(document);
         when(internalParser.get(anyString())).thenReturn(document);
+    }
+
+    @SneakyThrows(IOException.class)
+    private Document getDocument() {
+        Resource resource = resourceLoader.getResource(getResourcePage());
+        InputStream inputStream = resource.getInputStream();
+        return fileParser.parseInputStream(inputStream);
     }
 
     abstract String getResourcePage();

@@ -2,6 +2,8 @@ package io.github.zwieback.relef.utils.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.zwieback.relef.configs.JacksonConfig;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -26,10 +28,10 @@ public abstract class AbstractDeserializerTest {
     @Autowired
     private ObjectMapper mapper;
 
-    protected <T> T readValue(String fileName, Class<T> clazz) throws IOException {
+    @SneakyThrows(IOException.class)
+    protected <T> T readValue(String fileName, Class<T> clazz) {
         Resource resource = resourceLoader.getResource(fileName);
-        try (InputStream inputStream = resource.getInputStream()) {
-            return mapper.readValue(inputStream, clazz);
-        }
+        @Cleanup InputStream inputStream = resource.getInputStream();
+        return mapper.readValue(inputStream, clazz);
     }
 }

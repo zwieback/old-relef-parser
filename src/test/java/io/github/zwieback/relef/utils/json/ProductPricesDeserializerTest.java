@@ -4,7 +4,6 @@ import io.github.zwieback.relef.entities.dto.product.prices.ProductDto;
 import io.github.zwieback.relef.entities.dto.product.prices.ProductPricesDto;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ProductPricesDeserializerTest extends AbstractDeserializerTest {
 
     @Test
-    public void test_deserialize_should_return_one_product_price() throws IOException {
+    public void test_deserialize_should_return_one_product_price() {
         ProductPricesDto productPrices = readValue("classpath:json/product/prices/product_34259.json",
                 ProductPricesDto.class);
         assertThat(productPrices.getAction()).isEqualTo("define");
@@ -33,7 +32,7 @@ public class ProductPricesDeserializerTest extends AbstractDeserializerTest {
     }
 
     @Test
-    public void test_deserialize_should_return_no_product_price_with_error() throws IOException {
+    public void test_deserialize_should_return_no_product_price_with_error() {
         ProductPricesDto productPrices = readValue("classpath:json/product/prices/no_product.json",
                 ProductPricesDto.class);
         assertThat(productPrices.getError()).isNotNull();
@@ -41,7 +40,7 @@ public class ProductPricesDeserializerTest extends AbstractDeserializerTest {
     }
 
     @Test
-    public void test_deserialize_should_return_many_product_prices() throws IOException {
+    public void test_deserialize_should_return_many_product_prices() {
         ProductPricesDto productPrices = readValue("classpath:json/product/prices/catalogs.json",
                 ProductPricesDto.class);
         assertThat(productPrices.getError()).isNull();
@@ -49,7 +48,7 @@ public class ProductPricesDeserializerTest extends AbstractDeserializerTest {
     }
 
     @Test
-    public void test_deserialize_should_return_some_product_prices() throws IOException {
+    public void test_deserialize_should_return_some_product_prices() {
         ProductPricesDto productPrices = readValue("classpath:json/product/prices/catalog_68526.json",
                 ProductPricesDto.class);
         assertThat(productPrices.getError()).isNull();
