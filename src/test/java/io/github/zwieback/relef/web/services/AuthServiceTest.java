@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.IOException;
-
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -32,19 +30,19 @@ public class AuthServiceTest extends AbstractDeserializerTest {
     private RestService restService;
 
     @Test
-    public void test_auth_should_authorize() throws IOException {
+    public void test_auth_should_authorize() {
         setAuthDto(readValue("classpath:json/auth/authorized.json", AuthDto.class));
         authService.auth();
     }
 
     @Test(expected = AuthException.class)
-    public void test_auth_should_throws_exception() throws IOException {
+    public void test_auth_should_throws_exception() {
         setAuthDto(readValue("classpath:json/auth/not_authorized.json", AuthDto.class));
         authService.auth();
     }
 
     @Test
-    public void test_logout_should_logout() throws IOException {
+    public void test_logout_should_logout() {
         setAuthDto(readValue("classpath:json/auth/logout.json", AuthDto.class));
         authService.logout();
     }

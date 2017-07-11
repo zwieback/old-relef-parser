@@ -1,12 +1,12 @@
 package io.github.zwieback.relef.utils;
 
+import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -26,9 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestExecutionListeners
 public class StringFormatterTest {
 
+    @SneakyThrows(Exception.class)
     @Test
-    public void test_constructor_should_be_private() throws NoSuchMethodException, IllegalAccessException,
-            InvocationTargetException, InstantiationException {
+    public void test_constructor_should_be_private() {
         Constructor<StringFormatter> constructor = StringFormatter.class.getDeclaredConstructor();
         assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
         constructor.setAccessible(true);

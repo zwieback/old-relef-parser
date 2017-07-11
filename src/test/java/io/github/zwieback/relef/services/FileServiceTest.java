@@ -1,6 +1,7 @@
 package io.github.zwieback.relef.services;
 
 import io.github.zwieback.relef.configs.ServiceConfig;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Document;
 import org.junit.After;
@@ -34,14 +35,15 @@ public class FileServiceTest {
     private Path tempDir;
 
     @After
-    public void cleanUp() throws IOException {
+    public void cleanUp() {
         if (tempDir != null) {
             recursiveDeleteFilesInDirectory(tempDir.toFile());
         }
     }
 
+    @SneakyThrows(IOException.class)
     @Test
-    public void test_writeDocument_should_write_document_to_temp_file() throws IOException {
+    public void test_writeDocument_should_write_document_to_temp_file() {
         tempDir = Files.createTempDirectory("temp_files");
         String tempFile = tempDir.toFile().getAbsolutePath() + File.separator + ".tmp";
         fileService.writeDocument(buildEmptyDocument(), tempFile);
@@ -58,7 +60,8 @@ public class FileServiceTest {
         return Document.createShell("");
     }
 
-    private static void recursiveDeleteFilesInDirectory(File f) throws IOException {
+    @SneakyThrows(IOException.class)
+    private static void recursiveDeleteFilesInDirectory(File f) {
         if (f.isDirectory()) {
             File[] files = f.listFiles();
             if (files != null) {

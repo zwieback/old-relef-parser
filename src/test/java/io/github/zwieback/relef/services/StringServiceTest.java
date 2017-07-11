@@ -90,18 +90,18 @@ public class StringServiceTest {
     }
 
     @Test
-    public void test_parseToDouble_should_return_null() throws ParseException {
+    public void test_parseToDouble_should_return_null() {
         assertThat(stringService.parseToDouble(null)).isNull();
         assertThat(stringService.parseToDouble("")).isNull();
     }
 
     @Test(expected = ParseException.class)
-    public void test_parseToDouble_should_throw_exception() throws ParseException {
+    public void test_parseToDouble_should_throw_exception() {
         stringService.parseToDouble("_abc_");
     }
 
     @Test
-    public void test_parseToDouble_should_return_parsed_double() throws ParseException {
+    public void test_parseToDouble_should_return_parsed_double() {
         assertThat(stringService.parseToDouble("123,456")).isEqualTo(123.456);
     }
 

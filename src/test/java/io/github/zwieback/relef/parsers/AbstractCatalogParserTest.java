@@ -5,6 +5,7 @@ import io.github.zwieback.relef.configs.PropertyConfig;
 import io.github.zwieback.relef.configs.ServiceConfig;
 import io.github.zwieback.relef.entities.Product;
 import io.github.zwieback.relef.services.HeadersBuilder.Headers;
+import lombok.SneakyThrows;
 import org.jsoup.nodes.Document;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,7 +70,8 @@ abstract class AbstractCatalogParserTest {
         }).when(internalParser).post(anyString(), anyObject());
     }
 
-    private Document getCatalogDocument(int pageNumber) throws IOException {
+    @SneakyThrows(IOException.class)
+    private Document getCatalogDocument(int pageNumber) {
         String resourcePage = String.format("classpath:pages/catalog_%d_page_%d.html", getCatalogId(), pageNumber);
         Resource resource = resourceLoader.getResource(resourcePage);
         InputStream inputStream = resource.getInputStream();
