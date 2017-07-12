@@ -2,6 +2,7 @@ package io.github.zwieback.relef.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "T_PROPERTY")
@@ -18,5 +20,5 @@ public class Property extends BaseEntity {
 
     @Id
     @NotNull
-    private String name;
+    private String name = "";
 }
