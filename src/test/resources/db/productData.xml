@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <T_MANUFACTURER
+            name="Berlingo"
+            url="http://old.relefopt.ru/catalog/66062/?arrFilter_pf[DP_MANIFACTUR][12819243]=12819243"
+    />
+
+    <T_TRADE_MARK
+            name="Berlingo"
+            url="http://old.relefopt.ru/brands/12820028.php"
+    />
+
+    <T_PRODUCT
+            id="34259"
+            catalog_id="68711"
+            code="114377"
+            article="TF8010"
+            barcode="14260107451652"
+            manufacturer_country="китай"
+            name="Доска магнитно-маркерная 90*120, алюминиевая рамка, полочка"
+            description="Доска выполнена из стальной жести с покрытием из высококачественного пластика. Доска необходима при проведении совещаний, семинаров, собраний и презентаций. Писать на доске можно маркерами на водной основе, предназначенными для маркерных досок."
+            url="http://old.relefopt.ru/catalog/68711/34259/"
+            photo_url="http://old.relefopt.ru/upload/iblock/fc8/77e2290d_c30f_11dd_8aea_00e098c184c1_0b4db48c_acab_4059_ab8c_93993bdbb153.jpg"
+            photo_cached_url="http://old.relefopt.ru/upload/resize_cache/iblock/fc8/100_100_1/77e2290d_c30f_11dd_8aea_00e098c184c1_0b4db48c_acab_4059_ab8c_93993bdbb153.jpg"
+            manufacturer_name="Berlingo"
+            trade_mark_name="Berlingo"
+            party="1 / 1 / 1"
+            weight="6"
+            volume="0.036"
+            xml_id="uuid'77e2290d-c30f-11dd-8aea-00e098c184c1'"
+            data_type="basket"
+            price="1199.82"
+            amount="1"
+            available="0"
+            old_price="0.00"
+            black_friday="false"
+    />
+</dataset>
