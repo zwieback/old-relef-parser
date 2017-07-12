@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProductMergerTest extends AbstractMergerTest<Product, Long> {
 
@@ -124,56 +123,35 @@ public class ProductMergerTest extends AbstractMergerTest<Product, Long> {
 
     @Override
     void shouldBeEquals(Product mergedEntity, Product parsedEntity) {
-        assertEquals(mergedEntity.getId(), parsedEntity.getId());
-        assertEquals(mergedEntity.getCatalogId(), parsedEntity.getCatalogId());
-        assertEquals(mergedEntity.getCode(), parsedEntity.getCode());
-        assertEquals(mergedEntity.getArticle(), parsedEntity.getArticle());
-        assertEquals(mergedEntity.getBarcode(), parsedEntity.getBarcode());
-        assertEquals(mergedEntity.getManufacturerCountry(), parsedEntity.getManufacturerCountry());
-        assertEquals(mergedEntity.getName(), parsedEntity.getName());
-        assertEquals(mergedEntity.getDescription(), parsedEntity.getDescription());
-        assertEquals(mergedEntity.getUrl(), parsedEntity.getUrl());
-        assertEquals(mergedEntity.getPhotoUrl(), parsedEntity.getPhotoUrl());
-        assertEquals(mergedEntity.getPhotoCachedUrl(), parsedEntity.getPhotoCachedUrl());
-        assertEquals(mergedEntity.getManufacturer(), parsedEntity.getManufacturer());
-        assertEquals(mergedEntity.getTradeMark(), parsedEntity.getTradeMark());
-        assertEquals(mergedEntity.getParty(), parsedEntity.getParty());
-        assertEquals(mergedEntity.getWeight(), parsedEntity.getWeight());
-        assertEquals(mergedEntity.getVolume(), parsedEntity.getVolume());
-        assertEquals(mergedEntity.getXmlId(), parsedEntity.getXmlId());
-        assertEquals(mergedEntity.getDataType(), parsedEntity.getDataType());
-        assertEquals(mergedEntity.getPrice(), parsedEntity.getPrice());
-        assertEquals(mergedEntity.getAmount(), parsedEntity.getAmount());
-        assertEquals(mergedEntity.getAvailable(), parsedEntity.getAvailable());
-        assertEquals(mergedEntity.getOldPrice(), parsedEntity.getOldPrice());
-        assertEquals(mergedEntity.getBlackFriday(), parsedEntity.getBlackFriday());
-        assertEquals(mergedEntity.getProperties().size(), parsedEntity.getProperties().size());
+        String[] fieldsToIgnore = {"lastUpdate", "properties"};
+        assertThat(parsedEntity).isEqualToIgnoringGivenFields(mergedEntity, fieldsToIgnore);
+        assertThat(parsedEntity.getProperties()).hasSameSizeAs(mergedEntity.getProperties());
     }
 
     @Override
     void shouldBeNotEquals(Product mergedEntity, Product parsedEntity) {
-        assertNotEquals(mergedEntity.getId(), parsedEntity.getId());
-        assertNotEquals(mergedEntity.getCatalogId(), parsedEntity.getCatalogId());
-        assertNotEquals(mergedEntity.getCode(), parsedEntity.getCode());
-        assertNotEquals(mergedEntity.getArticle(), parsedEntity.getArticle());
-        assertNotEquals(mergedEntity.getBarcode(), parsedEntity.getBarcode());
-        assertNotEquals(mergedEntity.getManufacturerCountry(), parsedEntity.getManufacturerCountry());
-        assertNotEquals(mergedEntity.getName(), parsedEntity.getName());
-        assertNotEquals(mergedEntity.getDescription(), parsedEntity.getDescription());
-        assertNotEquals(mergedEntity.getUrl(), parsedEntity.getUrl());
-        assertNotEquals(mergedEntity.getPhotoUrl(), parsedEntity.getPhotoUrl());
-        assertNotEquals(mergedEntity.getPhotoCachedUrl(), parsedEntity.getPhotoCachedUrl());
-        assertNotEquals(mergedEntity.getManufacturer(), parsedEntity.getManufacturer());
-        assertNotEquals(mergedEntity.getTradeMark(), parsedEntity.getTradeMark());
-        assertNotEquals(mergedEntity.getParty(), parsedEntity.getParty());
-        assertNotEquals(mergedEntity.getWeight(), parsedEntity.getWeight());
-        assertNotEquals(mergedEntity.getVolume(), parsedEntity.getVolume());
-        assertNotEquals(mergedEntity.getXmlId(), parsedEntity.getXmlId());
-        assertNotEquals(mergedEntity.getDataType(), parsedEntity.getDataType());
-        assertNotEquals(mergedEntity.getPrice(), parsedEntity.getPrice());
-        assertNotEquals(mergedEntity.getAmount(), parsedEntity.getAmount());
-        assertNotEquals(mergedEntity.getAvailable(), parsedEntity.getAvailable());
-        assertNotEquals(mergedEntity.getOldPrice(), parsedEntity.getOldPrice());
-        assertNotEquals(mergedEntity.getBlackFriday(), parsedEntity.getBlackFriday());
+        assertThat(parsedEntity.getId()).isNotEqualTo(mergedEntity.getId());
+        assertThat(parsedEntity.getCatalogId()).isNotEqualTo(mergedEntity.getCatalogId());
+        assertThat(parsedEntity.getCode()).isNotEqualTo(mergedEntity.getCode());
+        assertThat(parsedEntity.getArticle()).isNotEqualTo(mergedEntity.getArticle());
+        assertThat(parsedEntity.getBarcode()).isNotEqualTo(mergedEntity.getBarcode());
+        assertThat(parsedEntity.getManufacturerCountry()).isNotEqualTo(mergedEntity.getManufacturerCountry());
+        assertThat(parsedEntity.getName()).isNotEqualTo(mergedEntity.getName());
+        assertThat(parsedEntity.getDescription()).isNotEqualTo(mergedEntity.getDescription());
+        assertThat(parsedEntity.getUrl()).isNotEqualTo(mergedEntity.getUrl());
+        assertThat(parsedEntity.getPhotoUrl()).isNotEqualTo(mergedEntity.getPhotoUrl());
+        assertThat(parsedEntity.getPhotoCachedUrl()).isNotEqualTo(mergedEntity.getPhotoCachedUrl());
+        assertThat(parsedEntity.getManufacturer()).isNotEqualTo(mergedEntity.getManufacturer());
+        assertThat(parsedEntity.getTradeMark()).isNotEqualTo(mergedEntity.getTradeMark());
+        assertThat(parsedEntity.getParty()).isNotEqualTo(mergedEntity.getParty());
+        assertThat(parsedEntity.getWeight()).isNotEqualTo(mergedEntity.getWeight());
+        assertThat(parsedEntity.getVolume()).isNotEqualTo(mergedEntity.getVolume());
+        assertThat(parsedEntity.getXmlId()).isNotEqualTo(mergedEntity.getXmlId());
+        assertThat(parsedEntity.getDataType()).isNotEqualTo(mergedEntity.getDataType());
+        assertThat(parsedEntity.getPrice()).isNotEqualTo(mergedEntity.getPrice());
+        assertThat(parsedEntity.getAmount()).isNotEqualTo(mergedEntity.getAmount());
+        assertThat(parsedEntity.getAvailable()).isNotEqualTo(mergedEntity.getAvailable());
+        assertThat(parsedEntity.getOldPrice()).isNotEqualTo(mergedEntity.getOldPrice());
+        assertThat(parsedEntity.getBlackFriday()).isNotEqualTo(mergedEntity.getBlackFriday());
     }
 }

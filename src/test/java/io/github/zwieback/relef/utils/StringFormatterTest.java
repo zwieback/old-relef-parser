@@ -1,19 +1,18 @@
 package io.github.zwieback.relef.utils;
 
+import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Note that @TestExecutionListeners has been configured with an empty list in order to disable the default
@@ -27,11 +26,11 @@ import static org.junit.Assert.assertTrue;
 @TestExecutionListeners
 public class StringFormatterTest {
 
+    @SneakyThrows(Exception.class)
     @Test
-    public void test_constructor_should_be_private() throws NoSuchMethodException, IllegalAccessException,
-            InvocationTargetException, InstantiationException {
+    public void test_constructor_should_be_private() {
         Constructor<StringFormatter> constructor = StringFormatter.class.getDeclaredConstructor();
-        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
         constructor.setAccessible(true);
         constructor.newInstance();
     }
@@ -42,7 +41,7 @@ public class StringFormatterTest {
         String PI_CORRECTLY_FORMATTED = "3" + decimalSeparator + "142";
 
         String piFormatted = StringFormatter.formatDouble(Math.PI);
-        assertEquals(PI_CORRECTLY_FORMATTED, piFormatted);
+        assertThat(piFormatted).isEqualTo(PI_CORRECTLY_FORMATTED);
     }
 
     @Test
@@ -51,7 +50,7 @@ public class StringFormatterTest {
         String E_CORRECTLY_FORMATTED = "2" + decimalSeparator + "718";
 
         String eFormatted = StringFormatter.formatDouble(Math.E);
-        assertEquals(E_CORRECTLY_FORMATTED, eFormatted);
+        assertThat(eFormatted).isEqualTo(E_CORRECTLY_FORMATTED);
     }
 
     private static char getDecimalSeparator() {

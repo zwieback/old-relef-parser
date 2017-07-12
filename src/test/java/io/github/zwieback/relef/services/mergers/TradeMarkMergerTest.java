@@ -4,8 +4,7 @@ import io.github.zwieback.relef.entities.TradeMark;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TradeMarkMergerTest extends AbstractMergerTest<TradeMark, String> {
 
@@ -42,13 +41,13 @@ public class TradeMarkMergerTest extends AbstractMergerTest<TradeMark, String> {
 
     @Override
     void shouldBeEquals(TradeMark mergedEntity, TradeMark parsedEntity) {
-        assertEquals(mergedEntity.getName(), parsedEntity.getName());
-        assertEquals(mergedEntity.getUrl(), parsedEntity.getUrl());
+        String[] fieldsToIgnore = {"lastUpdate"};
+        assertThat(parsedEntity).isEqualToIgnoringGivenFields(mergedEntity, fieldsToIgnore);
     }
 
     @Override
     void shouldBeNotEquals(TradeMark mergedEntity, TradeMark parsedEntity) {
-        assertNotEquals(mergedEntity.getName(), parsedEntity.getName());
-        assertNotEquals(mergedEntity.getUrl(), parsedEntity.getUrl());
+        assertThat(parsedEntity.getName()).isNotEqualTo(mergedEntity.getName());
+        assertThat(parsedEntity.getUrl()).isNotEqualTo(mergedEntity.getUrl());
     }
 }

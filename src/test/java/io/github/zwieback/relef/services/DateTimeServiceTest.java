@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
@@ -29,7 +29,7 @@ public class DateTimeServiceTest {
         LocalDate expected = LocalDate.now();
         long nowAsMilliseconds = dateTimeService.nowAsMilliseconds();
         LocalDate resultDate = Instant.ofEpochMilli(nowAsMilliseconds).atZone(ZoneId.systemDefault()).toLocalDate();
-        assertEquals(expected, resultDate);
+        assertThat(resultDate).isEqualTo(expected);
     }
 
     @Test
@@ -37,6 +37,6 @@ public class DateTimeServiceTest {
         LocalDate expected = LocalDate.now();
         LocalDateTime nowAsLocalDateTime = dateTimeService.nowAsLocalDateTime();
         LocalDate resultDate = nowAsLocalDateTime.toLocalDate();
-        assertEquals(expected, resultDate);
+        assertThat(resultDate).isEqualTo(expected);
     }
 }

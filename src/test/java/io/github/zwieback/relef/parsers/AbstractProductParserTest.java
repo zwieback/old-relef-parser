@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 abstract class AbstractProductParserTest extends AbstractParserTest {
 
@@ -41,29 +41,9 @@ abstract class AbstractProductParserTest extends AbstractParserTest {
     }
 
     private static void compareProducts(Product expectedProduct, Product actualProduct) {
-        assertEquals(expectedProduct.getId(), actualProduct.getId());
-        assertEquals(expectedProduct.getCatalogId(), actualProduct.getCatalogId());
-        assertEquals(expectedProduct.getPhotoUrl(), actualProduct.getPhotoUrl());
-        assertEquals(expectedProduct.getPhotoCachedUrl(), actualProduct.getPhotoCachedUrl());
-        assertEquals(expectedProduct.getName(), actualProduct.getName());
-        assertEquals(expectedProduct.getDescription(), actualProduct.getDescription());
-        assertEquals(expectedProduct.getCode(), actualProduct.getCode());
-        assertEquals(expectedProduct.getArticle(), actualProduct.getArticle());
-        assertEquals(expectedProduct.getBarcode(), actualProduct.getBarcode());
-        assertEquals(expectedProduct.getManufacturerCountry(), actualProduct.getManufacturerCountry());
-        assertEquals(expectedProduct.getParty(), actualProduct.getParty());
-        assertEquals(expectedProduct.getWeight(), actualProduct.getWeight());
-        assertEquals(expectedProduct.getVolume(), actualProduct.getVolume());
-        assertEquals(expectedProduct.getXmlId(), actualProduct.getXmlId());
-        assertEquals(expectedProduct.getDataType(), actualProduct.getDataType());
-        assertEquals(expectedProduct.getPrice(), actualProduct.getPrice());
-        assertEquals(expectedProduct.getAmount(), actualProduct.getAmount());
-        assertEquals(expectedProduct.getAvailable(), actualProduct.getAvailable());
-        assertEquals(expectedProduct.getOldPrice(), actualProduct.getOldPrice());
-        assertEquals(expectedProduct.getBlackFriday(), actualProduct.getBlackFriday());
-        assertEquals(expectedProduct.getProperties().size(), actualProduct.getProperties().size());
-        assertEquals(expectedProduct.getManufacturer(), actualProduct.getManufacturer());
-        assertEquals(expectedProduct.getTradeMark(), actualProduct.getTradeMark());
+        String[] fieldsToIgnore = {"url", "lastUpdate", "properties"};
+        assertThat(actualProduct).isEqualToIgnoringGivenFields(expectedProduct, fieldsToIgnore);
+        assertThat(actualProduct.getProperties()).hasSameSizeAs(expectedProduct.getProperties());
     }
 
     static List<ProductProperty> generatePropertiesStub(int size) {

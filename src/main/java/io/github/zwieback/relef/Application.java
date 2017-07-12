@@ -14,7 +14,6 @@ import io.github.zwieback.relef.services.FileService;
 import io.github.zwieback.relef.web.services.AuthService;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -26,7 +25,7 @@ public class Application {
 
     private static final Logger log = LogManager.getLogger(Application.class);
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 
         CommandLineService cmdService = context.getBean(CommandLineService.class);

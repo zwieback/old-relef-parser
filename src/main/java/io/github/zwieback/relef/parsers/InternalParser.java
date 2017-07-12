@@ -11,16 +11,16 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 @Component
-public class InternalParser implements InitializingBean {
+public class InternalParser {
 
     private static final Logger log = LogManager.getLogger(InternalParser.class);
     private static final String GZIP_DEFLATE_ENCODING = "gzip, deflate";
@@ -34,8 +34,8 @@ public class InternalParser implements InitializingBean {
         this.sleepService = sleepService;
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    @PostConstruct
+    public void init() {
         log.info("User agent is " + userAgent);
     }
 
@@ -72,16 +72,16 @@ public class InternalParser implements InitializingBean {
         return response;
     }
 
-    Document get(String url) {
+    public Document get(String url) {
         return get(url, buildEmptyParams());
     }
 
-    Document get(String url, Headers headers) {
+    public Document get(String url, Headers headers) {
         Response response = parseUrl(url, Method.GET, headers);
         return parseResponse(response);
     }
 
-    Document post(String url, Headers headers) {
+    public Document post(String url, Headers headers) {
         Response response = parseUrl(url, Method.POST, headers);
         return parseResponse(response);
     }

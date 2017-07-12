@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
@@ -43,7 +43,7 @@ public class UrlParserTest {
     @Test
     public void test_parseCatalogIdFromCatalogUrl_should_returns_correct_catalogId() {
         Long catalogId = urlParser.parseCatalogIdFromCatalogUrl(CORRECT_CATALOG_URL);
-        assertEquals(CORRECT_CATALOG_ID, catalogId);
+        assertThat(catalogId).isEqualTo(CORRECT_CATALOG_ID);
     }
 
     @Test(expected = UrlParseException.class)
@@ -54,7 +54,7 @@ public class UrlParserTest {
     @Test
     public void test_parseCatalogIdFromProductUrl_should_returns_correct_catalogId() {
         Long catalogId = urlParser.parseCatalogIdFromProductUrl(CORRECT_PRODUCT_URL);
-        assertEquals(CORRECT_CATALOG_ID, catalogId);
+        assertThat(catalogId).isEqualTo(CORRECT_CATALOG_ID);
     }
 
     @Test(expected = UrlParseException.class)
@@ -65,7 +65,7 @@ public class UrlParserTest {
     @Test
     public void test_parseProductIdFromProductUrl_should_returns_correct_productId() {
         Long productId = urlParser.parseProductIdFromProductUrl(CORRECT_PRODUCT_URL);
-        assertEquals(CORRECT_PRODUCT_ID, productId);
+        assertThat(productId).isEqualTo(CORRECT_PRODUCT_ID);
     }
 
     @Test(expected = UrlParseException.class)
@@ -76,6 +76,6 @@ public class UrlParserTest {
     @Test
     public void test_parseBrandId_should_returns_correct_brandId() {
         Long brandId = urlParser.parseBrandId(CORRECT_BRAND_URL);
-        assertEquals(CORRECT_BRAND_ID, brandId);
+        assertThat(brandId).isEqualTo(CORRECT_BRAND_ID);
     }
 }

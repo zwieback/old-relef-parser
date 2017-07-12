@@ -79,6 +79,8 @@ public class ParserStrategyFactory {
             strategies.add(productStrategy);
         }
         switch (fullParserStrategyType) {
+            case NONE:
+                break;
             case SLOW:
                 strategies.add(fullStrategySlow);
                 break;

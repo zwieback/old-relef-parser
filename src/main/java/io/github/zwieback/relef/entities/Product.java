@@ -1,5 +1,6 @@
 package io.github.zwieback.relef.entities;
 
+import com.google.common.base.MoreObjects;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
+import static io.github.zwieback.relef.utils.StringFormatter.formatDouble;
 
 @Data
 @Entity
@@ -153,5 +156,35 @@ public class Product extends BaseEntity {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("catalogId", catalogId)
+                .add("code", code)
+                .add("article", article)
+                .add("barcode", barcode)
+                .add("manufacturerCountry", manufacturerCountry)
+                .add("name", name)
+                .add("description", description)
+                .add("url", url)
+                .add("photoUrl", photoUrl)
+                .add("photoCachedUrl", photoCachedUrl)
+                .add("manufacturer", manufacturer)
+                .add("tradeMark", tradeMark)
+                .add("party", party)
+                .add("weight", formatDouble(weight))
+                .add("volume", formatDouble(volume))
+                .add("xmlId", xmlId)
+                .add("dataType", dataType)
+                .add("price", price)
+                .add("amount", amount)
+                .add("available", available)
+                .add("oldPrice", oldPrice)
+                .add("blackFriday", blackFriday)
+                .add("properties", properties)
+                .toString();
     }
 }

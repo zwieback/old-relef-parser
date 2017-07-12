@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
@@ -25,6 +25,6 @@ public class TransliterateServiceTest {
     @Test
     public void test_transliterate_should_return_transliterated_string() {
         String transliterated = transliterateService.transliterate(PANGRAM_STRING);
-        assertEquals(TRANSLITERATED_STRING, transliterated);
+        assertThat(transliterated).isEqualTo(TRANSLITERATED_STRING);
     }
 }

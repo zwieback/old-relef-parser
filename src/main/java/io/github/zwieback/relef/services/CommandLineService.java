@@ -1,5 +1,6 @@
 package io.github.zwieback.relef.services;
 
+import lombok.SneakyThrows;
 import org.apache.commons.cli.*;
 import org.springframework.stereotype.Service;
 
@@ -148,7 +149,8 @@ public class CommandLineService {
      * (non-Javadoc)
      * @see org.apache.commons.cli.CommandLineParser#parse(Options, String[])
      */
-    public CommandLine createCommandLine(Options options, String[] args) throws ParseException {
+    @SneakyThrows(ParseException.class)
+    public CommandLine createCommandLine(Options options, String[] args) {
         CommandLineParser cmdParser = new DefaultParser();
         return cmdParser.parse(options, args);
     }

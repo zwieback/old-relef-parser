@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
@@ -25,7 +25,7 @@ public abstract class AbstractMergerTest<T, ID> {
         List<T> existedEntities = buildEntitiesStubOne();
         List<T> parsedEntities = buildEntitiesStubOnePlusTwo();
         List<T> mergedEntities = getMerger().merge(existedEntities, parsedEntities);
-        assertEquals(mergedEntities.size(), parsedEntities.size());
+        assertThat(parsedEntities).hasSameSizeAs(mergedEntities);
         shouldBeEquals(mergedEntities.get(0), parsedEntities.get(0));
     }
 
@@ -34,7 +34,7 @@ public abstract class AbstractMergerTest<T, ID> {
         List<T> existedEntities = Collections.emptyList();
         List<T> parsedEntities = buildEntitiesStubTwo();
         List<T> mergedEntities = getMerger().merge(existedEntities, parsedEntities);
-        assertEquals(mergedEntities.size(), parsedEntities.size());
+        assertThat(parsedEntities).hasSameSizeAs(mergedEntities);
         shouldBeEquals(mergedEntities.get(0), parsedEntities.get(0));
     }
 

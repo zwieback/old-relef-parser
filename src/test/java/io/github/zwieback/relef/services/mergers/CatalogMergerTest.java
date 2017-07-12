@@ -6,8 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CatalogMergerTest extends AbstractMergerTest<Catalog, Long> {
 
@@ -53,19 +52,16 @@ public class CatalogMergerTest extends AbstractMergerTest<Catalog, Long> {
 
     @Override
     void shouldBeEquals(Catalog mergedEntity, Catalog parsedEntity) {
-        assertEquals(mergedEntity.getId(), parsedEntity.getId());
-        assertEquals(mergedEntity.getName(), parsedEntity.getName());
-        assertEquals(mergedEntity.getUrl(), parsedEntity.getUrl());
-        assertEquals(mergedEntity.getLevel(), parsedEntity.getLevel());
-        assertEquals(mergedEntity.getParent(), parsedEntity.getParent());
+        String[] fieldsToIgnore = {"lastUpdate"};
+        assertThat(parsedEntity).isEqualToIgnoringGivenFields(mergedEntity, fieldsToIgnore);
     }
 
     @Override
     void shouldBeNotEquals(Catalog mergedEntity, Catalog parsedEntity) {
-        assertNotEquals(mergedEntity.getId(), parsedEntity.getId());
-        assertNotEquals(mergedEntity.getName(), parsedEntity.getName());
-        assertNotEquals(mergedEntity.getUrl(), parsedEntity.getUrl());
-        assertNotEquals(mergedEntity.getLevel(), parsedEntity.getLevel());
-        assertNotEquals(mergedEntity.getParent(), parsedEntity.getParent());
+        assertThat(parsedEntity.getId()).isNotEqualTo(mergedEntity.getId());
+        assertThat(parsedEntity.getName()).isNotEqualTo(mergedEntity.getName());
+        assertThat(parsedEntity.getUrl()).isNotEqualTo(mergedEntity.getUrl());
+        assertThat(parsedEntity.getLevel()).isNotEqualTo(mergedEntity.getLevel());
+        assertThat(parsedEntity.getParent()).isNotEqualTo(mergedEntity.getParent());
     }
 }

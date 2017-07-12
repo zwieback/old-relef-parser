@@ -1,6 +1,7 @@
 package io.github.zwieback.relef.services;
 
 import io.github.zwieback.relef.configs.ServiceConfig;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Document;
 import org.junit.After;
@@ -17,7 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
@@ -34,18 +35,19 @@ public class FileServiceTest {
     private Path tempDir;
 
     @After
-    public void cleanUp() throws IOException {
+    public void cleanUp() {
         if (tempDir != null) {
             recursiveDeleteFilesInDirectory(tempDir.toFile());
         }
     }
 
+    @SneakyThrows(IOException.class)
     @Test
-    public void test_writeDocument_should_write_document_to_temp_file() throws IOException {
+    public void test_writeDocument_should_write_document_to_temp_file() {
         tempDir = Files.createTempDirectory("temp_files");
         String tempFile = tempDir.toFile().getAbsolutePath() + File.separator + ".tmp";
         fileService.writeDocument(buildEmptyDocument(), tempFile);
-        assertTrue(Files.exists(Paths.get(tempFile)));
+        assertThat(Paths.get(tempFile)).exists();
     }
 
     @Test(expected = IOException.class)
@@ -58,7 +60,8 @@ public class FileServiceTest {
         return Document.createShell("");
     }
 
-    private static void recursiveDeleteFilesInDirectory(File f) throws IOException {
+    @SneakyThrows(IOException.class)
+    private static void recursiveDeleteFilesInDirectory(File f) {
         if (f.isDirectory()) {
             File[] files = f.listFiles();
             if (files != null) {
