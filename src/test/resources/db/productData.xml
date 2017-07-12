@@ -35,4 +35,9 @@
             old_price="0.00"
             black_friday="false"
     />
+
+    <T_BRAND/>
+    <T_CATALOG/>
+    <T_PROPERTY/>
+    <T_PRODUCT_PROPERTY/>
 </dataset>
