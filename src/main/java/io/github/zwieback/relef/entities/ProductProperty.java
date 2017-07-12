@@ -1,5 +1,6 @@
 package io.github.zwieback.relef.entities;
 
+import com.google.common.base.MoreObjects;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +43,7 @@ public class ProductProperty extends BaseEntity {
     @NotNull
     private Property property = new Property("");
 
+    @Column(name = "value_")
     @NotNull
     private String value = "";
 
@@ -58,5 +60,13 @@ public class ProductProperty extends BaseEntity {
 
     public void setName(@NotNull String name) {
         this.property = new Property(name);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("name", property.getName())
+                .add("value", value)
+                .toString();
     }
 }

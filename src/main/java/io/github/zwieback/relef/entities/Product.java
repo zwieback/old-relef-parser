@@ -163,7 +163,6 @@ public class Product extends BaseEntity {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
                 .add("catalogId", catalogId)
-                .add("catalog", catalog)
                 .add("code", code)
                 .add("article", article)
                 .add("barcode", barcode)
