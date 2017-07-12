@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         WebConfigForTest.class
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class ParserStrategyFactoryTest {
+public class ParserStrategyFactoryIT {
 
     @SuppressWarnings("unused")
     @Autowired
